@@ -1,0 +1,80 @@
+@import './../../../../variables.scss';
+@import './../../../../mixins.scss';
+
+.add-vacancy {
+    margin-top: 1%;
+    &-form{
+        &-msg {
+            padding: 1rem 2rem 2rem 2rem;
+            color: $main;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+        &-x2 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            align-items: center;
+            justify-items: center;
+        }
+    }
+    &-step {
+        @include plus-list-component;
+        &-content {
+            &-table {
+                padding-right: 1%;
+                &-item {
+                    display: flex;
+                    align-items: center;
+                    &-info {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        & span:first-child {
+                            font-weight: bold;
+                        }
+                        & span:last-child {
+                            font-style: italic;
+                            font-size: 1.2rem;
+                        }
+                    }
+                    &-count {
+                        color: $gray;
+                        font-size: 2rem;
+                        font-weight: bold;
+                        background-color: $darkgray;
+                        border-radius: 50%;
+                        margin-right: 2%;
+                        width: 4rem;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        & .information__item {
+            padding-top: .8rem;
+        }
+    }
+}
+
+.modal-body {
+    & .modal-form {
+        padding-left: 3%;
+        padding-right: 3%;
+        & table {
+            & tbody {
+                & tr {
+                    & td:first-child {
+                        & .table-step-name {
+                            font-weight: bold;
+                        }
+                        & .table-step-desc {
+                            font-size: 1.4rem;
+                            font-style: italic;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

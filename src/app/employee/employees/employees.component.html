@@ -1,0 +1,72 @@
+<app-navigation></app-navigation>
+<div class="employees background-right">
+    <div class="employees__people background-right">
+        <div class="employees__people--title"><span class="fa-solid fa-sliders"></span> Filtros</div>
+        <span [class]="classPerDepartment(department.id)" *ngFor="let department of departments" (click)="perDepartment(department.id, 1)">
+            <div [style.background-color]="department.colorHex"></div>
+            <h4>{{department.name}} ({{ department.employeesCount }})</h4>
+        </span>
+        <span class="employees__people--person" (click)="clearFilters()">
+            <div class="employees__people--person--default"></div>
+            <h4>Todas las áreas ({{ totalDepartments }})</h4>
+        </span>
+    </div>
+    <div class="employees__block" *ngIf="showEmployees">
+      <div class="employees__block--card">
+          <div class="employees__block--card--employee" *ngFor="let employee of employees" [style.border-color]="employee.colorHex"
+              (click)="openEdit(employee.id)">
+              <div class="employees__block--card--employee--img" [style.border-bottom-color]="employee.colorHex">
+                <img [src]="employee.photoUrl.trim() != '' ? employee.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="employee.colorHex" />
+              </div>
+              <div class="employees__block--card--employee--info">
+                  <span>{{employee.name}}</span>
+                  <span>{{employee.jobName}}</span>
+                  <span>{{employee.email}}</span>
+                  <span>{{employee.cellPhone}}</span>
+              </div>
+          </div>
+        </div>
+        <div class="employees__block--pagination">
+          <button *ngIf="pagesArray.length > 0 && pagesArray[0] > 1" class="employees__block--pagination--option" (click)="employeesMethod(1)"><< Primera</button>
+          <button *ngIf="pagesArray.length > 0 && employeeCriteria.page > 1" class="employees__block--pagination--option" (click)="employeesMethod(employeeCriteria.page - 1)">< Anterior</button>
+          <button *ngFor="let page of pagesArray" [class]="page == employeeCriteria.page ? 'employees__block--pagination--selected' : 'employees__block--pagination--option'" (click)="employeesMethod(page)">{{ page }}</button>
+          <button *ngIf="pagesArray.length > 0 && employeeCriteria.page < lastPage" class="employees__block--pagination--option" (click)="employeesMethod(employeeCriteria.page + 1)">Siguiente ></button>
+          <button *ngIf="pagesArray.length > 0 && pagesArray[pagesArray.length - 1] < lastPage" class="employees__block--pagination--option" (click)="employeesMethod(lastPage)">Última >></button>
+        </div>
+        <div class="employees__block--btn">
+          <button data-bs-toggle="modal" data-bs-target="#modalSearch" (click)="openModal(modalSearch)" class="employees__block--btn--action">Buscar funcionario</button>
+          <button (click)="openAdd()" class="employees__block--btn--action">Agregar funcionario</button>
+          <button (click)="exportData()" class="employees__block--btn--export">Exportar funcionarios</button>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalSearch let-modal>
+  <div class="modal-body">
+    <div class="modal-close" (click)="closeModal()">
+      <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+    </div>
+    <div class="modal-form">
+      <form>
+          <div class="information__item">
+            <label>
+              <select [(ngModel)]="employeeSelect"  name="employeeSelect">
+                <option value="cedula">Cédula</option>
+                <option value="nombre">Nombre</option>
+              </select>
+            </label>
+            <div>
+              <input [type]="employeeSelect == 'cedula' ? 'number' : 'text'" placeholder="Digite un valor" [(ngModel)]="employeeDoc" name="employeeDoc" />
+            </div>
+          </div>
+          <div class="information__btn">
+            <button type="button" (click)="searchEmployee()">Buscar</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

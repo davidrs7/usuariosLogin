@@ -1,0 +1,48 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.add-field {
+    padding-top: 2rem;
+    &-form{
+        &-x2 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            align-items: center;
+            justify-items: center;
+        }
+        &-params {
+            &-all {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                & input {
+                    max-width: 3rem;
+                    min-width: 2.8rem;
+                }
+                & span {
+                    font-size: 1.8rem;
+                    padding-left: 1rem;
+                }
+            }
+            &-x3 {
+                display: grid;
+                grid-template-columns: 33% 34% 33%;
+                & div {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-start;
+                    & input {
+                        max-width: 2.5rem;
+                        min-width: 2.5rem;
+                    }
+                    & span {
+                        font-size: 1.6rem;
+                        padding-left: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+<app-navigation></app-navigation>
+
+<div class="container pt-5 mt-5">
+    <table class="table text-center fs-2 tabla-personalizada table-hover">
+        <tbody>
+            <tr *ngFor="let PostulanteHistoricos of PostulanteHistorico">
+                <td class="border-end w-25">{{PostulanteHistoricos[0]}}</td>
+                <td class="border-end w-25">{{PostulanteHistoricos[1]}}</td>
+                <td>
+                    <div class="employees__block--btn contenedor-botones">
+                        <select class="form-select text-center" aria-label="Default select example">
+                            <option selected>Asignar vacante activa </option>
+                            <option *ngFor="let PostulanteHistoricos of PostulanteHistorico"  value="Text" >{{vacantesHistorico[0]}}</option>
+                          </select>
+                    </div>
+                </td>
+                <td class="">
+                    <a class="employees__block--btn--action botones-action w-100 me-3 p-3 text-center" [queryParams]="{menu:8}" routerLink="/recruiter/postulates/detallespostulantes" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="fa-solid fa-magnifying-glass "></i></a>
+                    <!--<a data-bs-toggle="modal" data-bs-target="#detallesPostulados" class="employees__block--btn--action botones-action w-100 me-3 p-3 text-center "><i class="fa-solid fa-magnifying-glass "></i></a>-->
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="employees__block--btn contenedor-botones mt-5 pt-5">
+        <button class="employees__block--btn--action botones-action me-3 p-3" [queryParams]="{menu:4}" routerLink="#" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Guardar</button>
+    </div>
+</div>

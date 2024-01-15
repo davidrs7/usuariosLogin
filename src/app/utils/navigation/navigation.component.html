@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg navbar-dark background-right">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <div class="navbar-left-block d-flex">
+                <div (click)="open('modules')" class="navbar-brand me-2 mb-1 d-flex align-items-center">
+                    <img src="../../assets/asecofin_logo.png" height="50" alt="Asecofin Logo" loading="lazy" style="margin-top: 2px;" />
+                </div>
+            </div>
+            
+            <ul class="navbar-center-block navbar-nav flex-row d-none d-md-flex">
+                <li *ngFor="let nav of navigate[component]" [class]="nav.name == selected ? 'nav-item me-3 me-lg-1 active' : 'nav-item me-3 me-lg-1'">
+                    <div (click)="open(nav.routing)" class="nav-link">
+                        <span [class]="nav.faClass != null && nav.faClass != '' ? 'fas fa-lg ' + nav.faClass : 'fas fa-lg fa-circle'"></span>
+                        <span>{{ nav.title }}</span>
+                    </div>
+                </li>
+            </ul>
+    
+            <ul class="navbar-right-block navbar-nav flex-row">
+                <li class="nav-item me-3 me-lg-1">
+                    <div class="nav-link d-sm-flex align-items-sm-center">
+                        <img src="{{ (user.photoUrl != null && user.photoUrl != '') ? user.photoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="45" alt="{{ user.userName }}" loading="lazy" />
+                        <strong class="d-none d-sm-block ms-1">{{ userName }}</strong>
+                    </div>
+                </li>
+                <li class="nav-item me-3 me-lg-1">
+                    <div (click)="nuevoLogout()" class="nav-link">
+                        <span class="fas fa-right-from-bracket fa-lg"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<nav class="navbar navbar-sec navbar-expand-lg navbar-light bg-light" *ngIf="secNavigate.length > 0">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavSec" aria-controls="navbarNavSec" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNavSec">
+            <ul class="navbar-nav">
+                <li *ngFor="let secNav of secNavigate" [class]="secNav.name == secSelected ? 'nav-item active' : 'nav-item'">
+                    <div (click)="open(secNav.routing)" class="nav-link">
+                        <span [class]="secNav.faClass != null && secNav.faClass != '' ? 'fas fs-5 ' + secNav.faClass : 'fas fs-5 fa-circle'"></span>
+                        <span>{{ secNav.title }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

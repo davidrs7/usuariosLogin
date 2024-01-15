@@ -1,0 +1,39 @@
+<div class="login">
+  <div class="login__logo">
+    <img src="../../assets/asecofin_logo.png" alt="Asecofin Logo">
+  </div>
+  <div class="login__form">
+    <div class="login__form--title">¡Bienvenido!</div>
+    <div class="login__form--info">
+      <form [formGroup]="form" (ngSubmit)="nuevoLogin()">
+        <div class="information__item">
+          <div>
+            <input type="text" formControlName="userName" placeholder="Usuario" name="userName" />
+            <ul *ngIf="errors.validate(userName)">
+              <li *ngFor="let message of errors.getErrors(userName)">{{ message }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="information__item">
+          <div>
+            <input type="password" formControlName="password" placeholder="Contraseña" />
+            <ul *ngIf="!loginValid || !sessionValid || errors.validate(password)">
+              <li *ngIf="!loginValid">El usuario o la contraseña no son válidos.</li>
+              <li *ngIf="!sessionValid">La sesión ha caducado.</li>
+              <li *ngFor="let message of errors.getErrors(password)">{{ message }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="information__btn">
+          <button type="submit">Ingresar</button>
+          <a href="#">¿Olvidaste la contraseña?</a>
+        </div>
+      </form>
+    </div>
+    <div class="login__form--tiindux">
+      <img src="../../assets/tiindux_logo.png" alt="Tiindux Logo">
+    </div>
+  </div>
+</div>
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

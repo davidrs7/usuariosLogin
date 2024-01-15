@@ -1,0 +1,45 @@
+<app-navigation></app-navigation>
+<div class="container">
+    <br>
+    <br>
+    <br>
+<form [formGroup]="PermisosForm" autocomplete="off" class="container">
+
+     <h3>Asignación de permisos a roles:</h3>
+     <hr>
+     <label for="rolId">Seleccione un rol: * </label> 
+     <select (change)="rolSelect($event)" formControlName = "rolId">
+        <option value="0">--Seleccione una opcion--</option> 
+        <option *ngFor="let item of roles" [value]="item.rolId">{{item.nombre}}</option>
+      </select>
+
+      <br>
+      <br>
+      <br>
+      
+      <div class="container" *ngIf="rolSeleccionado">
+    <table >
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Descripción</th>  
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of rolPermisosTable let i = index">
+            <td><input type="checkbox" (change)="onChange(item)" [checked]="item.check"/></td>     
+            <td style="text-align: center;">{{ item.Nombre }}</td>
+            <td style="text-align: center;">{{ item.descripcion }}</td> 
+          </tr>
+        </tbody>
+      </table> <br><br>
+      
+        <mat-paginator [length]="Permisos.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
+          (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+        </div>
+
+</form>
+</div> 
+
+<div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>

@@ -1,0 +1,31 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
+
+.survey {
+    padding: 2rem 7rem;
+    &-table {
+        &-info {
+            &-title {
+                font-size: 1.9rem;
+                font-weight: bold;
+            }
+            &-desc {
+                font-size: 1.6rem;
+            }
+            &-date {
+                font-size: 1.5rem;
+                font-style: italic;
+            }
+        }
+        &-error {
+            font-size: 1.6rem;
+            font-style: italic;
+            padding: 4rem 0;
+            text-align: center;
+            color: $darkgray;
+        }
+        & .action-white {
+            @include btn-white;
+        }
+    }
+}

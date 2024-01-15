@@ -1,0 +1,53 @@
+<app-navigation></app-navigation>
+
+<div class="vacancy background-rigth">
+    <div>
+        <table class="vacancy-table">
+            <thead>
+                <tr>
+                    <th>Vacante</th>
+                    <th>Disponibles / Postulados</th>
+                    <th>Contratados</th>
+                    <th>Información complementaria</th>
+                    <th>Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vacant of vacantList">
+                    <td class="bgclaro">
+                        <div>
+                            <div>{{ vacant.jobName }}</div>
+                        </div>
+                    </td>
+                    <td class="bgclaro vacancy-table-num">
+                        <div>
+                            <div>{{ vacant.vacantNum }} / <span>{{ vacant.vacantsCount }}</span></div>
+                        </div>
+                    </td>
+                    <td class="vacancy-table-num">{{ vacant.employeesCount }}</td>
+                    <td>
+                        <div class="vacancy-table-desc">
+                            <div>
+                                {{ vacant.contractTypeName }}
+                                <span *ngIf="vacant.employeesCount != null && vacant.employeesCount >= vacant.vacantNum"> (Contratación cerrada)</span>
+                            </div>
+                            <div class="vacancy-table-desc-status vacancy-table-desc-status-{{ vacant.vacantStatusId }}">
+                                <span class="fa-solid fa-circle"></span>
+                                {{ vacant.vacantStatusName }}
+                            </div>
+                            <div>{{ vacant.description }}</div>
+                        </div>
+                    </td>
+                    <td class="action">
+                        <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="openEdit(vacant.id)"></span>
+                        <span *ngIf="vacant.employeesCount == null || vacant.employeesCount < vacant.vacantNum" ngbTooltip="Asignar postulados" class="fa-solid fa-user-group action-button" (click)="openPostulates(vacant.id)"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="information__btn">
+            <button (click)="openAdd()">Agregar Vacante</button>
+        </div>
+    </div>
+</div>

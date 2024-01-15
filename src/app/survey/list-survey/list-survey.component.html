@@ -1,0 +1,39 @@
+<app-navigation></app-navigation>
+
+<div class="survey background-right">
+    <div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th>Encuesta</th>
+                    <th>¿Está habilitada?</th>
+                    <th>Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let survey of surveyList">
+                    <td class="survey-table-info">
+                        <div class="survey-table-info-title">{{ survey.name }}</div>
+                        <div class="survey-table-info-desc">{{ survey.description }}</div>
+                    </td>
+                    <td class="survey-table-center">
+                      <span *ngIf="survey.available == 0" class="fa-solid fa-circle text-danger"></span>
+                      <span *ngIf="survey.available == 1" class="fa-solid fa-circle text-success"></span>
+                      {{ survey.available == 1 ? "Si" : "No" }}
+                    </td>
+                    <td class="action">
+                        <span (click)="openEdit(survey.id)" ngbTooltip="Editar" class="fa-solid fa-pen action-button"></span>
+                        <span *ngIf="survey.available == 1" (click)="openConfig(survey.id)" ngbTooltip="Configurar distribución de la encuesta" class="fa-solid fa-users-gear action-button"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="information__btn">
+            <button (click)="newSurvey()">Agregar Encuesta</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

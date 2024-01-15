@@ -1,0 +1,31 @@
+<app-navigation></app-navigation>
+<div class="department">
+  <div class="department__container">
+    <form [formGroup]="formEdit" (ngSubmit)="validateFormEdit()">
+      <div class="department__container--information">
+        <div class="department__container--information--items">
+          <div class="information__item">
+            <label for="departmentName">Nombre</label>
+            <div>
+              <input type="text" formControlName="name" name="name" id="departmentName">
+              <ul *ngIf="errors.validate(name)"><li *ngFor="let message of errors.getErrors(name)">{{ message }}</li></ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="departmentColor">Color</label>
+            <div>
+              <input type="color" formControlName="colorHex" name="colorHex" id="departmentColor">
+              <ul *ngIf="errors.validate(colorHex)"><li *ngFor="let message of errors.getErrors(colorHex)">{{ message }}</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="department__container--information--btn information__btn">
+          <button type="submit">Guardar</button>
+          <button type="button" (click)="cancel()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

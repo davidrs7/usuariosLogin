@@ -1,0 +1,129 @@
+<app-navigation></app-navigation>
+
+<div class="survey background-right">
+    <form [formGroup]="formSurvey" (ngSubmit)="validateFormSurvey()">
+        <div class="survey-form">
+            <div class="survey-form-x2">
+                <div class="information__item">
+                    <label for="surveyName">Nombre</label>
+                    <div>
+                        <input type="text" formControlName="name" name="name" id="surveyName">
+                        <ul *ngIf="errors.validate(name)">
+                            <li *ngFor="let message of errors.getErrors(name)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="surveyAvailable">Estado</label>
+                    <div>
+                        <select formControlName="available" name="available" id="surveyAvailable">
+                            <option value="1">Habilitado</option>
+                            <option value="0">Deshabilitado</option>
+                        </select>
+                        <ul *ngIf="errors.validate(available)">
+                            <li *ngFor="let message of errors.getErrors(available)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="information__item">
+                <label for="surveyDescription">Descripción</label>
+                <div>
+                    <textarea id="surveyDescription" name="description" rows="3" formControlName="description"></textarea>
+                    <ul *ngIf="errors.validate(description)">
+                        <li *ngFor="let message of errors.getErrors(description)">{{ message }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="survey-fields">
+            <div class="survey-fields-title">Campos asociados a la etapa</div>
+            <div class="survey-fields-content">
+                <div class="survey-fields-content-msg" *ngIf="!fieldsSelected">
+                    <div>Esta etapa no tiene campos asociados.</div>
+                    <div>Pulse el botón <span>+</span> ubicado a la derecha para seleccionar los campos de esta etapa.</div>
+                </div>
+                <div class="survey-fields-content-table" *ngIf="fieldsSelected">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Campo</th>
+                                <th>¿Está Activo?</th>
+                                <th>Peso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let field of fields">
+                                <td *ngIf="field.surveyId != null && field.surveyId != 0">
+                                    {{ field.name }}
+                                    <span class="tag tag-{{ field.fieldType }}">{{ field.fieldType }}</span>
+                                </td>
+                                <td *ngIf="field.surveyId != null && field.surveyId != 0">
+                                    <input (click)="changeActiveInField(field.id)" type="checkbox" id="activeCheckbox{{ field.id }}" value="1" [checked]="field.active != null && field.active == 1" />
+                                </td>
+                                <td *ngIf="field.surveyId != null && field.surveyId != 0">
+                                    <select id="selectWeight{{ field.id }}" (change)="changeWeightInField(field.id, $event)">
+                                        <option *ngFor="let i of weightList" value="{{ i }}" [selected]="field.weight != null && field.weight == i">{{ i }}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#modalSelFields" (click)="openModal(modalSelFields)">+</button>
+            </div>
+        </div>
+
+        <div class="survey-btn information__btn">
+            <button type="button" class="survey-btn-action" (click)="goBack()">Cancelar</button>
+            <button type="submit" class="survey-btn-action">Guardar</button>
+        </div>
+    </form>
+</div>
+
+
+<ng-template #modalSelFields let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-header">
+            <div class="modal-header-search">
+                <span class="fa-solid fa-magnifying-glass"></span>
+                <input type="text" placeholder="Buscar" />
+            </div>
+        </div>
+        <div class="modal-form">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Nombre del campo</td>
+                        <td>¿Es requerido?</td>
+                        <td>Seleccionado</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let field of fields">
+                        <td>
+                            {{ field.name }}
+                            <span class="tag tag-{{ field.fieldType }}">{{ field.fieldType }}</span>
+                        </td>
+                        <td>{{ field.isRequired ? 'Si' : 'No' }}</td>
+                        <td>
+                            <input (click)="toggleField(field.id)" type="checkbox" id="inlineCheckbox{{ field.id }}" value="{{ field.id }}" [disabled]="field.updated" [checked]="field.surveyId != null && field.surveyId != 0" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="information__btn">
+                <button type="button" (click)="closeModal()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

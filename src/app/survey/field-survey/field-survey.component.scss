@@ -1,0 +1,27 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
+
+.fields {
+    padding: 2rem 7rem;
+    &-table {
+        &-center {
+            text-align: center;
+        }
+        &-msg {
+            font-style: italic;
+            color: $darkgray;
+        }
+        &-config {
+            & ul {
+                margin-bottom: 0;
+                & li {
+                    & ul {
+                        & li {
+                            font-size: 1.5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

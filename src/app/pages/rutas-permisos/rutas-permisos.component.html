@@ -1,0 +1,69 @@
+<app-navigation></app-navigation>
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of permisos|paginador:p_Size:page">
+                <td style="text-align: center;">{{ item.permisoId }}</td>
+                <td style="text-align: center;">{{ item.nombre }}</td>
+                <td style="text-align: center;">{{ item.descripcion }}</td>
+                <td style="text-align: center;">{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click)="editarPermisos(item.permisoId)">
+                </td>
+                <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar"
+                    (click)="eliminarPermisos(item.permisoId)">
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+    <div>
+        <mat-paginator [length]="permisos.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
+            (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+    </div>
+    <br>
+    <hr>
+    <button type="button" (click)="guardaEmpresas()">{{ permisoToEdit ? 'Editar permiso' : 'Crear permiso' }}</button>
+    &nbsp;&nbsp;&nbsp;
+    <button type="button" (click)="LimpiarFormulario()">limpiar</button>
+    <br><br>
+
+
+    <form [formGroup]="permisosForm" autocomplete="off">
+        <div>
+            <label for="nombre">Nombre de permiso: * </label>
+            <input type="text" formControlName="nombre" required>
+        </div><br>
+
+        <div>
+            <label for="descripcion">Descripción de permiso: * </label>
+            <input type="text" formControlName="descripcion" required>
+        </div><br>
+
+        <div>
+            <label for="rutaangular">Ruta angular: * </label>
+            <input type="text" formControlName="rutaangular" required>
+        </div><br>
+
+        <div>
+            <label for="estado">Estado:</label>
+            <select formControlName="estado" required>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+        </div><br>
+
+    </form>
+    <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
+
+
+</div>

@@ -1,0 +1,216 @@
+<app-navigation></app-navigation>
+
+<div class="employees-edit background-right">
+    <div class="employees-edit__filters background-right">
+        <div class="employees-edit__filters--title">Filtros</div>
+        <span class="employees-edit__filters--section" (click)="openSection('basica')">
+            <div [style.background-color]="employee.colorHex"></div>
+            <h4>Información Básica</h4>
+        </span>
+        <span class="employees-edit__filters--section" (click)="openSection('general')">
+            <div [style.background-color]="employee.colorHex"></div>
+            <h4>Información General</h4>
+        </span>
+        <span class="employees-edit__filters--section" (click)="openSection('academica')">
+            <div [style.background-color]="employee.colorHex"></div>
+            <h4>Información Académica</h4>
+        </span>
+        <span class="employees-edit__filters--section" (click)="openSection('documentacion')">
+            <div [style.background-color]="employee.colorHex"></div>
+            <h4>Documentación</h4>
+        </span>
+    </div>
+
+    <div class="employees-edit__information">
+        <div class="employees-edit__information__card" *ngIf="section === 'basica'">
+            <div class="employees-edit__information__card--head">
+                <div class="employees-edit__information__card--head--info">
+                    <div class="employees-edit__information__card--head--info--name">{{ employee.name }}</div>
+                    <div class="employees-edit__information__card--head--info--job">{{ employee.jobName }} - {{ employee.statusName }}</div>
+                    <div class="employees-edit__information__card--head--info--job"><span>{{ employee.email }}</span></div>
+                    <div class="employees-edit__information__card--head--info--other">{{ employee.phone }} - {{ employee.cellPhone }} - {{ employee.corpCellPhone }}</div>
+                    <div class="employees-edit__information__card--head--info--other">{{ employee.docTypeName }} {{ employee.doc }} de {{ employee.docIssueCityName }} expedida el {{ employee.docIssueDate | date:"dd/MM/yyyy" }}</div>
+                    <div class="employees-edit__information__card--head--info--other">{{ employee.sex }} - {{ employee.birthDate | date:"dd/MM/yyyy" }} - {{ employee.rh }} - {{ employee.maritalStatusName }}</div>
+                </div>
+                <div class="employees-edit__information__card--head--img" [style.border-bottom-color]="employee.colorHex">
+                    <img src="{{ employee.photoUrl }}" alt="Photo Url" [style.border-bottom-color]="employee.colorHex" />
+                </div>
+            </div>
+            <div class="employees-edit__information__card--head">
+                <div class="employees-edit__information__card--head--info">
+                    <div class="employees-edit__information__card--head--info--title">Tipo de contrato y ciudad de trabajo</div>
+                    <div class="employees-edit__information__card--head--info--job">{{ employee.contractTypeName }} - {{ employee.jobCityName }}</div>
+                    <div class="employees-edit__information__card--head--info--title">Información Bancaria</div>
+                    <div class="employees-edit__information__card--head--info--other">{{ employee.bankAccountType }} No. {{ employee.bankAccount }} de {{ employee.bankingEntityName }}</div>
+                </div>
+                <div class="employees-edit__information__card--head--vaccine" [style.border-left-color]="employee.colorHex" *ngIf="employee.hasVaccine">
+                    <div class="employees-edit__information__card--head--vaccine--other"><strong>Vacunación:</strong></div>
+                    <div class="employees-edit__information__card--head--vaccine--other"><img src="../../assets/dose.png" alt="Dosis" /><span>{{ employee.vaccineDose }} dosis</span></div>
+                    <div class="employees-edit__information__card--head--vaccine--other"><img src="../../assets/vccmaker.png" alt="Dosis" /><span>{{ employee.vaccineMaker }}</span></div>
+                    <div class="employees-edit__information__card--head--vaccine--other"><u><span *ngIf="employee.hasVaccineBooster">Con</span><span *ngIf="!employee.hasVaccineBooster">Sin</span> Refuerzo</u></div>
+                </div>
+            </div>
+            <div class="employees-edit__information__card--profile">{{ employee.jobProfile }}</div>
+            <div class="employees-edit__information__card--skills">
+                <div class="employees-edit__information__card--skills--1">
+                    <h3>Conocimientos</h3>
+                    <div class="employees-edit__information__card--skills--1--item" *ngFor="let knowledge of employeeKnowledges">
+                        <div class="employees-edit__information__card--skills--1--item--info" *ngIf="knowledge.active">
+                            <span>{{ knowledge.knowledgeName }}</span>
+                            <div>
+                                <div [style.width]="ratePercent(knowledge.rate)" [style.background-color]="rateColor(knowledge.rate)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="employees-edit__information__card--skills--2">
+                    <h3>Habilidades</h3>
+                    <div class="employees-edit__information__card--skills--2--item" *ngFor="let skill of employeeSkills">
+                        <div class="employees-edit__information__card--skills--2--item--info" *ngIf="skill.active">
+                            <span>{{ skill.skillName }}</span>
+                            <div>
+                                <div [style.width]="ratePercent(skill.rate)" [style.background-color]="rateColor(skill.rate)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Edad Hijos-->
+                <div class="contenedor-list-hijos">
+                    <h3>Hijos</h3>
+                    <div class="list-hijos">
+                        <div *ngFor="let sonsAge of employeeSonsAge">
+                            <div *ngIf="sonsAge.sonName">
+                                <div class="contenedor-hijos2">
+                                    <div>{{sonsAge.sonName}}</div>
+                                    <div>{{sonsAge.sonBornDate | date: 'dd/MM/yyyy'}}</div>
+                                    <div class="field-anos"><i class="fa-solid fa-person"></i><span>&nbsp;&nbsp;</span>{{sonsAge.age}} <span>Años</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Edad Hijos-->
+            </div>
+            <div class="employees-edit__information__card--btn">
+                <button (click)="editMethod()">Editar información</button>
+            </div>
+        </div>
+
+        <div class="employees-edit__information__card" *ngIf="section === 'general'">
+            <div class="employees-edit__information__card--head">
+                <div class="employees-edit__information__card--head--info">
+                    <div class="employees-edit__information__card--head--info--title">Contacto de Emergencia</div>
+                    <div class="employees-edit__information__card--head--info--job">{{ employeeGeneral.emergencyContactName }} - {{ employeeGeneral.emergencyContactPhone }} - {{ employeeGeneral.emergencyContactRelationship }}</div>
+                    <div class="employees-edit__information__card--head--info--title">Residencia</div>
+                    <div class="employees-edit__information__card--head--info--job">{{ employeeGeneral.address }} - {{ employeeGeneral.neighborhood }} - {{ employeeGeneral.cityName }}</div>
+                    <div class="employees-edit__information__card--head--info--other">Estrato {{ employeeGeneral.socioeconomicStatus }} - {{ employeeGeneral.housingTypeName }} - Tiempo de residencia {{ employeeGeneral.housingTime }} meses</div>
+                </div>
+                <div class="employees-edit__information__card--head--img" [style.border-bottom-color]="employee.colorHex">
+                    <img src="{{ employee.photoUrl }}" alt="Photo Url" [style.border-bottom-color]="employee.colorHex" />
+                </div>
+            </div>
+            <div class="employees-edit__information__card--comp">
+                <div class="employees-edit__information__card--comp--info div__info">
+                    <div class="employees-edit__information__card--comp--info--title">Personas a cargo</div>
+                    <div class="employees-edit__information__card--comp--info--job">{{ employeeGeneral.dependents }}</div>
+                </div>
+                <div class="employees-edit__information__card--comp--info div__info">
+                    <div class="employees-edit__information__card--comp--info--title">¿Tiene hijos menores de 9 años?</div>
+                    <div class="employees-edit__information__card--comp--info--job">{{ employeeGeneral.dependentsUnder9 }} <i *ngIf="employeeGeneral.dependentsUnder9 > 0">(F. Nacimiento: {{ employeeGeneral.dependentBirthDate | date:"dd/MM/yyyy" }})</i></div>
+                </div>
+                <div class="employees-edit__information__card--comp--info">
+                    <div class="employees-edit__information__card--comp--info--title">Tipo de Cotizante</div>
+                    <div class="employees-edit__information__card--comp--info--job">{{ employeeGeneral.contributorType }}</div>
+                </div>
+                <div class="employees-edit__information__card--comp--info div__info">
+                    <div class="employees-edit__information__card--comp--info--title">Eps</div>
+                    <div class="employees-edit__information__card--comp--info--job">{{ employeeGeneral.eps }}</div>
+                </div>
+                <div class="employees-edit__information__card--comp--info div__info">
+                    <div class="employees-edit__information__card--comp--info--title">Arl</div>
+                    <div class="employees-edit__information__card--comp--info--job">{{ employeeGeneral.arl }}</div>
+                </div>
+                <div class="employees-edit__information__card--comp--info">
+                    <div class="employees-edit__information__card--comp--info--title">Afp</div>
+                    <div class="employees-edit__information__card--comp--info--job">{{ employeeGeneral.afp }}</div>
+                </div>
+            </div>
+            <div class="employees-edit__information__card--license">
+                <div class="employees-edit__information__card--license--title"><strong>Medio de transporte:</strong> {{ employeeGeneral.transportationName }}</div>
+                <div class="employees-edit__information__card--license--body" *ngIf="employeeGeneral.transportationName !== 'Transporte Público'">
+                    <div class="employees-edit__information__card--license--body--item">
+                        <div>Placa</div>
+                        <div>{{ employeeGeneral.licensePlate }}</div>
+                    </div>
+                    <div class="employees-edit__information__card--license--body--item">
+                        <div>Marca</div>
+                        <div>{{ employeeGeneral.vehicleMark }}</div>
+                    </div>
+                    <div class="employees-edit__information__card--license--body--item">
+                        <div>Modelo</div>
+                        <div>{{ employeeGeneral.vehicleModel }}</div>
+                    </div>
+                    <div class="employees-edit__information__card--license--body--item">
+                        <div>Licencia del conductor</div>
+                        <div>No. {{ employeeGeneral.licenseNumber }}</div>
+                    </div>
+                    <div class="employees-edit__information__card--license--body--item">
+                        <div>Categoría de la licencia</div>
+                        <div>{{ employeeGeneral.licenseCategory }}</div>
+                    </div>
+                    <div class="employees-edit__information__card--license--body--item">
+                        <div>Vigencia de la licencia</div>
+                        <div>{{ employeeGeneral.licenseValidity | date:"dd/MM/yyyy" }}</div>
+                    </div>
+                </div>
+                <div class="employees-edit__information__card--license--footer">
+                    <div class="employees-edit__information__card--license--footer--item">
+                        <div>Vencimiento del SOAT</div>
+                        <div>{{ employeeGeneral.soatExpirationDate | date:"dd/MM/yyyy" }}</div>
+                    </div>
+                    <div class="employees-edit__information__card--license--footer--item">
+                        <div>Vencimiento de la Revisión Tecnico-Mecánica</div>
+                        <div>{{ employeeGeneral.rtmExpirationDate | date:"dd/MM/yyyy" }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="employees-edit__information__card--profile" *ngIf="employeeGeneral.recommendedBy != ''"><strong>Recomendado Por:</strong> {{ employeeGeneral.recommendedBy }}</div>
+            <div class="employees-edit__information__card--profile">{{ employeeGeneral.description }}</div>
+            <div class="employees-edit__information__card--btn">
+                <button (click)="editMethod()">Editar información</button>
+            </div>
+        </div>
+
+        <div class="employees-edit__information__card" *ngIf="section === 'academica'">
+            <div class="employees-edit__information__card--head">
+                <div class="employees-edit__information__card--head--info">
+                    <div class="employees-edit__information__card--head--info--name">{{ employeeAcademic.educationalLevelName }}</div>
+                    <div class="employees-edit__information__card--head--info--job">{{ employeeAcademic.career }}</div>
+                </div>
+                <div class="employees-edit__information__card--head--img" [style.border-bottom-color]="employee.colorHex">
+                    <img src="{{ employee.photoUrl }}" alt="Photo Url" [style.border-bottom-color]="employee.colorHex" />
+                </div>
+            </div>
+            <div class="employees-edit__information__card--btn">
+                <button (click)="editMethod()">Editar información</button>
+            </div>
+        </div>
+
+        <div class="employees-edit__information__card" *ngIf="section === 'documentacion'">
+            <div class="employees-edit__information__card--tree">
+                <tree-root #tree [nodes]="treeData" [options]="treeOptions">
+                    <ng-template #treeNodeTemplate let-node let-index="index">
+                        <div [class]="node.getClass() + ' ' + treeClasses(node)" [class.tree-node]="true" [class.tree-node-expanded]="node.isExpanded && node.hasChildren" [class.tree-node-collapsed]="node.isCollapsed && node.hasChildren" [class.tree-node-leaf]="node.isLeaf"
+                            [class.tree-node-active]="node.isActive" [class.tree-node-focused]="node.isFocused" (click)="treeClick(node)">
+                            {{ node.data.name }}
+                        </div>
+                    </ng-template>
+                </tree-root>
+            </div>
+            <div class="employees-edit__information__card--btn" *ngIf="employeeGeneral.cityName != '' && employee.name != ''">
+                <button (click)="editMethod()">Agregar documentos</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

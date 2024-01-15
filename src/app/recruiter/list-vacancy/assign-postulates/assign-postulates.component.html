@@ -1,0 +1,153 @@
+<app-navigation></app-navigation>
+
+<div class="assign background-right">
+    <div class="assign-header" [style.border-left-color]="vacant.jobColorHex">
+        <div class="assign-header-name">
+            <span class="assign-header-name-job">{{ vacant.jobName }}</span>
+            <span class="assign-header-name-count">
+                ({{ vacant.vacantNum }}
+                <span *ngIf="vacant.vacantNum == 1">disponible</span><span *ngIf="vacant.vacantNum != 1">disponibles</span>
+                / {{ vacant.vacantsCount }}
+                <span *ngIf="vacant.vacantsCount == 1">postulado</span><span *ngIf="vacant.vacantsCount != 1">postulados</span>)
+            </span>
+        </div>
+        <div class="assign-header-contract">{{ vacant.contractTypeName }}</div>
+        <div class="assign-header-status assign-header-status-{{ vacant.vacantStatusId }}">
+            <span class="fa-solid fa-circle"></span>
+            {{ vacant.vacantStatusName }}
+        </div>
+        <div class="assign-header-desc">{{ vacant.description }}</div>
+    </div>
+
+    <div class="assign-postulates">
+        <div class="tabs">
+            <div #tabsGroup class="tabs-group">
+                <div class="tabs-group-tab" (click)="tabSelect(tabsGroup.children, 0); tabSelect(tabsContent.children, 0);">
+                    <span class="fa-solid fa-user-plus"></span>
+                    Asignar postulados
+                </div>
+                <div class="tabs-group-tab active" (click)="tabSelect(tabsGroup.children, 1); tabSelect(tabsContent.children, 1);">
+                    <span class="fa-solid fa-people-group"></span>
+                    Asignados a esta vacante
+                </div>
+            </div>
+            <div #tabsContent class="tabs-content">
+                <div class="tabs-content-tab">
+                    <table class="assign-postulates-table">
+                        <thead>
+                            <tr>
+                                <th>Selección</th>
+                                <th>Postulado</th>
+                                <th>Información complementaria</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let postulate of postulates">
+                                <td>
+                                    <input (click)="togglePostulate(postulate.id)" type="checkbox" id="setCheckbox{{ postulate.id }}" name="setCheckbox" value="{{ postulate.id }}" [checked]="postulate.active" />
+                                </td>
+                                <td>
+                                    <div class="assign-postulates-table-name">
+                                        <div class="assign-postulates-table-name-photo">
+                                            <img [src]="postulate.photoUrl.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" />
+                                        </div>
+                                        <div class="assign-postulates-table-name-text">
+                                            <div>{{ postulate.firstName }}</div>
+                                            <div>{{ postulate.lastName }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="assign-postulates-table-info">
+                                        <div class="assign-postulates-table-info-text">
+                                            <div *ngIf="postulate.career != null && postulate.career != ''">
+                                                <span class="fa-solid fa-graduation-cap"></span>
+                                                {{ postulate.career }}
+                                            </div>
+                                            <div *ngIf="postulate.educationalLevelName != null && postulate.educationalLevelName != ''">
+                                                <span class="fa-solid fa-school"></span>
+                                                {{ postulate.educationalLevelName }}
+                                            </div>
+                                        </div>
+                                        <div class="assign-postulates-table-info-text">
+                                            <div *ngIf="postulate.expectedSalary != null">
+                                                <span class="fa-solid fa-money-bill-wave"></span>
+                                                {{ postulate.expectedSalary | currency:'$':'symbol-narrow':'3.0' }}
+                                            </div>
+                                        </div>
+                                        <div class="assign-postulates-table-info-desc" *ngIf="postulate.description != null && postulate.description != ''">{{ postulate.description }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="assign-postulates-action information__btn">
+                        <button type="button" (click)="savePostulates()">Asignar postulados</button>
+                    </div>
+                </div>
+
+                <div class="tabs-content-tab active">
+                    <table class="assign-postulates-table" *ngIf="postulatesSelected.length > 0">
+                        <thead>
+                            <tr>
+                                <th>Postulado</th>
+                                <th>Información complementaria</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let postulate of postulatesSelected">
+                                <td>
+                                    <div class="assign-postulates-table-name">
+                                        <div class="assign-postulates-table-name-photo">
+                                            <img [src]="postulate.photoUrl.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" />
+                                        </div>
+                                        <div class="assign-postulates-table-name-text">
+                                            <div>{{ postulate.firstName }}</div>
+                                            <div>{{ postulate.lastName }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="assign-postulates-table-info">
+                                        <div class="assign-postulates-table-info-text">
+                                            <div *ngIf="postulate.career != null && postulate.career != ''">
+                                                <span class="fa-solid fa-graduation-cap"></span>
+                                                {{ postulate.career }}
+                                            </div>
+                                            <div *ngIf="postulate.educationalLevelName != null && postulate.educationalLevelName != ''">
+                                                <span class="fa-solid fa-school"></span>
+                                                {{ postulate.educationalLevelName }}
+                                            </div>
+                                        </div>
+                                        <div class="assign-postulates-table-info-text">
+                                            <div *ngIf="postulate.expectedSalary != null">
+                                                <span class="fa-solid fa-money-bill-wave"></span>
+                                                {{ postulate.expectedSalary | currency:'$':'symbol-narrow':'3.0' }}
+                                            </div>
+                                        </div>
+                                        <div class="assign-postulates-table-info-desc" *ngIf="postulate.description != null && postulate.description != ''">{{ postulate.description }}</div>
+                                    </div>
+                                </td>
+                                <td class="action">
+                                    <span ngbTooltip="Ir al detalle del postulado" class="fa-solid fa-arrow-right action-button" (click)="openPostulate(postulate.id)"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="assign-postulates-error" *ngIf="postulatesSelected.length == 0">
+                        -- No hay postulados asociados a esta vacante --
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                    
+    <div class="information__btn">
+        <button type="button" (click)="cancel()">Volver a la lista</button>
+    </div>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

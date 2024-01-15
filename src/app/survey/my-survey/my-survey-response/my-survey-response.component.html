@@ -1,0 +1,40 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="survey background-right">
+    <form [formGroup]="formSurvey" (ngSubmit)="validateFormSurvey()">
+        <div class="survey-title">
+            <div class="survey-title-text">{{ survey.name | uppercase }}</div>
+            <div class="survey-title-desc">{{ survey.description }}</div>
+        </div>
+
+        <div class="survey-form">
+            <div class="information__item" *ngFor="let field of fieldsForm">
+                <label *ngIf="field.fieldType != 'boolean'" for="fr_{{ field.fieldName }}">{{ field.name }}</label>
+                <div>
+                    <input *ngIf="field.fieldType == 'text' || field.fieldType == 'number' || field.fieldType == 'date'" [type]="field.fieldType" [formControlName]="field.fieldName" [name]="field.fieldName" [readonly]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}">
+                    <textarea *ngIf="field.fieldType == 'textarea'" [formControlName]="field.fieldName" [name]="field.fieldName" [readonly]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}"></textarea>
+                    <div class="information__item--checkbox" *ngIf="field.fieldType == 'boolean'">
+                        <input type="checkbox" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}">
+                        <span>{{ field.name }}</span>
+                    </div>
+                    <select *ngIf="field.fieldType == 'list'" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}">
+                        <option value=""></option>
+                        <option *ngFor="let param of getOptionList(field.config)" [value]="param">{{ param }}</option>
+                    </select>
+                    <ul *ngIf="errors.validate(formSurvey.get(field.fieldName))">
+                        <li *ngFor="let message of errors.getErrors(formSurvey.get(field.fieldName))">{{ message }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="survey-btn information__btn">
+            <button type="button" class="survey-btn-action" (click)="goBack()">Cancelar</button>
+            <button type="submit" class="survey-btn-action" *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)">Guardar como borrador</button>
+            <button type="submit" class="survey-btn-action" *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)">Responder</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

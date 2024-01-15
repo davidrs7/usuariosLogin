@@ -1,0 +1,37 @@
+<div class="fondo-personalizado">
+    <app-navigation-survey></app-navigation-survey>
+    <app-navigation-survey-senivel></app-navigation-survey-senivel>
+
+    <!--lista de encuesta-->
+
+    <div class="container pt-5 mt-5">
+        <table class="table text-left fs-2 tabla-personalizada table-hover">
+            <tbody>
+                <tr *ngFor="let listaObjetivos of listaObjetivo">
+                    <td class=" border-end w-40 text-center ">{{ listaObjetivos[0] }}</td>
+                    <td class="w-100 container-fluid row">
+                        <div class="col-1"><img class="icono-tamano" src="{{ listaObjetivos[1] }}" /></div>
+                        <div class="col-2"><span class="p-3">{{ listaObjetivos[2] }}</span></div>
+                        <div class="col-4">
+                            <div class="employees__block--btn contenedor-botones">
+                                <button data-bs-target="#selectEtapa" class="employees__block--btn--action botones-action me-3 p-3 text-center">Asignar Objetivo</button>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="employees__block--btn contenedor-botones">
+                                <button data-bs-target="#selectEtapa" class="employees__block--btn--action botones-action me-3 p-3 text-center">Asignar Objetivo</button>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div class="employees__block--btn contenedor-botones mt-5 pt-5 ">
+            <button class="employees__block--btn--action botones-action me-3 p-3 " routerLink="/survey/create-survey" [queryParams]="{menu:1}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Crear Encuesta</button>
+        </div>
+    </div>
+</div>

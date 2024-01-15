@@ -1,0 +1,30 @@
+<app-navigation></app-navigation>
+
+<div class="jobs background-right">
+  <div class="jobs__content">
+      <table class="jobs__content__table">
+        <thead>
+          <tr>
+            <td class="jobs__content__table--fc"><h3>Cargo</h3></td>
+            <td class="jobs__content__table--lc"><h3>Activos</h3></td>
+            <td class="jobs__content__table--lc"><h3>En proceso</h3></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let job of jobs">
+            <td class="jobs__content__table--fc">
+              <div>
+                <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="openEdit(job.id)"></span>
+                <span>{{ job.name }}</span>
+              </div>
+            </td>
+            <td class="jobs__content__table--lc">{{ job.employees }}</td>
+            <td class="jobs__content__table--lc">{{ job.employeesInprocess }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="jobs__content__add"><button (click)="openAdd()">Agregar</button></div>
+  </div>
+</div>
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

@@ -1,0 +1,170 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.postulate {
+    margin-top: 4rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    margin-bottom: 2rem;
+    &-info {
+        display: grid;
+        grid-template-columns: 85% 15%;
+        width: 100%;
+        &-card {
+            &-name {
+                font-size: 5rem;
+                font-family: 'Questrial';
+                font-weight: bold;
+            }
+            &-job {
+                font-size: 3.3125rem;
+                font-weight: 200;
+                font-family: 'Roboto';
+            }
+            &-other {
+                margin-top: .5rem;
+                font-size: 1.8rem;
+                font-weight: 200;
+            }
+        }
+        &-img {
+            display: inline-flex;
+            flex-flow: column wrap;
+            flex-direction: column-reverse;
+            flex-wrap: nowrap;
+            align-content: space-around;
+            justify-content: space-between;
+            align-items: stretch;
+            height: 18rem;
+            width: 13rem;
+            border-bottom-width: .5rem;
+            border-bottom-style: solid;
+        }
+    }
+    &-wf {
+        margin-top: 2rem;
+        padding-bottom: 2rem;
+        padding-top: 2rem;
+        border-top-color: $gray;
+        border-top-width: 3px;
+        border-top-style: solid;
+        &-selected {
+            &-keys {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                width: 100%;
+                margin-bottom: 1rem;
+                &-item {
+                    padding: 0 1.5rem;
+                    font-size: 1.6rem;
+                    font-family: 'Questrial';
+                    color: $darkgray;
+                }
+            }
+            &-vacants {
+                &-content {
+                    &-desc {
+                        color: $darkgray;
+                        font-size: 1.7rem;
+                        font-style: italic;
+                        padding-bottom: 1rem;
+                    }
+                    &-error {
+                        text-align: center;
+                        color: $darkgray;
+                        & span {
+                            font-weight: bold;
+                        }
+                        & div:first-child {
+                            font-weight: bold;
+                            font-size: 1.8rem;
+                        }
+                        & div:last-child {
+                            font-size: 1.5rem;
+                        }
+                    }
+                    &-postulateform {
+                        padding-top: 2rem;
+                        &-title {
+                            padding: .5rem 2rem;
+                            background-color: $darkgray;
+                            color: $white;
+                            border-top-left-radius: 1rem;
+                            border-top-right-radius: 1rem;
+                            font-size: 1.8rem;
+                            font-weight: bold;
+                        }
+                        &-item {
+                            padding: 2rem;
+                            background-color: $shadow;
+                            border-bottom-left-radius: 1rem;
+                            border-bottom-right-radius: 1rem;
+                        }
+                    }
+                }
+            }
+        }
+        &-error {
+            width: 100%;
+            color: $darkgray;
+            &-title {
+                width: 100%;
+                text-align: center;
+                font-size: 2rem;
+                font-weight: bold;
+            }
+            &-desc {
+                width: 100%;
+                text-align: center;
+                font-size: 1.5rem;
+                &-button {
+                    padding: 3px 15px;
+                    border-radius: 5px;
+                    color: $white;
+                    background-color: $color3;
+                    font-size: 1.3rem;
+                }
+                &-menu {
+                    border-bottom: $color3 3px solid;
+                    padding: 0 5px;
+                    color: $color3;
+                    font-size: 1.3rem;
+                }
+            }
+        }
+    }
+    & span {
+        &.fa-solid {
+            margin-right: .5rem;
+        }
+        &.text {
+            margin-right: 2.5rem;
+        }
+    }
+    & span:last-child {
+        & .text {
+            margin-right: 0;
+        }
+    }
+}
+
+.modal-form {
+    padding: 0 5rem;
+    .vacant-table {
+        &-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        &-other {
+            font-size: 1.6rem;
+        }
+        &-desc {
+            font-size: 1.4rem;
+            font-style: italic;
+        }
+        &-status {
+            text-align: center;
+        }
+    }
+}

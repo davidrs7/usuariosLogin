@@ -1,0 +1,54 @@
+@import './../../../../variables.scss';
+@import './../../../../mixins.scss';
+
+.survey {
+    margin-top: 3%;
+    &-form {
+        &-x2 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            align-items: center;
+            justify-items: center;
+        }
+    }
+    &-fields {
+        @include plus-list-component;
+        &-content {
+            &-table {
+                padding-right: 1%;
+                & table {
+                    & tr {
+                        & td {
+                            & .required {
+                                font-size: 1.3rem;
+                                font-weight: bold;
+                                text-decoration: underline;
+                                text-transform: uppercase;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.modal-body {
+    & .modal-form {
+        padding-left: 3%;
+        padding-right: 3%;
+        & table {
+            & tbody {
+                & tr {
+                    & td:nth-child(2) {
+                        text-align: center;
+                        text-transform: capitalize;
+                    }
+                    & td:nth-child(3) {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}

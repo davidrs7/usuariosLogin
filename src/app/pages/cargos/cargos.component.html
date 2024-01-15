@@ -1,0 +1,65 @@
+<app-navigation></app-navigation>
+<div class="container">
+<br>
+<h2>Lista de Cargos</h2>
+
+    <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripción</th>  
+            <th>Estado</th> 
+          </tr>
+        </thead>
+        <tbody> 
+          <tr *ngFor="let cargo of cargos|paginador:p_Size:page">
+            <td style="text-align: center;">{{ cargo.cargoId }}</td>
+            <td style="text-align: center;">{{ cargo.nombre }}</td>
+            <td style="text-align: center;">{{ cargo.descripcion }}</td> 
+            <td style="text-align: center;">{{ cargo.estado ? 'Activo' : 'Inactivo' }}</td>
+            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click) = "editarcargos(cargo.cargoId)"></td>
+            <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click) = "eliminarCargos(cargo.cargoId)"></td>  
+            <td> 
+            </td> 
+          </tr> 
+        </tbody>
+        
+      </table>     
+      <div>       
+      <mat-paginator [length]="cargos.length"
+      [pageSize]="p_Size"
+      [pageSizeOptions]="optionsPage"
+      (page)="pageEvent($event)"
+      aria-label="page"
+      class="m-3"></mat-paginator> 
+      </div>
+
+      <button type="button" (click) = "guardaCargos()">{{ cargoToEdit ? 'Editar cargo' : 'Crear cargo' }}</button> &nbsp;&nbsp;&nbsp;
+      <button type="button" (click) = "LimpiarFormulario()">limpiar</button> 
+       
+      <br><br><br>
+      <h2>{{ cargoToEdit ? 'Editar cargo' : 'Crear Nuevo cargo' }}</h2>
+      <form [formGroup]="cargoForm" autocomplete="off" >
+        <div >
+          <label for="nombre">Nombre del cargo: * </label>
+          <input type="text" formControlName="nombre" required>
+        </div><br>
+      
+        <div>  
+          <label for="descripcion">Descripción: *</label>
+          <textarea formControlName="descripcion" name="descripcion" required></textarea>  
+        </div><br>
+       
+        <div>
+          <label for="estado">Estado:</label>
+          <select formControlName="estado" required>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div><br>
+      
+      </form>
+      <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
+      
+</div>

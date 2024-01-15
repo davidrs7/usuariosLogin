@@ -1,0 +1,285 @@
+<app-navigation></app-navigation>
+
+<div class="survey background-right">
+    <div class="survey-title">
+        <div class="survey-title-text">{{ survey.name }}</div>
+        <div class="survey-title-desc">{{ survey.description }}</div>
+    </div>
+
+    <div class="survey-config">
+        <div class="survey-config-header">
+            <div class="survey-config-header-add">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#modalHeader" (click)="openAddModal(modalHeader)">Adicionar Cabecera</button>
+            </div>
+            <div *ngFor="let surveyHeader of surveyList" (click)="selectSurveyHeader(surveyHeader)" [class]="surveyHeader.active == 1 ? 'survey-config-header-item survey-config-header-show' : 'survey-config-header-item'">
+                <div>
+                    <div class="survey-config-header-item-title">{{ surveyHeader.title }}</div>
+                    <div class="survey-config-header-item-date">
+                        <span>Fecha de Inicio: </span>
+                        <span>{{ surveyHeader.started | date: 'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="survey-config-header-item-date">
+                        <span>Fecha de Finalización: </span>
+                        <span>{{ surveyHeader.finished | date: 'dd/MM/yyyy' }}</span>
+                    </div>
+                </div>
+                <span class="fa-solid fa-angle-right"></span>
+            </div>
+            <div class="survey-config-header-none" *ngIf="surveyList.length == 0">
+                -- No hay cabeceras disponibles --
+            </div>
+        </div>
+
+        <div class="survey-config-info" *ngIf="surveyList.length > 0">
+            <div class="survey-config-info-title">
+                <div class="survey-config-info-title-data">
+                    <div class="survey-config-info-title-data-text">{{ surveySelected.title }}</div>
+                    <div class="survey-config-info-title-data-date">Desde {{ surveySelected.started | date: 'dd/MM/yyyy' }} hasta {{ surveySelected.finished | date: 'dd/MM/yyyy' }}</div>
+                </div>
+                <div class="survey-config-info-title-btn" *ngIf="!validateFinishedDate()">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalHeader" (click)="openEditModal(modalHeader)">Editar Cabecera</button>
+                </div>
+            </div>
+
+            <div class="survey-config-info-tabs">
+                <div class="tabs">
+                    <div #tabsGroup class="tabs-group">
+                        <div class="tabs-group-tab active" (click)="tabSelect(tabsGroup.children, 0); tabSelect(tabsContent.children, 0);">
+                            <span class="fa-solid fa-user-group"></span>
+                            Usuarios asociados
+                        </div>
+                        <div class="tabs-group-tab" (click)="tabSelect(tabsGroup.children, 1); tabSelect(tabsContent.children, 1);">
+                            <span class="fa-solid fa-user-plus"></span>
+                            Asignar usuarios
+                        </div>
+                        <div class="tabs-group-tab" (click)="tabSelect(tabsGroup.children, 2); tabSelect(tabsContent.children, 2);">
+                            <span class="fa-solid fa-users-line"></span>
+                            Asignar usuarios masivo
+                        </div>
+                    </div>
+                    <div #tabsContent class="tabs-content">
+                        <div class="tabs-content-tab active">
+                            <div *ngIf="usersSelected.length > 0">
+                                <div class="survey-config-info-tabs-search">
+                                    <span class="fa-solid fa-magnifying-glass"></span>
+                                    <input type="text" placeholder="Buscar" />
+                                </div>
+    
+                                <div  class="survey-config-info-tabs-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">Usuario</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let user of usersSelected">
+                                                <td class="survey-config-info-tabs-table-sel">
+                                                    <input *ngIf="user.responseId == null || user.responseId <= 0" (click)="toggleSurveyUser(user.id)" type="checkbox" id="inlineCheckbox{{ user.id }}" value="{{ user.id }}" [checked]="user.available" />
+                                                    <span *ngIf="user.responseId != null && user.responseId > 0" class="fa-solid fa-square-xmark"></span>
+                                                </td>
+                                                <td class="survey-config-info-tabs-table-info">
+                                                    <div  class="survey-config-info-tabs-table-info-img">
+                                                        <img src="{{ (user.photoUrl != null && user.photoUrl != '') ? user.photoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="45" alt="{{ user.userName }}" loading="lazy" />
+                                                    </div>
+                                                    <div class="survey-config-info-tabs-table-info-data">
+                                                        <span *ngIf="user.name != null && user.name != ''">{{ user.name }} ({{ user.userName }})</span>
+                                                        <span *ngIf="user.name == null || user.name == ''">{{ user.userName }}</span>
+                                                        <span *ngIf="user.jobName != null && user.jobName != ''">{{ user.jobName }}</span>
+                                                        <span *ngIf="user.departmentName != null && user.departmentName != ''">{{ user.departmentName }}</span>
+                                                        <span *ngIf="user.jobName == null || user.jobName == ''">Usuario del sistema</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                                <div class="information__item" *ngIf="errorSelected">
+                                    <div>
+                                        <ul><li>Debe seleccionar al menos un usuario de la lista.</li></ul>
+                                    </div>
+                                </div>
+    
+                                <div class="information__btn">
+                                    <button type="button" (click)="saveUsers(true)">Retirar usuarios</button>
+                                </div>
+                            </div>
+                            <div class="survey-config-info-tabs-empty" *ngIf="usersSelected.length == 0">
+                                No hay usuarios asignados a {{ surveySelected.title }}.
+                            </div>
+                        </div>
+                        <div class="tabs-content-tab">
+                            <div class="survey-config-info-tabs-search">
+                                <span class="fa-solid fa-magnifying-glass"></span>
+                                <input type="text" placeholder="Buscar" />
+                            </div>
+
+                            <div  class="survey-config-info-tabs-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">Usuario</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of users">
+                                            <td class="survey-config-info-tabs-table-sel">
+                                                <input (click)="toggleUser(user.id)" type="checkbox" id="inlineCheckbox{{ user.id }}" value="{{ user.id }}" [checked]="user.available" />
+                                            </td>
+                                            <td class="survey-config-info-tabs-table-info">
+                                                <div  class="survey-config-info-tabs-table-info-img">
+                                                    <img src="{{ (user.photoUrl != null && user.photoUrl != '') ? user.photoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="45" alt="{{ user.userName }}" loading="lazy" />
+                                                </div>
+                                                <div class="survey-config-info-tabs-table-info-data">
+                                                    <span *ngIf="user.name != null && user.name != ''">{{ user.name }} ({{ user.userName }})</span>
+                                                    <span *ngIf="user.name == null || user.name == ''">{{ user.userName }}</span>
+                                                    <span *ngIf="user.jobName != null && user.jobName != ''">{{ user.jobName }}</span>
+                                                    <span *ngIf="user.departmentName != null && user.departmentName != ''">{{ user.departmentName }}</span>
+                                                    <span *ngIf="user.jobName == null || user.jobName == ''">Usuario del sistema</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="information__item" *ngIf="errorSelected">
+                                <div>
+                                    <ul><li>Debe seleccionar al menos un usuario de la lista.</li></ul>
+                                </div>
+                            </div>
+
+                            <div class="information__btn">
+                                <button type="button" (click)="saveUsers(false)">Asignar usuarios</button>
+                            </div>
+                        </div>
+                        <div class="tabs-content-tab">
+                            <div class="survey-config-info-tabs-desc">
+                                Esta asignación masiva se realiza a partir de los funcionarios registrados en el sistema con un usuario asociado. Los usuarios del sistema deben ser asignados individualmente.
+                            </div>
+
+                            <div class="survey-config-info-tabs-x2">
+                                <div>
+                                    <input (click)="toggleMasive('department')" type="checkbox" value="" [checked]="userMasive == 'department'" />
+                                    <span>Seleccionar usuarios por departamento</span>
+                                </div>
+                                <div class="information__btn" *ngIf="userMasive == 'department'">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalParam" (click)="openModal(modalParam)">Seleccionar departamentos</button>
+                                </div>
+                            </div>
+
+                            <div class="survey-config-info-tabs-x2">
+                                <div>
+                                    <input (click)="toggleMasive('job')" type="checkbox" value="" [checked]="userMasive == 'job'" />
+                                    <span>Seleccionar usuarios por cargo</span>
+                                </div>
+                                <div class="information__btn" *ngIf="userMasive == 'job'">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalParam" (click)="openModal(modalParam)">Seleccionar cargos</button>
+                                </div>
+                            </div>
+
+                            <div class="survey-config-info-tabs-x2">
+                                <div>
+                                    <input (click)="toggleMasive('city')" type="checkbox" value="" [checked]="userMasive == 'city'" />
+                                    <span>Seleccionar usuarios por ciudad de trabajo</span>
+                                </div>
+                                <div class="information__btn" *ngIf="userMasive == 'city'">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#modalParam" (click)="openModal(modalParam)">Seleccionar ciudades</button>
+                                </div>
+                            </div>
+                            
+                            <div class="information__item" *ngIf="errorSelected">
+                                <div>
+                                    <ul><li>Debe seleccionar al menos un parámetro.</li></ul>
+                                </div>
+                            </div>
+
+                            <div class="information__btn" *ngIf="userMasive != '' && params.length > 0">
+                                <button type="button" (click)="saveUsersMasive()">Asignar usuarios masivamente</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalHeader let-modal>
+    <div class="modal-body" *ngIf="!validateFinishedDate()">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <form [formGroup]="formHeader" (ngSubmit)="validateFormHeader()">
+                <div class="information__item">
+                    <label for="surveyTitle">Título administrtivo</label>
+                    <div>
+                        <input type="text" formControlName="title" name="title" id="surveyTitle">
+                        <ul *ngIf="errors.validate(title)">
+                            <li *ngFor="let message of errors.getErrors(title)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="modal-form-x2">
+                    <div class="information__item">
+                        <label for="surveyStarted">Fecha de inicio</label>
+                        <div>
+                            <input type="date" formControlName="started" name="started" id="surveyStarted" [readonly]="validateStartedDate()">
+                            <ul *ngIf="errors.validate(started)">
+                                <li *ngFor="let message of errors.getErrors(started)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="surveyFinished">Fecha de finalización</label>
+                        <div>
+                            <input type="date" formControlName="finished" name="finished" id="surveyFinished" [readonly]="validateFinishedDate()">
+                            <ul *ngIf="errors.validate(finished)">
+                                <li *ngFor="let message of errors.getErrors(finished)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="information__btn">
+                    <button type="button" (click)="closeModal()">Cancelar</button>
+                    <button type="submit">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #modalParam let-modal>
+    <div class="modal-body" *ngIf="userMasive != '' && params.length > 0">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <div class="modal-form-title">
+                <div class="modal-form-title-fr">Seleccione los parámetros para realizar la asignación masiva</div>
+                <div class="modal-form-title-sc">Debe seleccionar al menos un parámetro para realizar este proceso</div>
+            </div>
+
+            <div class="modal-form-content">
+                <div class="modal-form-content-item" *ngFor="let param of params">
+                    <input (click)="toggleParam(param.id)" type="checkbox" id="inlineCheckbox{{ param.id }}" value="{{ param.id }}" [checked]="param.available" />
+                    <span>{{ param.name }}</span>
+                </div>
+            </div>
+
+            <div class="information__btn">
+                <button type="button" (click)="closeModal()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

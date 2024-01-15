@@ -1,0 +1,68 @@
+<app-navigation></app-navigation>
+<div class="container">
+    <!-- list-roles.component.html -->
+<br>
+<h2>Lista de Roles</h2>
+ <table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Descripción</th>  
+      <th>Estado</th> 
+    </tr>
+  </thead>
+  <tbody> 
+    <tr *ngFor="let rol of roles|paginador:p_Size:page">
+      <td style="text-align: center;">{{ rol.rolId }}</td>
+      <td style="text-align: center;">{{ rol.nombre }}</td>
+      <td style="text-align: center;">{{ rol.descripcion }}</td> 
+      <td style="text-align: center;">{{ rol.estado ? 'Activo' : 'Inactivo' }}</td>
+      <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click) = "editarRoles(rol.rolId)"></td>
+      <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click) = "eliminarRoles(rol.rolId)"></td>       
+      <td> 
+      </td> 
+    </tr> 
+  </tbody>
+  
+</table>     
+<div>       
+<mat-paginator [length]="roles.length"
+[pageSize]="p_Size"
+[pageSizeOptions]="optionsPage"
+(page)="pageEvent($event)"
+aria-label="page"
+class="m-3"></mat-paginator> 
+</div>
+ <br>
+<hr>  
+<button type="button" (click) = "guardaRoles()">{{ roleToEdit ? 'Editar Rol' : 'Crear Rol' }}</button> &nbsp;&nbsp;&nbsp;
+<button type="button" (click) = "LimpiarFormulario()">limpiar</button> 
+ 
+<br><br><br>
+<h2>{{ roleToEdit ? 'Editar Rol' : 'Crear Nuevo Rol' }}</h2>
+
+
+<form [formGroup]="roleForm" autocomplete="off" >
+  <div >
+    <label for="nombre">Nombre del Rol: * </label>
+    <input type="text" formControlName="nombre" required>
+  </div><br>
+
+  <div>  
+    <label for="descripcion">Descripción: *</label>
+    <textarea formControlName="descripcion" name="descripcion" required></textarea>  
+  </div><br>
+ 
+  <div>
+    <label for="estado">Estado:</label>
+    <select formControlName="estado" required>
+      <option value="true">Activo</option>
+      <option value="false">Inactivo</option>
+    </select>
+  </div><br>
+
+</form>
+<div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
+
+</div>

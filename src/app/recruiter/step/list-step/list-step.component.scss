@@ -1,0 +1,29 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.steps {
+    padding: 2rem 7rem;
+    &-table {
+        padding: 0 !important;
+        &-center {
+            text-align: center;
+        }
+        &-name {
+            text-align: left;
+            padding-right: 2vw;
+        }
+        &-desc {
+            text-align: left;
+        }
+        & thead {
+            color: $color4;
+            font-family: 'Poppins';
+        }
+        & tbody {
+            color: $color3;
+        }
+    }
+    & .information_btn {
+        margin-bottom: 3%;
+    }
+}

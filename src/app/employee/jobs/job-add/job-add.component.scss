@@ -1,0 +1,25 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.job-add {
+    width: 100%;
+    height: 100%;
+    padding-top: 5rem;
+
+    &__form {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      align-items: center;
+      justify-items: center;
+
+      & label {
+        width: 20rem;
+      }
+    }
+
+    &__profile {
+      & label {
+        width: 17rem;
+      }
+    }
+}

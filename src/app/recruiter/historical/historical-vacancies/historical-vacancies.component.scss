@@ -1,0 +1,30 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.vacancy {
+    padding: 2rem 7rem;
+    &-table {
+        & .bgclaro {
+            font-weight: bold;
+        }
+        &-num {
+            text-align: center;
+            & span {
+                color: $darkgray;
+            }
+        }
+        &-desc {
+            &-status {
+                @include vacant-status-color;
+                font-size: 1.8rem;
+            }
+            & div:first-child {
+                font-weight: bold;
+            }
+            & div:last-child {
+                font-size: 1.6rem;
+                font-style: italic;
+            }
+        }
+    }
+}

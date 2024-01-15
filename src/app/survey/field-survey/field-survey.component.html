@@ -1,0 +1,54 @@
+<app-navigation></app-navigation>
+
+<div class="fields background-right">
+  <div>
+    <table class="fields-table">
+      <thead>
+          <tr>
+              <th>Nombre del campo</th>
+              <th>¿Está habilitado?</th>
+              <th>¿Es requerido?</th>
+              <th>Configuración adicional</th>
+              <th>Editar</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let field of surveyFields">
+              <td class="bgclaro">
+                <span>{{ field.name }}</span>
+                <span class="tag tag-{{ field.fieldType }}">{{ field.fieldType }}</span>
+              </td>
+              <td class="fields-table-center">
+                <span *ngIf="field.available == 0" class="fa-solid fa-circle text-danger"></span>
+                <span *ngIf="field.available == 1" class="fa-solid fa-circle text-success"></span>
+                {{ field.available == 1 ? "Si" : "No" }}
+              </td>
+              <td class="fields-table-center">
+                <span *ngIf="field.isRequired == 0" class="fa-solid fa-circle text-danger"></span>
+                <span *ngIf="field.isRequired == 1" class="fa-solid fa-circle text-success"></span>
+                {{ field.isRequired == 1 ? "Si" : "No" }}
+              </td>
+              <td class="fields-table-config">
+                <ul *ngIf="field.config != null && field.config != ''">
+                  <li *ngFor="let config of forms.getStepFieldConfig(field)">
+                    <strong>{{ config.title }}: </strong>
+                    <span *ngIf="config.list == null || config.list.length == 0">{{ config.value }}</span>
+                    <ul *ngIf="config.list != null && config.list.length > 0">
+                      <li *ngFor="let item of config.list">{{ item }}</li>
+                    </ul>
+                  </li>
+                </ul>
+                <span class="fields-table-msg" *ngIf="field.config == null || field.config == ''">-- No hay configuración adicional --</span>
+              </td>
+              <td class="action">
+                <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="openEdit(field.id)"></span>
+              </td>
+          </tr>
+      </tbody>
+    </table>
+
+    <div class="information__btn">
+        <button type="button" (click)="newField()">Agregar Campo</button>
+    </div>
+  </div>
+</div>

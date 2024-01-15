@@ -1,0 +1,172 @@
+<app-navigation></app-navigation>
+
+<div class="add-vacancy background-right">
+    <form [formGroup]="formVacant" (ngSubmit)="validateFormVacant()">
+        <div class="add-vacancy-form">
+            <div *ngIf="vacantFinish" class="add-vacancy-form-msg">
+                <div>Ya fueron contratados los postulados solicitados en esta vacante.</div>
+                <div>Puede aumentar la cantidad de vacantes disponibles para continuar con el proceso de contratación o cambiar el estado para terminar el proceso.</div>
+            </div>
+
+            <div class="add-vacancy-form-x2">
+                <div *ngIf="!vacantFinish" class="information__item">
+                    <label for="vacantJobId">Cargo</label>
+                    <div>
+                        <select formControlName="jobId" name="jobId" id="vacantJobId">
+                            <option value=""></option>
+                            <option *ngFor="let param of paramJob" [value]="param.id">{{ param.name }}</option>
+                        </select>
+                        <ul *ngIf="errors.validate(jobId)">
+                            <li *ngFor="let message of errors.getErrors(jobId)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div *ngIf="!vacantFinish" class="information__item">
+                    <label for="vacantContractTypeId">Tipo de Contrato</label>
+                    <div>
+                        <select formControlName="contractTypeId" name="contractTypeId" id="vacantContractTypeId">
+                            <option value=""></option>
+                            <option *ngFor="let param of paramContractType" [value]="param.id">{{ param.name }}</option>
+                        </select>
+                        <ul *ngIf="errors.validate(contractTypeId)">
+                            <li *ngFor="let message of errors.getErrors(contractTypeId)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="vacantVacantNum">Número de vacantes</label>
+                    <div>
+                        <input type="number" formControlName="vacantNum" name="vacantNum" id="vacantVacantNum">
+                        <ul *ngIf="errors.validate(vacantNum)">
+                            <li *ngFor="let message of errors.getErrors(vacantNum)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="vacantVacantStatusId">Estado de la Vacante</label>
+                    <div>
+                        <select formControlName="vacantStatusId" name="vacantStatusId" id="vacantVacantStatusId">
+                            <option value=""></option>
+                            <option *ngFor="let param of paramVacantStatus" [value]="param.id">{{ param.name }}</option>
+                        </select>
+                        <ul *ngIf="errors.validate(vacantStatusId)">
+                            <li *ngFor="let message of errors.getErrors(vacantStatusId)">{{ message }}</li>
+                        </ul>
+                        <div class="information__item--desc" *ngIf="showVacantStatusWarn()">La vacante se podrá ver en la lista por <strong>los próximos 2 días a partir de la última modificación realizada</strong>. Después de eso podrá revisarla a través del historial de vacantes.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!vacantFinish" class="information__item">
+                <label for="vacantDescription">Descripción</label>
+                <div>
+                    <textarea id="vacantDescription" name="description" rows="3" formControlName="description"></textarea>
+                    <ul *ngIf="errors.validate(description)">
+                        <li *ngFor="let message of errors.getErrors(description)">{{ message }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!vacantFinish" class="add-vacancy-step">
+            <div class="add-vacancy-step-title">Etapas asociadas a la vacante</div>
+            <div class="add-vacancy-step-content">
+                <div class="add-vacancy-step-content-msg" *ngIf="!stepsSelected">
+                    <div>Esta vacante no tiene etapas asociadas.</div>
+                    <div>Pulse el botón <span>+</span> ubicado a la derecha para seleccionar las etapas de esta vacante.</div>
+                </div>
+                <div class="add-vacancy-step-content-table" *ngIf="stepsSelected">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Etapa</th>
+                                <th>¿Está Activa?</th>
+                                <th>Peso</th>
+                                <th>¿Es Requerida?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let step of stepList">
+                                <td class="add-vacancy-step-content-table-item" *ngIf="step.vacantId != null && step.vacantId != 0">
+                                    <div class="add-vacancy-step-content-table-item-info">
+                                        <span>{{ step.name }}</span>
+                                        <span>{{ step.description }}</span>
+                                    </div>
+                                </td>
+                                <td *ngIf="step.vacantId != null && step.vacantId != 0">
+                                    <input (click)="changeActiveInStep(step.id)" type="checkbox" id="activeCheckbox{{ step.id }}" value="1" [checked]="step.active != null && step.active == 1" />
+                                </td>
+                                <td *ngIf="step.vacantId != null && step.vacantId != 0">
+                                    <select id="selectWeight{{ step.id }}" (change)="changeWeightInStep(step.id, $event)">
+                                        <option *ngFor="let i of weightList" value="{{ i }}" [selected]="step.weight != null && step.weight == i">{{ i }}</option>
+                                    </select>
+                                </td>
+                                <td *ngIf="step.vacantId != null && step.vacantId != 0">
+                                    <input (click)="changeIsRequiredInStep(step.id)" type="checkbox" id="isRequiredCheckbox{{ step.id }}" value="1" [checked]="step.isRequired != null && step.isRequired == 1" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#modalSelStep" (click)="openModal(modalSelStep)">+</button>
+            </div>
+            <div class="information__item">
+                <div>
+                    <ul *ngIf="stepsSelectedError">
+                        <li>Es necesario incluir etapas en la vacante.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-vacancy-btn information__btn">
+            <button type="button" (click)="cancel()">Cancelar</button>
+            <button type="submit">Guardar vacante</button>
+        </div>
+    </form>
+</div>
+
+
+<ng-template #modalSelStep let-modal>
+    <div *ngIf="!vacantFinish" class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-header">
+            <div class="modal-header-search">
+                <span class="fa-solid fa-magnifying-glass"></span>
+                <input type="text" placeholder="Buscar" />
+            </div>
+        </div>
+        <div class="modal-form">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Etapa</td>
+                        <td>Seleccionado</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let step of stepList">
+                        <td>
+                            <div class="table-step-name">{{ step.name }}</div>
+                            <div class="table-step-desc" *ngIf="step.description != null && step.description != ''">{{ step.description }}</div>
+                        </td>
+                        <td>
+                            <input (click)="toggleStep(step.id)" type="checkbox" id="inlineCheckbox{{ step.id }}" value="{{ step.id }}" [disabled]="step.updated" [checked]="step.active" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="information__btn">
+                <button type="button" (click)="closeModal()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

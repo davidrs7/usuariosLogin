@@ -1,0 +1,213 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="postulate background-right">
+    <form [formGroup]="formPostulate" (ngSubmit)="validateFormPostulate()">
+        <div class="postulate-form">
+            <div class="row">
+                <div class="postulate-form-x2">
+                    <div class="information__item">
+                        <label for="postulateFirstName">Nombre</label>
+                        <div>
+                            <input type="text" formControlName="firstName" name="firstName" id="postulateFirstName">
+                            <ul *ngIf="errors.validate(firstName)">
+                                <li *ngFor="let message of errors.getErrors(firstName)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateLastName">Apellido</label>
+                        <div>
+                            <input type="text" formControlName="lastName" name="lastName" id="postulateLastName">
+                            <ul *ngIf="errors.validate(lastName)">
+                                <li *ngFor="let message of errors.getErrors(lastName)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateDocTypeId">Tipo de identificación</label>
+                        <div>
+                            <select formControlName="docTypeId" name="docTypeId" id="postulateDocTypeId">
+                                <option value=""></option>
+                                <option *ngFor="let param of paramDocType" [value]="param.id">{{ param.name }}</option>
+                            </select>
+                            <ul *ngIf="errors.validate(docTypeId)">
+                                <li *ngFor="let message of errors.getErrors(docTypeId)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateDoc">Identificación</label>
+                        <div>
+                            <input type="number" formControlName="doc" name="doc" id="postulateDoc">
+                            <ul *ngIf="errors.validate(doc)">
+                                <li *ngFor="let message of errors.getErrors(doc)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulatePhone">Teléfono</label>
+                        <div>
+                            <input type="number" formControlName="phone" name="phone" id="postulatePhone">
+                            <ul *ngIf="errors.validate(phone)">
+                                <li *ngFor="let message of errors.getErrors(phone)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateCellPhone">Celular</label>
+                        <div>
+                            <input type="number" formControlName="cellPhone" name="cellPhone" id="postulateCellPhone">
+                            <ul *ngIf="errors.validate(cellPhone)">
+                                <li *ngFor="let message of errors.getErrors(cellPhone)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateEmail">Correo electrónico</label>
+                        <div>
+                            <input type="email" formControlName="email" name="email" id="postulateEmail">
+                            <ul *ngIf="errors.validate(email)">
+                                <li *ngFor="let message of errors.getErrors(email)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateSex">Sexo</label>
+                        <div>
+                            <select formControlName="sex" name="sex" id="postulateSex">
+                        <option value=""></option>
+                        <option>Masculino</option>
+                        <option>Femenino</option>
+                      </select>
+                            <ul *ngIf="errors.validate(sex)">
+                                <li *ngFor="let message of errors.getErrors(sex)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateBirthDate">Fecha de nacimiento</label>
+                        <div>
+                            <input type="date" formControlName="birthDate" name="birthDate" id="postulateBirthDate">
+                            <ul *ngIf="errors.validate(birthDate)">
+                                <li *ngFor="let message of errors.getErrors(birthDate)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateRh">RH</label>
+                        <div>
+                            <select formControlName="rh" name="rh" id="postulateRh">
+                        <option value=""></option>
+                        <option>A+</option>
+                        <option>A-</option>
+                        <option>B+</option>
+                        <option>B-</option>
+                        <option>AB+</option>
+                        <option>AB-</option>
+                        <option>O+</option>
+                        <option>O-</option>
+                      </select>
+                            <ul *ngIf="errors.validate(rh)">
+                                <li *ngFor="let message of errors.getErrors(rh)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateEducationalLevelId">Nivel de Estudios</label>
+                        <div>
+                            <select formControlName="educationalLevelId" name="educationalLevelId" id="postulateEducationalLevelId">
+                                <option value=""></option>
+                                <option *ngFor="let param of paramEducationalLevel" [value]="param.id">{{ param.name }}</option>
+                            </select>
+                            <ul *ngIf="errors.validate(findOutId)">
+                                <li *ngFor="let message of errors.getErrors(educationalLevelId)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateCareer">Profesión</label>
+                        <div>
+                            <input type="text" formControlName="career" name="career" id="postulateCareer">
+                            <ul *ngIf="errors.validate(career)">
+                                <li *ngFor="let message of errors.getErrors(career)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateExpectedSalary">Aspiración salarial</label>
+                        <div>
+                            <input type="number" formControlName="expectedSalary" name="expectedSalary" id="postulateExpectedSalary">
+                            <ul *ngIf="errors.validate(expectedSalary)">
+                                <li *ngFor="let message of errors.getErrors(expectedSalary)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateOfferedSalary">Promedio salarial ofrecido</label>
+                        <div>
+                            <input type="number" formControlName="offeredSalary" name="offeredSalary" id="postulateOfferedSalary">
+                            <ul *ngIf="errors.validate(offeredSalary)">
+                                <li *ngFor="let message of errors.getErrors(offeredSalary)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label for="postulateFindOutId">¿Cómo se enteró de la oferta?</label>
+                        <div>
+                            <select formControlName="findOutId" name="findOutId" id="postulateFindOutId">
+                                <option value=""></option>
+                                <option *ngFor="let param of paramFindOut" [value]="param.id">{{ param.name }}</option>
+                            </select>
+                            <ul *ngIf="errors.validate(findOutId)">
+                                <li *ngFor="let message of errors.getErrors(findOutId)">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__item">
+                        <label>Nueva foto</label>
+                        <div>
+                            <input type="file" formControlName="photo" name="photo" (change)="addFile($event, 0)">
+                            <ul *ngIf="errors.validate(photo)">
+                                <li *ngFor="let message of errors.getErrors(photo)">{{ message }}</li>
+                            </ul>
+                            <div class="information__item--desc"><strong>ADVERTENCIA:</strong> Los cambios de fotografía realizados a través de este campo pueden tardar unos minutos en reflejarse dentro de la aplicación.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="postulateDescription">Descripción</label>
+                    <div>
+                        <textarea formControlName="description" name="description" id="postulateDescription"></textarea>
+                        <ul *ngIf="errors.validate(description)">
+                            <li *ngFor="let message of errors.getErrors(description)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="postulate-btn information__btn">
+            <button type="button" (click)="cancel()">Cancelar</button>
+            <button type="submit">Guardar vacante</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

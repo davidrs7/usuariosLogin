@@ -1,0 +1,174 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.employees-edit {
+    &__filters {
+        display: grid;
+        grid-template-columns: 16% 21% 21% 21% 21%;
+        grid-template-rows: 8.5vh;
+        align-items: center;
+        justify-items: center;
+        height: 100%;
+        width: 100%;
+        background-color: $gray;
+        &--title {
+            color: $main;
+            border-right-color: $main;
+            border-right-width: 1px;
+            border-right-style: solid;
+        }
+        h4 {
+            font-size: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            text-align: center;
+            border-bottom-color: $black;
+            border-bottom-width: 1px;
+        }
+    }
+    &__information {
+        margin-top: 2%;
+        &--basic {
+            &--items {
+                display: grid;
+                grid-template-columns: 50% 50%;
+                align-items: center;
+                justify-items: center;
+            }
+            &--skills {
+                margin-top: 2rem;
+                display: grid;
+                grid-template-columns: 50% 50%;
+                &--1 {
+                    border-right-width: 1px;
+                    border-right-color: $color5;
+                    border-right-style: inset;
+                }
+                &--3 {
+                    margin-top: 4%;
+                    &--edit {
+                        @include list-hijos;
+                    }
+                }
+                &--1,
+                &--2,
+                &--3 {
+                    &--edit {
+                        display: grid;
+                        grid-template-columns: 90% 10%;
+                        align-items: center;
+                        justify-content: center;
+                        padding-right: 5%;
+                        padding-left: 5%;
+                        &--fields {
+                            padding-right: 4rem;
+                            &--item {
+                                font-weight: 200;
+                                font-size: 2rem;
+                                &--info {
+                                    display: grid;
+                                    grid-template-columns: 60% 40%;
+                                    margin-top: 4%;
+                                    & div {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                        }
+                        & button {
+                            @include btn-gray;
+                            font-size: 4.5rem;
+                            font-weight: bold;
+                        }
+                    }
+                }
+                & h3 {
+                    color: $color3;
+                    font-size: 2.5rem;
+                    font-family: 'Poppins';
+                    font-weight: bold;
+                    padding-left: 5%;
+                }
+            }
+            & label {
+                width: 30%;
+            }
+        }
+        &--general {
+            &--items {
+                display: grid;
+                grid-template-columns: 50% 50%;
+                align-items: center;
+                justify-items: center;
+                & label {
+                    width: 40%;
+                }
+            }
+            &--items2 {
+                margin-top: 2rem;
+                &--files {
+                    display: grid;
+                    grid-template-columns: 94% 6%;
+                    align-items: center;
+                    justify-items: center;
+                    &--document {
+                        &--item {
+                            display: grid;
+                            grid-template-columns: 30% 70%;
+                            align-items: center;
+                            justify-items: center;
+                            padding-bottom: 1.5rem;
+                        }
+                    }
+                    &--action {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        & button {
+                            @include btn-gray;
+                            font-size: 4.5rem;
+                            font-weight: bold;
+                            width: 6rem;
+                            margin-bottom: 1.5rem;
+                        }
+                    }
+                }
+                & label {
+                    width: 20%;
+                }
+            }
+        }
+        &--academic {
+            &--items {
+                display: grid;
+                grid-template-columns: 50% 50%;
+                align-items: center;
+                justify-items: center;
+                & label {
+                    width: 30%;
+                }
+            }
+        }
+    }
+}
+
+.modal-body {
+    & .modal-form {
+        &-checklist {
+            margin-top: 2%;
+            margin-left: 5%;
+            &-item {
+                display: grid;
+                grid-template-columns: 80% 20%;
+                align-items: center;
+                justify-items: baseline;
+                margin-bottom: 1.5rem;
+                & span {
+                    color: $white;
+                    font-weight: 200;
+                    font-size: 2.5rem;
+                }
+            }
+        }
+    }
+}

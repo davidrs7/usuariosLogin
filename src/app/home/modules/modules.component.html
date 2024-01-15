@@ -1,0 +1,58 @@
+<div class="modules background-right">
+    <div class="modules__user background-left">
+        <img src="../../assets/asecofin_logo.png" alt="Asecofin Logo" class="modules__user--logo">
+        <span class="modules__user--message">
+            <p>¡Bienvenido!</p>
+            <p><img src="{{ (user.photoUrl != null && user.photoUrl != '') ? user.photoUrl : '../../assets/avatar.png' }}" alt="Asecofin Logo" class="modules__user--profile"></p>
+            <p>{{ userName }}</p>
+        </span>
+        <img src="../../assets/tiindux_logo.png" alt="Tiindux Logo" class="modules__user--tiindux">
+    </div>
+    <div class="modules__card">
+        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)">RRHH</div>
+        <div class="modules__card--bienestar ">BIENESTAR</div>
+        <div class="modules__card--sst">SST</div>
+        <div class="modules__card--conocimiento">GESTIÓN DE CONOCIMIENTO</div>
+        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)">ADMINISTRACION</div>
+    </div>
+</div>
+
+
+<ng-template #modalFuncionarios let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <div class="modules__card">
+                <div class="modules__card--estorg" (click)="openModule('employees/employee/list')">Estructura Organizacional</div>
+                <div class="modules__card--personal" (click)="openModule('recruiter/vacancy/list')">Selección de personal</div>
+                <div class="modules__card--desempeno">Desempeño</div>
+                <div class="modules__card--adminpersonal">Administración de personal</div>
+                <div class="modules__card--encuestas" (click)="openModule('survey/pending/list')">Encuestas</div>
+                <div class="modules__card--reportes">Reportes</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalConfig let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click) ="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <div class="modules__card"> 
+                <div class="modules__card--rol" (click)="openModule('pages/roles')">Roles</div>
+                <div class="modules__card--rol" (click)="openModule('pages/cargos')">Cargos</div>
+                <div class="modules__card--rol" (click)="openModule('pages/permisos')">Permisos</div>
+                <div class="modules__card--rol" (click)="openModule('pages/rutaspermisos')">Accesos</div>
+                <div class="modules__card--rol" (click)="openModule('pages/usuarios')" >Usuarios</div>
+                <div class="modules__card--rol" (click)="openModule('pages/empresas')">Empresas</div>
+            </div>                 
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

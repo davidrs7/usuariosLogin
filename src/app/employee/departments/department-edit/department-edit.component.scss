@@ -1,0 +1,17 @@
+@import '../../../../variables.scss';
+@import '../../../../mixins.scss';
+
+.department {
+  &__container {
+    margin-top: 2%;
+
+    &--information {
+      &--items {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        align-items: center;
+        justify-items: center;
+      }
+    }
+  }
+}

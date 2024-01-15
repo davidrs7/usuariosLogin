@@ -1,0 +1,85 @@
+@import './../../../../variables.scss';
+@import './../../../../mixins.scss';
+
+.assign {
+    padding: 2% 10%;
+    &-header {
+        border-left-width: 7px;
+        border-left-style: solid;
+        padding: .4rem 0 .4rem .8rem;
+        margin-bottom: 2.5rem;
+        &-name {
+            font-family: 'Questrial';
+            &-job {
+                font-size: 3.5rem;
+                font-weight: bold;
+            }
+            &-count {
+                font-size: 2.8rem;
+                color: $darkgray;
+            }
+        }
+        &-contract {
+            font-family: 'Questrial';
+            font-size: 2.7rem;
+        }
+        &-status {
+            @include vacant-status-color;
+            font-size: 2.3rem;
+        }
+        &-desc {
+            font-size: 2.1rem;
+            font-style: italic;
+        }
+    }
+    &-postulates {
+        margin-bottom: 1.5rem;
+        &-search {
+            @include search-input;
+        }
+        &-table {
+            &-name {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                &-photo {
+                    margin-right: 1rem;
+                    & img {
+                        width: 7rem;
+                        height: 7rem;
+                        border-radius: 50%;
+                    }
+                }
+                &-text {
+                    font-size: 2rem;
+                    & div:last-child {
+                        font-weight: bold;
+                    }
+                }
+            }
+            &-info {
+                &-text {
+                    display: flex;
+                    flex-direction: row;
+                    & div {
+                        margin-right: 3.5rem;
+                    }
+                }
+                &-desc {
+                    font-size: 1.5rem;
+                    font-style: italic;
+                    color: $darkgray;
+                }
+            }
+        }
+        &-action {
+            justify-content: flex-end;
+        }
+        &-error {
+            text-align: center;
+            font-size: 2rem;
+            font-style: italic;
+            color: $darkgray;
+        }
+    }
+}

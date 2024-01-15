@@ -1,0 +1,42 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="survey background-right">
+    <div>
+        <table *ngIf="surveyList.length > 0" class="survey-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Encuestas pendientes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let survey of surveyList">
+                    <td class="survey-table-info">
+                        <div class="survey-table-info-title">{{ survey.name }}</div>
+                        <div class="survey-table-info-desc">{{ survey.description }}</div>
+                        <div class="survey-table-info-date">Disponible hasta {{ survey.finished | date:"dd/MM/yyyy" }}</div>
+                    </td>
+                    <td class="action">
+                        <button *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)" (click)="openEdit(survey.id)">Responder</button>
+                        <button *ngIf="survey.isAnswered == 1 && survey.draft == 0" class="action-white" (click)="openEdit(survey.id)">Ver</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table *ngIf="surveyList.length == 0" class="survey-table">
+            <thead>
+                <tr><th>Encuestas pendientes</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="survey-table-error">
+                        -- No hay encuentas pendientes para el usuario <strong>{{ user.name }}</strong> --
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

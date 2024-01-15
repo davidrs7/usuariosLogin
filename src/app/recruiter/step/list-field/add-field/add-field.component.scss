@@ -1,0 +1,13 @@
+@import '../../../../../variables.scss';
+@import '../../../../../mixins.scss';
+
+.add-field {
+    &-form{
+        &-x2 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            align-items: center;
+            justify-items: center;
+        }
+    }
+}

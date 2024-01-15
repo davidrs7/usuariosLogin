@@ -1,0 +1,72 @@
+<app-navigation></app-navigation>
+
+<div class="postulates background-right">
+    <div class="postulates__people background-right">
+        <div class="postulates__people--title"><span class="fa-solid fa-sliders"></span> Filtros</div>
+        <span [class]="classPerVacant(vacant.id)" *ngFor="let vacant of vacants" (click)="perVacant(vacant.id, 1)">
+            <div [style.background-color]="vacant.jobColorHex"></div>
+            <h4>{{ vacant.jobName }} ({{ vacant.vacantsCount }})</h4>
+        </span>
+        <span class="postulates__people--person" (click)="clearFilters()">
+            <div class="postulates__people--person--default"></div>
+            <h4>Todas las vacantes ({{ totalVacants }})</h4>
+        </span>
+    </div>
+    <div class="postulates__block">
+        <div class="postulates__block--card">
+            <div class="postulates__block--card--employee" *ngFor="let postulate of postulatesList" [style.border-color]="postulate.colorHex" (click)="openEdit(postulate.id)">
+              <div class="postulates__block--card--employee--img" [style.border-bottom-color]="postulate.colorHex">
+                <img [src]="postulate.photoUrl.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />
+              </div>
+              <div class="postulates__block--card--employee--info">
+                  <span>{{postulate.firstName}} {{postulate.lastName}}</span>
+                  <span>{{postulate.educationalLevelName}}</span>
+                  <span>{{postulate.email}}</span>
+                  <span>{{postulate.cellPhone}}</span>
+              </div>
+          </div>
+        </div>
+        <div class="postulates__block--pagination">
+            <button *ngIf="pagesArray.length > 0 && pagesArray[0] > 1" class="postulates__block--pagination--option" (click)="postulateMethod(1)"><< Primera</button>
+            <button *ngIf="pagesArray.length > 0 && postulateCriteria.page > 1" class="postulates__block--pagination--option" (click)="postulateMethod(postulateCriteria.page - 1)">< Anterior</button>
+            <button *ngFor="let page of pagesArray" [class]="page == postulateCriteria.page ? 'postulates__block--pagination--selected' : 'postulates__block--pagination--option'" (click)="postulateMethod(page)">{{ page }}</button>
+            <button *ngIf="pagesArray.length > 0 && postulateCriteria.page < lastPage" class="postulates__block--pagination--option" (click)="postulateMethod(postulateCriteria.page + 1)">Siguiente ></button>
+            <button *ngIf="pagesArray.length > 0 && pagesArray[pagesArray.length - 1] < lastPage" class="postulates__block--pagination--option" (click)="postulateMethod(lastPage)">Última >></button>
+        </div>
+
+        <div class="information__btn">
+            <button data-bs-toggle="modal" data-bs-target="#modalSearch" (click)="openModal(modalSearch)" class="postulates__block--btn--action">Buscar postulado</button>
+            <button type="button" (click)="openAdd()">Agregar postulado</button>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalSearch let-modal>
+  <div class="modal-body">
+    <div class="modal-close" (click)="closeModal()">
+      <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+    </div>
+    <div class="modal-form">
+      <form>
+          <div class="information__item">
+            <label>
+              <select [(ngModel)]="postulateSelect"  name="postulateSelect">
+                <option value="cedula">Cédula</option>
+                <option value="nombre">Nombre</option>
+              </select>
+            </label>
+            <div>
+              <input [type]="postulateSelect == 'cedula' ? 'number' : 'text'" placeholder="Digite un valor" [(ngModel)]="postulateDoc" name="postulateDoc" />
+            </div>
+          </div>
+          <div class="information__btn">
+            <button type="button" (click)="searchPostulate()">Buscar</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

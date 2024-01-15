@@ -1,0 +1,64 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
+.navbar {
+    background-color: $main;
+    font-size: 1.8rem;
+    font-family: 'Poppins';
+    & .navbar-left-block {
+        & img {
+            cursor: pointer;
+        }
+    }
+    & ul {
+        &.navbar-center-block {
+            & li {
+                & div {
+                    cursor: pointer;
+                    padding-left: 1vw;
+                    padding-right: 1vw;
+                    & span:first-child {
+                        padding-right: .5vw;
+                    }
+                }
+            }
+        }
+        &.navbar-right-block {
+            & li:first-child {
+                & strong {
+                    color: $white;
+                }
+            }
+            & li:last-child {
+                display: flex;
+                padding-left: .5vw;
+                font-size: 2.8rem;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.navbar-sec {
+    background-color: $gray !important;
+    & .nav-item {
+        &.active {
+            & .nav-link {
+                & span {
+                    color: $error !important;
+                }
+            }
+        }
+        & .nav-link {
+            font-size: 1.67rem;
+            font-weight: bold;
+            color: $color4 !important;
+            padding-left: 2.5vw;
+            padding-right: 2.5vw;
+            cursor: pointer;
+            & span:first-child {
+                padding-right: .5vw;
+            }
+        }
+    }
+}

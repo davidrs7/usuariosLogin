@@ -1,0 +1,268 @@
+<app-navigation></app-navigation>
+
+<div class="postulate background-right">
+    <div class="postulate-info">
+        <div class="postulate-info-card">
+            <div class="postulate-info-card-name">{{ postulate.firstName }} {{ postulate.lastName }}</div>
+            <div class="postulate-info-card-job">
+                <span>
+                    <span class="fa-solid fa-school"></span>
+                    <span class="text">{{ postulate.educationalLevelName }}</span>
+                </span>
+                <span *ngIf="postulate.career != null && postulate.career != ''">
+                    <span class="fa-solid fa-graduation-cap"></span>
+                    <span class="text">{{ postulate.career }}</span>
+                </span>
+            </div>
+            <div class="postulate-info-card-job">{{ postulate.email }}</div>
+            <div class="postulate-info-card-other">
+                <span *ngIf="postulate.phone != null && postulate.phone != ''">
+                    <span class="fa-solid fa-phone"></span>
+                    <span class="text">{{ postulate.phone }}</span>
+                </span>
+                <span *ngIf="postulate.cellPhone != null && postulate.cellPhone != ''">
+                    <span class="fa-solid fa-mobile-screen"></span>
+                    <span class="text">{{ postulate.cellPhone }}</span>
+                </span>
+                <span *ngIf="postulate.sex != null && postulate.sex != ''">
+                    <span class="fa-solid fa-venus-mars"></span>
+                    <span class="text">{{ postulate.sex }}</span>
+                </span>
+                <span *ngIf="postulate.birthDate != null && postulate.birthDate != undefined && postulate.birthDate.toString() != '0001-01-01T00:00:00'">
+                    <span class="fa-solid fa-cake-candles"></span>
+                    <span class="text">{{ postulate.birthDate | date:"dd/MM/yyyy" }}</span>
+                </span>
+                <span *ngIf="postulate.rh != null && postulate.rh != ''">
+                    <span class="fa-solid fa-droplet"></span>
+                    <span class="text">{{ postulate.rh }}</span>
+                </span>
+                <span *ngIf="postulate.expectedSalary != null">
+                    <span class="fa-solid fa-money-bill-wave"></span>
+                    <span class="text">{{ postulate.expectedSalary | currency:'$':'symbol-narrow':'3.0' }}</span>
+                </span>
+            </div>
+            <div class="postulate-info-card-other">{{ postulate.docTypeName }} {{ postulate.doc }}</div>
+        </div>
+        <div class="postulate-info-img" [style.border-bottom-color]="postulate.colorHex">
+            <img [src]="postulate.photoUrl?.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />
+        </div>
+    </div>
+
+    <div class="postulate-btn information__btn">
+        <button type="button" (click)="cancel()">Volver a la lista</button>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#modalSelVacant" (click)="openModal(modalSelVacant, true)" *ngIf="vacantList.length > 0">Asignar vacantes</button>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#modalChangeFunc" (click)="openModal(modalChangeFunc, false)" *ngIf="changeEmployee">Convertir en funcionario</button>
+        <button type="button" (click)="openEdit()">Editar postulado</button>
+    </div>
+
+    <div class="postulate-wf">
+        <div class="postulate-wf-selection" *ngIf="vacantSelectedList.length > 0">
+            <div class="information__item">
+                <label for="postulateVacantSelected">Vacante en seguimiento</label>
+                <div>
+                    <select name="vacantSelected" id="postulateVacantSelected" (change)="changeVacant($event)">
+                        <option value="" *ngIf="vacantSelectedList.length > 1"></option>
+                        <option *ngFor="let vacantSel of vacantSelectedList" [value]="vacantSel.id">{{ vacantSel.jobName }} ({{ vacantSel.vacantNum }}) | {{ vacantSel.vacantStatusName }}</option>
+                    </select>
+                    <div class="information__item--desc" *ngIf="vacantSelectedList.length > 1">Seleccione una vacante asociada al postulado para ver y actualizar el proceso de contratación correspondiente.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="postulate-wf-selected" *ngIf="vacantSelected != null && vacantSelected != undefined">
+            <div class="postulate-wf-selected-keys">
+                <div class="postulate-wf-selected-keys-item">
+                    <span class="fa-solid fa-circle text-info"></span>
+                    <span>Depende de etapas anteriores</span>
+                </div>
+                <div class="postulate-wf-selected-keys-item">
+                    <span class="fa-solid fa-circle text-success"></span>
+                    <span>Terminada</span>
+                </div>
+                <div class="postulate-wf-selected-keys-item">
+                    <span class="fa-solid fa-circle text-warning"></span>
+                    <span>En proceso</span>
+                </div>
+                <div class="postulate-wf-selected-keys-item">
+                    <span class="fa-solid fa-circle text-danger"></span>
+                    <span>Incompleta</span>
+                </div>
+                <div class="postulate-wf-selected-keys-item">
+                    <span class="fa-solid fa-circle text-muted"></span>
+                    <span>No aplicada al postulado</span>
+                </div>
+            </div>
+
+            <div class="postulate-wf-selected-vacants">
+                <div class="tabs">
+                    <div #tabsGroup class="tabs-group">
+                        <div *ngFor="let stepId of stepIndexInt; let i = index; let first = first" [class]="first ? 'tabs-group-tab active' : 'tabs-group-tab'" (click)="tabSelect(tabsGroup.children, i); tabSelect(tabsContent.children, i);">
+                            <span class="fa-solid fa-circle text-{{ stepIndex[stepId].status }}"></span>
+                            {{ stepIndex[stepId].step.name }}
+                        </div>
+                    </div>
+
+                    <div #tabsContent class="tabs-content postulate-wf-selected-vacants-content">
+                        <div *ngFor="let stepId of stepIndexInt; let first = first" [class]="first ? 'tabs-content-tab active' : 'tabs-content-tab'">
+                            <div class="postulate-wf-selected-vacants-content-desc">{{ stepIndex[stepId].step.description }}</div>
+                            <div *ngIf="stepIndex[stepId].status == 'info'" class="postulate-wf-selected-vacants-content-error">
+                                <div>No hay información disponible para esta etapa</div>
+                                <div>Debe diligenciar la información de las etapas anteriores para habilitar <span>{{ stepIndex[stepId].step.name }}</span>.</div>
+                            </div>
+                            <div *ngIf="stepIndex[stepId].status == 'muted'" class="postulate-wf-selected-vacants-content-error">
+                                <div>Esta etapa no fue aplicada para este postulado</div>
+                                <div>El postulado fue descartado para esta vacante en una etapa anterior a <span>{{ stepIndex[stepId].step.name }}</span>.</div>
+                            </div>
+
+                            <form *ngIf="stepIndex[stepId].status != 'info' && stepIndex[stepId].status != 'muted'" [formGroup]="stepIndex[stepId].formGroup" (ngSubmit)="validateFormGroup(stepId)">
+                                <div *ngIf="stepIndex[stepId].fieldsForm.length > 0" class="postulate-wf-selected-vacants-content-stepform">
+                                    <div class="information__item" *ngFor="let field of stepIndex[stepId].fieldsForm">
+                                        <label *ngIf="field.fieldType != 'boolean'" for="fr_{{ field.fieldName }}">{{ field.name }}</label>
+                                        <div>
+                                            <input *ngIf="field.fieldType == 'text' || field.fieldType == 'number' || field.fieldType == 'date'" [type]="field.fieldType" [formControlName]="field.fieldName" [name]="field.fieldName" [readonly]="stepIndex[stepId].status == 'success'" id="fr_{{ field.fieldName }}">
+                                            <textarea *ngIf="field.fieldType == 'textarea'" [formControlName]="field.fieldName" [name]="field.fieldName" [readonly]="stepIndex[stepId].status == 'success'" id="fr_{{ field.fieldName }}"></textarea>
+                                            <div class="information__item--checkbox" *ngIf="field.fieldType == 'boolean'">
+                                                <input type="checkbox" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="stepIndex[stepId].status == 'success'" id="fr_{{ field.fieldName }}">
+                                                <span>{{ field.name }}</span>
+                                            </div>
+                                            <select *ngIf="field.fieldType == 'list'" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="stepIndex[stepId].status == 'success'" id="fr_{{ field.fieldName }}">
+                                                <option value=""></option>
+                                                <option *ngFor="let param of getOptionList(field.config)" [value]="param">{{ param }}</option>
+                                            </select>
+                                            <ul *ngIf="errors.validate(stepIndex[stepId].formGroup.get(field.fieldName))">
+                                                <li *ngFor="let message of errors.getErrors(stepIndex[stepId].formGroup.get(field.fieldName))">{{ message }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="postulate-wf-selected-vacants-content-postulateform">
+                                    <div class="postulate-wf-selected-vacants-content-postulateform-title">
+                                        Evaluación para la etapa {{ stepIndex[stepId].step.name }}
+                                    </div>
+
+                                    <div class="postulate-wf-selected-vacants-content-postulateform-item">
+                                        <div class="information__item">
+                                            <label for="fr_approved">Estado</label>
+                                            <div>
+                                                <select (change)="changeApproved(stepId)" formControlName="approved" name="approved" [disabled]="stepIndex[stepId].status == 'success'" id="fr_approved">
+                                                    <option value="">En proceso</option>
+                                                    <option value="1">Aprobado en {{ stepIndex[stepId].step.name }}</option>
+                                                    <option value="0">Rechazado en {{ stepIndex[stepId].step.name }}</option>
+                                                </select>
+                                                <ul *ngIf="errors.validate(stepIndex[stepId].formGroup.get('approved'))">
+                                                    <li *ngFor="let message of errors.getErrors(stepIndex[stepId].formGroup.get('approved'))">{{ message }}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="stepIndex[stepId].formGroup.get('approved')?.value != ''" class="information__item">
+                                            <label for="fr_reason">
+                                                Razón
+                                                <span *ngIf="stepIndex[stepId].formGroup.get('approved')?.value == '1'"> de la aprobación</span>
+                                                <span *ngIf="stepIndex[stepId].formGroup.get('approved')?.value == '0'"> del rechazo</span>
+                                            </label>
+                                            <div>
+                                                <textarea formControlName="reason" name="reason" [readonly]="stepIndex[stepId].status == 'success'" id="fr_reason"></textarea>
+                                                <ul *ngIf="errors.validate(stepIndex[stepId].formGroup.get('reason'))">
+                                                    <li *ngFor="let message of errors.getErrors(stepIndex[stepId].formGroup.get('reason'))">{{ message }}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="stepIndex[stepId].status != 'success'" class="information__btn">
+                                    <button type="submit">Guardar {{ stepIndex[stepId].step.name }}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="postulate-wf-error" *ngIf="(vacantSelected == null || vacantSelected == undefined) && vacantSelectedList.length == 0">
+            <div class="postulate-wf-error-title">Este postulado no tiene procesos de contratación asociados</div>
+            <div class="postulate-wf-error-desc" *ngIf="vacantList.length > 0">Para iniciar un proceso de contratación con este postulado asocie una vacante a través del botón <span class="postulate-wf-error-desc-button">Asignar vacantes</span></div>
+            <div class="postulate-wf-error-desc" *ngIf="vacantList.length == 0">Antes de poder iniciar un proceso de contratación con este postulado debe crea una nueva vacante a través del menú <span class="postulate-wf-error-desc-menu">Vacantes</span> ubicado en la barra superior</div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalSelVacant let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-header">
+            <div class="modal-header-search">
+                <span class="fa-solid fa-magnifying-glass"></span>
+                <input type="text" placeholder="Buscar" />
+            </div>
+        </div>
+        <div class="modal-form">
+            <table class="vacant-table">
+                <thead>
+                    <tr>
+                        <td>Vacante</td>
+                        <td>Estado</td>
+                        <td>Seleccionado</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let vacant of vacantList">
+                        <td>
+                            <div class="vacant-table-title">{{ vacant.jobName }} ({{ vacant.vacantNum }}) | {{ vacant.contractTypeName }}</div>
+                            <div class="vacant-table-other">Postulados {{ vacant.vacantsCount }} actualmente</div>
+                            <div class="vacant-table-desc">{{ vacant.description }}</div>
+                        </td>
+                        <td class="vacant-table-status">{{ vacant.vacantStatusName }}</td>
+                        <td>
+                            <input (click)="toggleVacant(vacant.id)" type="checkbox" id="inlineCheckbox{{ vacant.id }}" value="{{ vacant.id }}" [checked]="vacant.active" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="information__item" *ngIf="errorModalAssign">
+                <div>
+                    <ul>
+                        <li>Debe seleccionar al menos un ìtem de la lista.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="information__btn">
+                <button type="button" (click)="closeModal()">Cerrar</button>
+                <button type="button" (click)="assignVacants()">Asignar vacantes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #modalChangeFunc let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <div class="modal-form-question">
+                El postulado <strong>{{ postulate.firstName }} {{ postulate.lastName }}</strong> ha sido aprobado en todas las etapas del proceso de contratación para la vacante al rol de <strong>{{ vacantSelected.jobName }}</strong>.
+                ¿Desea convertir al postulado en un funcionario bajo este rol?
+            </div>
+            <div class="information__btn">
+                <button type="button" (click)="changeToEmployee()" *ngIf="changeEmployee">Si</button>
+                <button type="button" (click)="closeModal()">No</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva">
+    <img src="../../assets/load.gif" alt="Cargando" />
+    <div *ngIf="canvaMsg">Esta acción puede tardar unos minutos...</div>
+</div>

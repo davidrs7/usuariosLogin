@@ -1,0 +1,116 @@
+@import '../../variables.scss';
+@import '../../mixins.scss';
+.login {
+    background-color: $gray;
+    background-image: url(../../assets/back.png);
+    background-repeat: initial;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    background-attachment: fixed;
+    @media only screen and (max-width: $sm) {
+        width: 100% !important;
+        transition: width 2s;
+    }
+    &__logo {
+        width: 25vw;
+        position: absolute;
+        top: 4%;
+        background-color: $main;
+        /*resposive dising*/
+        @media only screen and (max-width: $sm) {
+            width: 100vw;
+            z-index: 100;
+            transition: width 2s;
+        }
+        & img {
+            width: 20vw;
+            margin-top: 3%;
+            margin-bottom: 2%;
+            margin-left: 5%;
+            /*resposive dising*/
+            @media only screen and (max-width: $sm) {
+                width: 50vw;
+                z-index: 100;
+                transition: width 2s;
+            }
+        }
+    }
+    &__form {
+        width: 35%;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        background-color: rgba($color: $main, $alpha: 0.8);
+        @media only screen and (max-width: $sm) {
+            width: 100% !important;
+            transition: width 2s;
+        }
+        &--title {
+            width: 100%;
+            text-align: center;
+            color: $white;
+            font-family: 'Poppins';
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding-top: 30%;
+        }
+        &--info {
+            padding-top: 10%;
+            & form {
+                display: grid;
+                grid-template-columns: 100%;
+                align-items: center;
+                justify-items: center;
+                & .information__item {
+                    width: 60%;
+                    margin-bottom: 2.5rem;
+                    padding-left: 0;
+                    padding-right: 0;
+                    & input {
+                        font-size: 2rem;
+                        height: 5rem;
+                        padding-left: 1rem;
+                        padding-right: 1rem;
+                    }
+                }
+                & .information__btn {
+                    display: grid;
+                    grid-template-columns: 100%;
+                    align-items: center;
+                    justify-items: center;
+                    & button {
+                        width: 70%;
+                        margin-top: 3rem;
+                        margin-bottom: 10%;
+                    }
+                    & a {
+                        font-weight: 200;
+                        font-size: 2rem;
+                        text-decoration: underline;
+                        color: $white;
+                        text-align: center !important;
+                        padding: 2rem;
+                        @media only screen and (max-width: $sm) {
+                            padding: 2rem;
+                            text-align: center !important;
+                            transition: width 2s;
+                        }
+                    }
+                }
+            }
+        }
+        &--tiindux {
+            display: inline-flex;
+            justify-content: center;
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            & img {
+                width: 15vw;
+                transition: width 2s;
+            }
+        }
+    }
+}

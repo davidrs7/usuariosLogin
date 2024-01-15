@@ -1,0 +1,69 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
+
+.jobs {
+    width: 100%;
+    height: 100%;
+    padding-top: 5rem;
+    &__content {
+        width: 70vw;
+        margin: 0 auto;
+        &__table {
+            width: 100%;
+            font-size: 2rem;
+            border-collapse: collapse;
+            & thead {
+                color: $color3;
+                text-align: center;
+                font-family: 'Poppins';
+                & td {
+                    text-align: center !important;
+                }
+            }
+            & tbody {
+                font-weight: 200;
+                & td {
+                    & div {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        & .action-button {
+                            margin-right: 1rem;
+                        }
+                    }
+                }
+            }
+            & td {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+                border-bottom-color: $color4;
+                border-bottom-width: 1px;
+                border-bottom-style: inset;
+            }
+            &--fc {
+                width: 50%;
+                border-right-color: $color4;
+                border-right-width: 1px;
+                border-right-style: inset;
+                text-align: left;
+            }
+            &--lc {
+                width: 25%;
+                border-left-color: $color4;
+                border-left-width: 1px;
+                border-left-style: inset;
+                text-align: center;
+            }
+        }
+        &__add {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            margin-top: 5%
+        }
+        & button {
+            min-width: 20rem;
+            width: 30%;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+<app-navigation></app-navigation>
+
+<div class="fondo-personalizado">
+
+
+    <div class="container pt-5 mt-5">
+        <table class="table text-center fs-2 tabla-personalizada table-hover ms-5 me-5">
+            <tbody>
+                <tr class="align-middle" *ngFor="let resultadoPeoples of resultadoPeople">
+                    <td class="w-25 text-center"> {{ resultadoPeoples[0] }}</td>
+                    <td class="w-25 text-center">{{ resultadoPeoples[1] }}</td>
+                    <td class="w-25 text-end">{{ resultadoPeoples[2] }} </td>
+                    <td class="w-25 text-left"><img class="icono-tamano text-left" src="{{ resultadoPeoples[3] }}" /></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div class="employees__block--btn contenedor-botones mt-5 pt-5 ">
+            <button class="employees__block--btn--action botones-action me-3 p-3 " routerLink="/survey/create-survey" [queryParams]="{menu:1}" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Exportar Seleccionados</button>
+        </div>
+    </div>
+</div>

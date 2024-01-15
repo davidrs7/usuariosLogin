@@ -1,0 +1,103 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
+
+.modules {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 100vh;
+    &__user {
+        height: 100%;
+        width: 100%;
+        background-color: $main;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 40% 40% 20%;
+        &--logo {
+            align-self: flex-start;
+            justify-self: baseline;
+            height: 12vh;
+            margin-top: 5%;
+            margin-left: 5%;
+            @media only screen and (max-width: $sm) {
+                height: 5vh;
+                transition: height 2s;
+            }
+        }
+        &--message {
+            & p {
+                &:first-child {
+                    font-size: 6.5rem;
+                    font-family: 'Questrial';
+                    font-weight: bold;
+                    letter-spacing: .25rem;
+                    margin-bottom: 5%;
+                    @media only screen and (max-width: $sm) {
+                        font-size: 3rem;
+                        transition: font-size 2s;
+                    }
+                }
+                &:last-child {
+                    font-weight: 300;
+                }
+                & img {
+                    width: 10vw;
+                    border-radius: 50%;
+                }
+                font-size: 2.5rem;
+                color: $white;
+                text-align: center;
+            }
+        }
+        &--tiindux {
+            align-self: flex-end;
+            justify-self: center;
+            height: 5vh;
+            margin-bottom: 5%;
+        }
+    }
+}
+
+.modules__card {
+    align-self: center;
+    justify-self: center;
+    height: 35rem;
+    width: 80%;
+    margin: 4% 10%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
+    grid-gap: 10px;
+    align-items: center;
+    justify-items: center;
+    align-content: space-evenly;
+    & div {
+        background-color: $main;
+        color: $white;
+        width: 100%;
+        padding-top: 15%;
+        padding-bottom: 15%;
+        text-align: center;
+        font-size: 2rem;
+        border-top-left-radius: 40px;
+        border-top-right-radius: 40px;
+        cursor: pointer;
+    }
+    & div:hover, & div:focus {
+        background-color: $color3;
+    }
+}
+
+.modal-form {
+    .modules__card {
+        & div {
+            background-color: $gray;
+            color: $main;
+            padding-top: 10%;
+            padding-bottom: 10%;
+        }
+        & div:hover, & div:focus {
+            background-color: $white;
+        }
+    }
+}

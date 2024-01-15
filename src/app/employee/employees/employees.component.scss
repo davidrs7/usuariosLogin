@@ -1,0 +1,16 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
+
+.employees {
+    @include filter-page;
+}
+
+.modal-body {
+    & .modal-form {
+        & .information__item {
+            & label {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

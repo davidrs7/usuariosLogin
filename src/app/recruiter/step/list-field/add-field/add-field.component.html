@@ -1,0 +1,106 @@
+<app-navigation></app-navigation>
+
+<div class="add-field background-right">
+    <form [formGroup]="formField" (ngSubmit)="validateFormField()">
+        <div class="add-field-form">
+            <div class="add-field-form-x2">
+                <div class="information__item">
+                    <label for="fieldName">Nombre</label>
+                    <div>
+                        <input type="text" formControlName="name" name="name" id="fieldName">
+                        <ul *ngIf="errors.validate(name)">
+                            <li *ngFor="let message of errors.getErrors(name)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="fieldFieldType">Tipo de campo</label>
+                    <div>
+                        <select formControlName="fieldType" name="fieldType" id="fieldFieldType">
+                            <option value=""></option>
+                            <option value="text">Texto</option>
+                            <option value="number">Número</option>
+                            <option value="list">Lista de opciones</option>
+                            <option value="boolean">Selección</option>
+                            <option value="textarea">Texto largo</option>
+                            <option value="date">Fecha</option>
+                        </select>
+                        <ul *ngIf="errors.validate(fieldType)">
+                            <li *ngFor="let message of errors.getErrors(fieldType)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="fieldAvailable">Estado del campo</label>
+                    <div>
+                        <select formControlName="available" name="available" id="fieldAvailable">
+                            <option value="1">Habilitado</option>
+                            <option value="0">Deshabilitado</option>
+                        </select>
+                        <ul *ngIf="errors.validate(available)">
+                            <li *ngFor="let message of errors.getErrors(available)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="fieldIsRequired">¿Este campo es obligatorio?</label>
+                    <div>
+                        <select formControlName="isRequired" name="isRequired" id="fieldIsRequired">
+                            <option value="1">Si</option>
+                            <option value="0">No</option>
+                        </select>
+                        <ul *ngIf="errors.validate(isRequired)">
+                            <li *ngFor="let message of errors.getErrors(isRequired)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="add-field-form-x2" *ngIf="fieldType?.value == 'number'">
+                <div class="information__item">
+                    <label for="fieldNumMin">Valor mínimo</label>
+                    <div>
+                        <input type="number" formControlName="numMin" name="numMin" id="fieldNumMin">
+                        <ul *ngIf="errors.validate(numMin)">
+                            <li *ngFor="let message of errors.getErrors(numMin)">{{ message }}</li>
+                        </ul>
+                        <div class="information__item--desc">Si se mantiene este campo vacio, no se aplicará validación de valor mínimo en este campo.</div>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="fieldNumMax">Valor máximo</label>
+                    <div>
+                        <input type="number" formControlName="numMax" name="numMax" id="fieldNumMax">
+                        <ul *ngIf="errors.validate(numMax)">
+                            <li *ngFor="let message of errors.getErrors(numMax)">{{ message }}</li>
+                        </ul>
+                        <div class="information__item--desc">Si se mantiene este campo vacio, no se aplicará validación de valor máximo en este campo.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="information__item" *ngIf="fieldType?.value == 'list'">
+                <label for="fieldOptions">Opciones de la lista</label>
+                <div>
+                    <textarea formControlName="options" name="options" id="fieldOptions"></textarea>
+                    <ul *ngIf="errors.validate(options)">
+                        <li *ngFor="let message of errors.getErrors(options)">{{ message }}</li>
+                    </ul>
+                    <div class="information__item--desc">Este campo es obligatorio. Debe escribir las opciones de la lista separadas por coma.<br/><strong>Ejemplo:</strong> Opción 1,Opción 2,Opción 3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-field-btn information__btn">
+            <button type="button" (click)="cancel()">Cancelar</button>
+            <button type="submit">Guardar campo</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

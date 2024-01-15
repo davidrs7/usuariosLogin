@@ -1,0 +1,219 @@
+@import './../../../../variables.scss';
+@import './../../../../mixins.scss';
+
+.survey {
+    padding: 0;
+    width: 100%;
+    &-title {
+        padding: 2rem 0;
+        text-align: center;
+        &-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        &-desc {
+            font-size: 1.6rem;
+        }
+    }
+    &-config {
+        display: flex;
+        flex-direction: row;
+        border-top: $color4 solid 3px;
+        padding-bottom: 2rem;
+        width: 100%;
+        &-header {
+            background-color: $shadow;
+            width: 25vw;
+            &-add {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                padding: 1rem 0;
+                border-bottom: $darkgray solid 1px;
+                width: 100%;
+            }
+            &-item {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                cursor: pointer;
+                border-bottom: $darkgray solid 1px;
+                background-color: transparent;
+                &-title {
+                    font-size: 1.8rem;
+                    font-weight: bold;
+                    padding-bottom: .6rem;
+                    line-height: 1.2;
+                }
+                &-date {
+                    font-size: 1.5rem;
+                    & span:first-child {
+                        font-weight: 600;
+                    }
+                }
+                & .fa-solid {
+                    font-size: 2rem;
+                    opacity: .7;
+                }
+            }
+            &-item:hover {
+                background-color: $gray;
+            }
+            &-show {
+                background-color: $color5;
+                color: $white;
+            }
+            &-show:hover {
+                background-color: $color4;
+            }
+            &-none {
+                text-align: center;
+                font-style: italic;
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
+        }
+        &-info {
+            padding: 2rem;
+            width: 75vw;
+            &-title {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                &-data {
+                    padding-right: 2rem;
+                    &-text {
+                        font-size: 2rem;
+                        font-weight: 500;
+                    }
+                    &-date {
+                        font-size: 1.6rem;
+                    }
+                }
+            }
+            &-tabs {
+                padding-top: 2rem;
+                &-x2 {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    & div:first-child {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        & input {
+                            min-width: 3rem;
+                        }
+                        & span {
+                            font-size: 1.8rem;
+                            white-space: nowrap;
+                            padding-left: 1rem;
+                        }
+                    }
+                    & div:last-child {
+                        justify-content: flex-end;
+                        & button {
+                            @include btn-white;
+                            min-width: 22vw;
+                        }
+                    }
+                }
+                &-search {
+                    @include search-input;
+                    padding-bottom: 1.5rem;
+                }
+                &-desc {
+                    margin-bottom: 1rem;
+                    font-size: 1.4rem;
+                    font-style: italic;
+                }
+                &-table {
+                    overflow-x: auto;
+                    max-height: 75vh;
+                    height: min-content;
+                    &-sel {
+                        width: 4.5rem;
+                        & span {
+                            font-size: 4.5rem;
+                            text-align: center;
+                            color: $error;
+                        }
+                    }
+                    &-info {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: flex-start;
+                        &-img {
+                            padding-right: 1rem;
+                        }
+                        &-data {
+                            display: flex;
+                            flex-direction: column;
+                            font-size: 1.5rem;
+                            & span:first-child {
+                                font-size: 1.7rem;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }
+                &-empty {
+                    font-size: 1.8rem;
+                    color: $darkgray;
+                    padding: 2rem 0;
+                }
+            }
+        }
+    }
+}
+
+.modal-form {
+    &-title {
+        width: 100%;
+        margin-bottom: 1rem;
+        &-fr {
+            font-size: 2.1rem;
+            font-family: 'Poppins';
+            font-weight: bold;
+            text-align: center;
+        }
+        &-sc {
+            font-size: 1.8rem;
+            font-family: 'Poppins';
+            text-align: center;
+        }
+    }
+    &-x2 {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        align-items: center;
+        justify-items: center;
+    }
+    &-content {
+        display: grid;
+        grid-template-columns: 33% 34% 33%;
+        align-items: start;
+        justify-items: start;
+        padding: 0 5rem;
+        &-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            font-size: 1.6rem;
+            padding-top: .4rem;
+            padding-bottom: .4rem;
+            & input {
+                width: 3rem;
+            }
+            & span {
+                padding-left: .5rem;
+                cursor: default;
+            }
+        }
+    }
+}

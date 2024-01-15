@@ -1,0 +1,69 @@
+<app-navigation></app-navigation>
+
+<div class="job-add background-right">
+    <form [formGroup]="formJob" (ngSubmit)="validateFormJob()">
+      <div class="job-add__form">
+        <div class="information__item">
+            <label for="jobAddName">Nombre</label>
+            <div>
+              <input type="text" formControlName="name" name="name" id="jobAddName">
+              <ul *ngIf="errors.validate(name)"><li *ngFor="let message of errors.getErrors(name)">{{ message }}</li></ul>
+            </div>
+        </div>
+        <div class="information__item">
+            <label for="jobAddApproveId">Aprueba</label>
+            <div>
+              <select formControlName="approveId" name="approveId" id="jobAddApproveId">
+                <option value=""></option>
+                <option *ngFor="let job of jobs" [value]="job.id">{{ job.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(approveId)"><li *ngFor="let message of errors.getErrors(approveId)">{{ message }}</li></ul>
+            </div>
+        </div>
+        <div class="information__item">
+            <label for="jobAddDepartmentId">Departamento</label>
+            <div>
+              <select formControlName="departmentId" name="departmentId" id="jobAddDepartmentId">
+                <option value=""></option>
+                  <option *ngFor="let department of departments" [value]="department.id">{{ department.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(departmentId)"><li *ngFor="let message of errors.getErrors(departmentId)">{{ message }}</li></ul>
+            </div>
+        </div>
+        <div class="information__item">
+            <label for="jobAddApproveId">Reporta a</label>
+            <div>
+              <select formControlName="reportId" name="reportId" id="jobAddReportId">
+                <option value=""></option>
+                  <option *ngFor="let job of jobs" [value]="job.id">{{ job.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(reportId)"><li *ngFor="let message of errors.getErrors(reportId)">{{ message }}</li></ul>
+            </div>
+        </div>
+      </div>
+      <div class="job-add__profile">
+        <div class="information__item">
+            <label for="jobAddProfile">Perfil</label>
+            <div>
+              <textarea formControlName="profile" name="profile" id="jobAddProfile"></textarea>
+              <ul *ngIf="errors.validate(profile)"><li *ngFor="let message of errors.getErrors(profile)">{{ message }}</li></ul>
+            </div>
+        </div>
+      </div>
+      <div class="job-add__profile">
+        <div class="information__item">
+            <label for="jobAddFunctions">Funciones</label>
+            <div>
+              <textarea formControlName="functions" name="functions" id="jobAddFunctions"></textarea>
+              <ul *ngIf="errors.validate(functions)"><li *ngFor="let message of errors.getErrors(functions)">{{ message }}</li></ul>
+            </div>
+        </div>
+      </div>
+      <div class="job-add__btn information__btn">
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cancel()">Cancelar</button>
+      </div>
+    </form>
+</div>
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>
