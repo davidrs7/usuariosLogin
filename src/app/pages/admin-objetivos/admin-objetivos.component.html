@@ -1,0 +1,73 @@
+<app-navigation></app-navigation>
+
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>titulo</th>
+                <th>Descripción</th>
+                <th>Peso</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Objetivos|paginador:p_Size:page">
+                <td style="text-align: center;">{{ item.id }}</td>
+                <td style="text-align: center;">{{ item.titulo }}</td>
+                <td style="text-align: center;">{{ item.descripcion }}</td>
+                <td style="text-align: center;">{{ item.peso }}</td>
+                <td style="text-align: center;">{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click)="editarObjetivos(item.id)"></td>
+                <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click)="eliminarObjetivos(item.id)">
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+    <div>
+        <mat-paginator [length]="Objetivos.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
+            (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+    </div>
+
+    <button type="button" (click)="guardaObjetivos()">{{ cargoToEdit ? 'Editar Objetivos' : 'Crear Objetivos'
+        }}</button> &nbsp;&nbsp;&nbsp;
+    <button type="button" (click)="LimpiarFormulario()">limpiar</button>
+
+    <br><br><br>
+    <h2>{{ cargoToEdit ? 'Editar Objetivos' : 'Crear Nuevo Objetivos' }}</h2>
+    <form [formGroup]="ObjetivosForm" autocomplete="off">
+        <div>
+            <label for="titulo">Titulo: * </label>
+            <input type="text" formControlName="titulo" required>
+        </div><br>
+
+        <div>
+            <label for="descripcion">Descripción: *</label>
+            <textarea formControlName="descripcion" name="descripcion" required></textarea>
+        </div><br>
+
+        <div>
+            <label for="peso">peso: *</label>
+            <input type="text" formControlName="peso" required>
+        </div><br>
+
+        <label for="fechainicio">Fecha Inicio: * </label>
+        <input type="date" formControlName="fechainicio" required><br><br>
+
+        <label for="fechafin">Fecha Fin: * </label>
+        <input type="date" formControlName="fechafin" required><br><br>
+
+        <div>
+            <label for="estado">Estado:</label>
+            <select formControlName="estado" required>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+        </div><br>
+
+    </form>
+    <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
+</div>

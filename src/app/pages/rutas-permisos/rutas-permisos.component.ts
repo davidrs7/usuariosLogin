@@ -68,7 +68,7 @@ export class RutasPermisosComponent implements OnInit {
             icon: respuesta.estado.codigo == "500" ? 'warning' : 'success',
             title: respuesta.estado.codigo == "500" ? "Error: Permisos asociados a un rol" : respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },
@@ -106,7 +106,7 @@ export class RutasPermisosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },
@@ -130,7 +130,7 @@ export class RutasPermisosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },

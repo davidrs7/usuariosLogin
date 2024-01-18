@@ -56,3 +56,14 @@ export interface reqlogin {
        usuario: string,
        pw: string 
 }
+
+
+export interface reqObjetivos {
+    id: string,
+    titulo: string,
+    descripcion: string,
+    peso: string,
+    fechainicio: Date,
+    fechafin: Date,
+    estado: boolean
+}

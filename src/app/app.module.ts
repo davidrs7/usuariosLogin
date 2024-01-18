@@ -52,6 +52,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PermisosComponent } from './pages/permisos/permisos.component';
 import { EditarPermisosComponent } from './pages/editar-permisos/editar-permisos.component';
 import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.component';
+import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component';
 
 
 
@@ -98,6 +99,7 @@ import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.co
     PermisosComponent,
     EditarPermisosComponent,
     RutasPermisosComponent,
+    AdminObjetivosComponent,
   
   ],
   imports: [

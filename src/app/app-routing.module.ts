@@ -38,6 +38,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { PermisosComponent } from './pages/permisos/permisos.component';
 import { EditarPermisosComponent } from './pages/editar-permisos/editar-permisos.component';
 import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.component';
+import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component';
 
 
 const routes: Routes =
@@ -93,6 +94,7 @@ const routes: Routes =
   { path: 'pages/permisos', component: PermisosComponent},
   { path: 'pages/editarpermisos', component: EditarPermisosComponent},
   { path: 'pages/rutaspermisos', component: RutasPermisosComponent},
+  { path: 'pages/adminobjetivos', component: AdminObjetivosComponent},
 ];
 
 @NgModule({

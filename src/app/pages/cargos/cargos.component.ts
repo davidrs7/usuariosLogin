@@ -9,7 +9,7 @@ import { UserDTO } from '../../dto/user.dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
-import Swal from 'sweetalert2'; 
+import  Swal  from "sweetalert2"
 
 @Component({
   selector: 'app-cargos',
@@ -71,7 +71,7 @@ export class CargosComponent implements OnInit {
             icon: respuesta.estado.codigo == "500" ? 'warning' : 'success',
             title: respuesta.estado.codigo == "500" ? "Error: Usuarios asociados a este rol" : respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },
@@ -130,7 +130,7 @@ export class CargosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },
@@ -154,7 +154,7 @@ export class CargosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },

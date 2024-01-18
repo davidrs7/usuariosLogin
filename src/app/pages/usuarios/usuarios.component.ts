@@ -98,7 +98,7 @@ export class UsuariosComponent implements OnInit {
         icon: 'info',
         title: 'El usuario no existe',
         text: 'Por favor verifique el numero de documento'
-      }).then(res => {
+      }).then((res:any) => {
         this.LimpiarFormulario();
       });
     }
@@ -174,7 +174,7 @@ export class UsuariosComponent implements OnInit {
             icon: respuesta.estado.codigo == "500" ? 'warning' : 'success',
             title: respuesta.estado.codigo == "500" ? "Error: Usuarios asociados a este rol" : respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },
@@ -233,7 +233,7 @@ export class UsuariosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },
@@ -257,7 +257,7 @@ export class UsuariosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.LimpiarFormulario();
           });
         },

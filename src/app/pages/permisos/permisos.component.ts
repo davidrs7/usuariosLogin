@@ -81,7 +81,7 @@ export class PermisosComponent implements OnInit {
             icon: respuesta.estado.codigo == "500" ? 'warning' : 'success',
             title: respuesta.estado.codigo == "500" ? "Error eliminando permisos" : respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.rolSelect(rolid)
           });
         },
@@ -105,7 +105,7 @@ export class PermisosComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then(res => {
+          }).then((res:any) => {
             this.rolSelect(body.rolid);
           });
         },
