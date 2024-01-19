@@ -55,35 +55,38 @@
     <div class="col-6"> <br><br><br><br><br><br>
         <h1>Mis acciones</h1>
         <div class="container" *ngIf="acciones">
-            <hr><br><br>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Objetivo</th>
-                        <th>Accion</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of accionesObjetivoSel|paginador:p_Size:page">
-                        <td style="text-align: center;">{{ item.idObjetivo }}</td>
-                        <td style="text-align: center;">{{ item.descripcion }}</td>
-                        <td style="text-align: center;">{{ item.idEstado }}</td>
-                        <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"></td>
-                        <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                </tbody>
 
-            </table>
             <div>
-                <mat-paginator [length]="accionesObjetivo.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
-                    (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+                <hr><br><br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Objetivo</th>
+                            <th>Accion</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of accionesObjetivoSel|paginador:p_Size:page">
+                            <td style="text-align: center;">{{ item.idObjetivo }}</td>
+                            <td style="text-align: center;">{{ item.descripcion }}</td>
+                            <td style="text-align: center;">{{ item.idEstado }}</td>
+                            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"></td>
+                            <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar">
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+                <div>
+                    <mat-paginator [length]="accionesObjetivo.length" [pageSize]="p_Size"
+                        [pageSizeOptions]="optionsPage" (page)="pageEvent($event)" aria-label="page"
+                        class="m-3"></mat-paginator>
+                </div>
+
             </div>
-
-
             <button type="button">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
                 }}</button> &nbsp;&nbsp;&nbsp;
             <button type="button">limpiar</button>
@@ -105,17 +108,17 @@
 
                 <label for="fechaaccion">Fecha Accion: * </label>
                 <input type="date" formControlName="fechaaccion" required><br><br>
+                <div *ngIf="propietario">
+                    <div>
+                        <label for="calificacion">calificacion: *</label>
+                        <input type="number" formControlName="calificacion" required>
+                    </div><br>
 
-                <div>
-                    <label for="calificacion">calificacion: *</label>
-                    <input type="number" formControlName="calificacion" required>
-                </div><br>
-
-                <div>
-                    <label for="comentarios"> Comentarios: *</label>
-                    <textarea formControlName="comentarios" name="comentarios" required></textarea>
-
-                </div><br>
+                    <div>
+                        <label for="comentarios"> Comentarios: *</label>
+                        <textarea formControlName="comentarios" name="comentarios" required></textarea>
+                    </div><br>
+                </div>
 
             </form>
             <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>

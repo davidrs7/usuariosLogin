@@ -44,13 +44,13 @@ export class ObejtivosUsuarioComponent implements OnInit {
     estado: ['', [Validators.required]],
     calificacion: [0, [Validators.required]],
     descripcion: ['', [Validators.required]],
-    comentarios: ['', [Validators.required]], 
+    comentarios: ['', [Validators.required]],
     evidencia: ['', [Validators.required]],
     fechaaccion: ['', [Validators.required]]
-    
+
   });
 
-  constructor(private fb: FormBuilder,private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
 
   ngOnInit(): void {
     this.cargalistas();
@@ -81,10 +81,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
       this.objetivos = respuesta.data;
     })
 
-    await this.loginServices.getUsersByBoss<any>('AccionesObjetivos/xIduser', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
-      this.accionesObjetivo = respuesta.data;
-      console.log(this.accionesObjetivo)
-    });
   }
 
   async rolSelect(event: any) {
@@ -102,12 +98,15 @@ export class ObejtivosUsuarioComponent implements OnInit {
         this.claseIcono = 'fas fa-plus'
       }
     } else {
-      this.claseIcono = ''
-      this.propietario = false
-      this.acciones = false
+       this.limpiarForm()
     }
+  }
 
-
+  limpiarForm(){
+    this.claseIcono = ''
+    this.propietario = false
+    this.acciones = false
+    this.nombrelider =  ''
   }
 
   calcularAnchoPonderacion(peso: number): number {
@@ -121,13 +120,17 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.ponderacionTotal = this.objetivos.reduce((total, objetivo) => total + objetivo.peso, 0);
   }
 
-  async abrirModal(objetivo: any) { 
-    //this.accionesObjetivoSel = [];
-    console.log(objetivo);
-    this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
-    this.acciones = this.accionesObjetivoSel.length > 0 ? true : false;
+  async abrirModal(objetivo: any) {
+    this.acciones = true
+    await this.loginServices.getUsersByBoss<any>('AccionesObjetivos/xIduser', this.usuario.usuarioId).subscribe((respuesta: ApiResponse<any>) => {
+      this.accionesObjetivo = respuesta.data;
+      this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
+      //this.acciones = this.accionesObjetivoSel.length > 0 ? true : false;
+    });
 
   }
+
+
   cerrarModal(): void {
     const modal = document.getElementById('myModal');
     if (modal) {
