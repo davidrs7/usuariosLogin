@@ -29,7 +29,7 @@ export class NavigationComponent implements OnInit {
     // this.sessionValidate();
     this.sesionActiva();
     this.initNavigate();
-    this.initComponentRef();
+    this.initComponentRef(); 
   }
 
   initComponentRef() {
@@ -37,7 +37,12 @@ export class NavigationComponent implements OnInit {
     const urlGroup: UrlSegmentGroup = urlTree.root.children[PRIMARY_OUTLET];
     const urlSegments: UrlSegment[] = urlGroup.segments;
 
-    if (urlSegments.length > 0 && urlSegments[0].path != '')
+    //console.log(urlSegments)
+    
+    if (urlSegments.length > 2 && urlSegments[0].path != '' &&  urlSegments[0].path == 'pages')
+        this.component = urlSegments[1].path;
+
+    if (urlSegments.length > 0 && urlSegments[0].path != '' && this.component.length == 0)
       this.component = urlSegments[0].path;
 
     this.secNavigate = [];
@@ -53,7 +58,7 @@ export class NavigationComponent implements OnInit {
 
     if (urlSegments.length > 2 && urlSegments[2].path != '')
       this.secSelected = urlSegments[2].path;
-  }
+  } 
 
   initNavigate() {
     this.navigate['employees'] = [];
@@ -95,8 +100,11 @@ export class NavigationComponent implements OnInit {
         { name: 'add-field', title: 'Agregar campo', faClass: 'fa-plus', routing: 'survey/survey/add-field' }
       ]
     });
-    //this.navigate['survey'].push({ name: 'people', title: 'Usuarios', faClass: 'fa-users', routing: 'survey/people/list' });
-    //this.navigate['survey'].push({ name: 'result', title: 'Resultados', faClass: 'fa-list-check', routing: 'survey/result/list' });
+
+    this.navigate['performance'] = [];
+    this.navigate['performance'].push({ name: 'objetiveUser', title: 'Objetivos', faClass: 'fas fa-trophy', routing: 'pages/performance/objetiveUser' });
+    this.navigate['performance'].push({ name: 'compUser', title: 'Competencias', faClass: 'fas fa-check-double', routing: 'pages/performance/compUser' });
+
   }
 
   sessionValidate() {
@@ -153,7 +161,7 @@ export class NavigationComponent implements OnInit {
         var userId = localStorage.getItem('SEUID');
         this.loginTiindux.eliminarDato('Sesion', Number(userId)).subscribe(
           (respuesta: ApiResponse<any>) => {
-            console.log(respuesta.data)
+            //console.log(respuesta.data)
             this.destroySession();
           }
         );
@@ -172,7 +180,7 @@ export class NavigationComponent implements OnInit {
       if (token != null && token != '') {
         this.loginTiindux.tokenSesion('Sesion/token', token).subscribe(
           (respuesta: ApiResponse<any>) => {
-            console.log(respuesta)
+            //console.log(respuesta)
             if (respuesta.data == null) {
               console.log(respuesta);
               this.nuevoLogout();

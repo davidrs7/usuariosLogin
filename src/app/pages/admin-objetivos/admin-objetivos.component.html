@@ -5,8 +5,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>titulo</th>
-                <th>Descripción</th>
+                <th>titulo</th> 
                 <th>Peso</th>
                 <th>Estado</th>
             </tr>
@@ -14,9 +13,8 @@
         <tbody>
             <tr *ngFor="let item of Objetivos|paginador:p_Size:page">
                 <td style="text-align: center;">{{ item.id }}</td>
-                <td style="text-align: center;">{{ item.titulo }}</td>
-                <td style="text-align: center;">{{ item.descripcion }}</td>
-                <td style="text-align: center;">{{ item.peso }}</td>
+                <td style="text-align: center;">{{ item.titulo }}</td> 
+                <td style="text-align: center;">{{ item.peso }} %</td>
                 <td style="text-align: center;">{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
                 <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click)="editarObjetivos(item.id)"></td>
                 <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click)="eliminarObjetivos(item.id)">
@@ -50,7 +48,7 @@
         </div><br>
 
         <div>
-            <label for="peso">peso: *</label>
+            <label for="peso">% peso: *</label>
             <input type="text" formControlName="peso" required>
         </div><br>
 

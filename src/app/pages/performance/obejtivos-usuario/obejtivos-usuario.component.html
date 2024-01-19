@@ -1,0 +1,125 @@
+<app-navigation></app-navigation>
+<br>
+<br>
+<br>
+
+<div class="row">
+    <div class="col-6">
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <h1>Objetivos usuario:</h1><br>
+                </div>
+                <div class="col-8">
+                    <select (change)="rolSelect($event)">
+                        <option value="0">--Seleccione una opcion--</option>
+                        <option *ngFor="let item of usuarios" [value]="item.usuarioId">{{item.nombre}} {{ item.usuarioId
+                            ==
+                            idusuario ? '(yo)' : ''}} </option>
+                    </select>
+                </div>
+            </div><br>
+
+            <div class="row">
+                <div class="col-4">
+                    <h1>Lider:</h1><br>
+                </div>
+                <div class="col-8">
+                    <h1>{{ nombrelider }}</h1><br>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="card-container">
+                <div *ngFor="let objetivo of objetivos" class="card">
+                    <div class="card__header">
+                        <h1>{{ objetivo.titulo }}</h1>
+                        <i [ngClass]="claseIcono" (click)="abrirModal(objetivo)"></i>
+                    </div> <br>
+                    <br>
+                    <div class="card__content">
+                        <h3><strong>Descripción:</strong> {{ objetivo.descripcion }}</h3><br>
+                        <div class="barra-ponderacion" [style.width.%]="calcularAnchoPonderacion(objetivo.peso)">
+                            <p><strong>Peso:</strong> {{ calcularPorcentajePonderacion(objetivo.peso) }}% </p>
+                        </div>
+                    </div>
+                    <div class="card__footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6"> <br><br><br><br><br><br>
+        <h1>Mis acciones</h1>
+        <div class="container" *ngIf="acciones">
+            <hr><br><br>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Objetivo</th>
+                        <th>Accion</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of accionesObjetivoSel|paginador:p_Size:page">
+                        <td style="text-align: center;">{{ item.idObjetivo }}</td>
+                        <td style="text-align: center;">{{ item.descripcion }}</td>
+                        <td style="text-align: center;">{{ item.idEstado }}</td>
+                        <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"></td>
+                        <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar">
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div>
+                <mat-paginator [length]="accionesObjetivo.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
+                    (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+            </div>
+
+
+            <button type="button">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
+                }}</button> &nbsp;&nbsp;&nbsp;
+            <button type="button">limpiar</button>
+            <br><br><br>
+            <h2>{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2>
+            <form [formGroup]="AccionesObjForm" autocomplete="off">
+                <div>
+                    <label for="estado">Estado: * </label>
+                    <input type="text" formControlName="estado" required>
+                </div><br>
+
+                <div>
+                    <label for="descripcion">Descripción: *</label>
+                    <textarea formControlName="descripcion" name="descripcion" required></textarea>
+                </div><br>
+
+                <label for="evidencia">Evidencia: * </label>
+                <input type="file" formControlName="evidencia" required><br><br>
+
+                <label for="fechaaccion">Fecha Accion: * </label>
+                <input type="date" formControlName="fechaaccion" required><br><br>
+
+                <div>
+                    <label for="calificacion">calificacion: *</label>
+                    <input type="number" formControlName="calificacion" required>
+                </div><br>
+
+                <div>
+                    <label for="comentarios"> Comentarios: *</label>
+                    <textarea formControlName="comentarios" name="comentarios" required></textarea>
+
+                </div><br>
+
+            </form>
+            <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
+
+        </div>
+    </div>
+</div>

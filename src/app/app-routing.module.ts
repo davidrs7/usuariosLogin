@@ -39,6 +39,8 @@ import { PermisosComponent } from './pages/permisos/permisos.component';
 import { EditarPermisosComponent } from './pages/editar-permisos/editar-permisos.component';
 import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.component';
 import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component';
+import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario/obejtivos-usuario.component'; 
+import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
 
 
 const routes: Routes =
@@ -95,6 +97,8 @@ const routes: Routes =
   { path: 'pages/editarpermisos', component: EditarPermisosComponent},
   { path: 'pages/rutaspermisos', component: RutasPermisosComponent},
   { path: 'pages/adminobjetivos', component: AdminObjetivosComponent},
+  { path: 'pages/performance/objetiveUser', component: ObejtivosUsuarioComponent}, 
+  { path: 'pages/performance/compUser', component: CompetenciasUsuarioComponent}, 
 ];
 
 @NgModule({

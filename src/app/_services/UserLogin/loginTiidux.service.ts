@@ -50,6 +50,16 @@ import { environment } from 'src/environments/environment';
       const url = `${this.baseApiUrl}/${ruta}/${token}`;
       return this.http.get<ApiResponse<T>>(url);
     }
+
+    getUsersByBoss<T>(ruta: string, id: number): Observable<ApiResponse<T>>{
+      const url = `${this.baseApiUrl}/${ruta}/${id}`;
+      return this.http.get<ApiResponse<T>>(url);
+    }
+
+    getAccionesObjetivosxIdusuario<T>(ruta: string, id: number): Observable<ApiResponse<T>>{
+      const url = `${this.baseApiUrl}/${ruta}/${id}`;
+      return this.http.get<ApiResponse<T>>(url);
+    }
       
   }
 

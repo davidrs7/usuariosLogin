@@ -64,7 +64,7 @@ export class AdminObjetivosComponent implements OnInit {
     this.ObjetivosForm.get('descripcion')?.setValue(this.Objetivo[0].descripcion);
     this.ObjetivosForm.get('peso')?.setValue(this.Objetivo[0].peso);
     this.ObjetivosForm.get('fechainicio')?.setValue(this.convertirFormatoFecha(this.Objetivo[0].fechaInicio));
-    this.ObjetivosForm.get('fechaFin')?.setValue(this.convertirFormatoFecha(this.Objetivo[0].fechaFin));
+    this.ObjetivosForm.get('fechafin')?.setValue(this.convertirFormatoFecha(this.Objetivo[0].fechaFin));
     this.ObjetivosForm.get('estado')?.setValue(this.Objetivo[0].estado);
   }
 
@@ -99,7 +99,7 @@ export class AdminObjetivosComponent implements OnInit {
       peso: this.ObjetivosForm.get('peso')?.value,
       fechainicio: this.ObjetivosForm.get('fechainicio')?.value,
       fechafin: this.ObjetivosForm.get('fechafin')?.value,
-      estado: this.ObjetivosForm.get('estado')?.value == "true" ? true : false,
+      estado: Boolean(JSON.parse(this.ObjetivosForm.get('estado')?.value)) ,
     };
 
     if (this.validarcampos()) {
@@ -170,11 +170,11 @@ export class AdminObjetivosComponent implements OnInit {
 
   LimpiarFormulario() {
     this.ObjetivosForm.get('id')?.setValue(0);
-    this.ObjetivosForm.get('titulo')?.setValue(0);
+    this.ObjetivosForm.get('titulo')?.setValue('');
     this.ObjetivosForm.get('descripcion')?.setValue('');
     this.ObjetivosForm.get('peso')?.setValue('');
     this.ObjetivosForm.get('fechainicio')?.setValue('');
-    this.ObjetivosForm.get('fecahfin')?.setValue('');
+    this.ObjetivosForm.get('fechafin')?.setValue('');
     this.ObjetivosForm.get('estado')?.setValue(true);
     this.cargarLista();
     this.canva = false
