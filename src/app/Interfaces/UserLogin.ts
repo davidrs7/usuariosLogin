@@ -67,3 +67,16 @@ export interface reqObjetivos {
     fechafin: Date,
     estado: boolean
 }
+
+export interface reqAccionesObjetivos 
+{
+    id:number,
+    idobjetivo:number,
+    idusuario:number,
+    descripcion:string,
+    calificacion:number,
+    evidencia: string,
+    idestado:number,
+    comentarios: string,
+    fechaaccion: Date
+}

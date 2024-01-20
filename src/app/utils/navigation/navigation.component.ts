@@ -15,6 +15,7 @@ export class NavigationComponent implements OnInit {
   component: string = '';
   selected: string = '';
   secSelected: string = '';
+  session: any[] = []; 
 
   user: UserDTO = { id: 0, userName: '', password: '' };
   userName: string = '';
@@ -29,7 +30,7 @@ export class NavigationComponent implements OnInit {
     // this.sessionValidate();
     this.sesionActiva();
     this.initNavigate();
-    this.initComponentRef(); 
+    this.initComponentRef();
   }
 
   initComponentRef() {
@@ -38,9 +39,9 @@ export class NavigationComponent implements OnInit {
     const urlSegments: UrlSegment[] = urlGroup.segments;
 
     //console.log(urlSegments)
-    
-    if (urlSegments.length > 2 && urlSegments[0].path != '' &&  urlSegments[0].path == 'pages')
-        this.component = urlSegments[1].path;
+
+    if (urlSegments.length > 2 && urlSegments[0].path != '' && urlSegments[0].path == 'pages')
+      this.component = urlSegments[1].path;
 
     if (urlSegments.length > 0 && urlSegments[0].path != '' && this.component.length == 0)
       this.component = urlSegments[0].path;
@@ -58,7 +59,7 @@ export class NavigationComponent implements OnInit {
 
     if (urlSegments.length > 2 && urlSegments[2].path != '')
       this.secSelected = urlSegments[2].path;
-  } 
+  }
 
   initNavigate() {
     this.navigate['employees'] = [];
@@ -185,6 +186,8 @@ export class NavigationComponent implements OnInit {
               console.log(respuesta);
               this.nuevoLogout();
               this.destroySession();
+            } else {               
+              this.asignaToken(respuesta.data)               
             }
           }
         );
@@ -194,6 +197,12 @@ export class NavigationComponent implements OnInit {
 
   }
 
+  asignaToken(session:any){
+    localStorage.setItem('SESSL', '1');
+    localStorage.setItem('SEUID', session.usuarioId);
+    localStorage.setItem('SESST', session.token); 
+  }
+  
   destroySession() {
     localStorage.setItem('SESSL', '0');
     this.router.navigateByUrl('');

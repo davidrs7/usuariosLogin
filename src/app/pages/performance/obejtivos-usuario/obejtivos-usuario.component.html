@@ -71,8 +71,8 @@
                             <td style="text-align: center;">{{ item.idObjetivo }}</td>
                             <td style="text-align: center;">{{ item.descripcion }}</td>
                             <td style="text-align: center;">{{ item.idEstado }}</td>
-                            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"></td>
-                            <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar">
+                            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click) = "editarAccion(item.id)"></td>
+                            <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click) = "eliminarAccion(item.id)">
                             </td>
                             <td>
                             </td>
@@ -87,16 +87,17 @@
                 </div>
 
             </div>
-            <button type="button">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
+            <button type="button" (click) = "guardaUsuarios()">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
                 }}</button> &nbsp;&nbsp;&nbsp;
             <button type="button">limpiar</button>
             <br><br><br>
-            <h2>{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2>
+            <h2>{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
             <form [formGroup]="AccionesObjForm" autocomplete="off">
-                <div>
-                    <label for="estado">Estado: * </label>
-                    <input type="text" formControlName="estado" required>
-                </div><br>
+                <label for="estado">Estado: *</label>
+                <select id="estado" formControlName="estado">
+                    <option value="0">--Seleccione una opcion--</option>
+                    <option *ngFor="let item of estadoAcciones" value="{{item.id}}">{{item.estado}}</option>
+                </select><br><br>
 
                 <div>
                     <label for="descripcion">Descripción: *</label>
@@ -104,19 +105,20 @@
                 </div><br>
 
                 <label for="evidencia">Evidencia: * </label>
-                <input type="file" formControlName="evidencia" required><br><br>
+                <input type="text"  formControlName="evidencia"><br><br>
+              
 
                 <label for="fechaaccion">Fecha Accion: * </label>
-                <input type="date" formControlName="fechaaccion" required><br><br>
+                <input type="date" formControlName="fechaaccion" [attr.disabled]="true"><br><br>
                 <div *ngIf="propietario">
                     <div>
                         <label for="calificacion">calificacion: *</label>
-                        <input type="number" formControlName="calificacion" required>
+                        <input type="number" formControlName="calificacion">
                     </div><br>
 
                     <div>
                         <label for="comentarios"> Comentarios: *</label>
-                        <textarea formControlName="comentarios" name="comentarios" required></textarea>
+                        <textarea formControlName="comentarios" name="comentarios"></textarea>
                     </div><br>
                 </div>
 

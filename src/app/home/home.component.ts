@@ -102,8 +102,7 @@ export class HomeComponent implements OnInit {
 
   // Login CRUD
   validarLogin(sesion: any) {
-    if (sesion != null) {
-      console.log('Login!');
+    if (sesion != null) { 
       localStorage.setItem('SESSL', '1');
       localStorage.setItem('SEUID', this.sesion.usuarioId);
       localStorage.setItem('SESST', this.sesion.token); 
@@ -114,4 +113,4 @@ export class HomeComponent implements OnInit {
   }
  
 
-}
+} 
