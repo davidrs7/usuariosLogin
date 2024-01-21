@@ -52,11 +52,11 @@
         </div>
     </div>
 
-    <div class="col-6"> <br><br><br><br><br><br>
-        <h1>Mis acciones</h1>
+    <div class="col-6"> <br><br><br><br><br>
+        <h1>Mis acciones: {{ objetivotitulo || '' }}</h1><br>
         <div class="container" *ngIf="acciones">
-
             <div>
+                <h1>Calificación Objetivo: {{ calificacionObjetivo }}</h1>
                 <hr><br><br>
                 <table>
                     <thead>
@@ -70,7 +70,7 @@
                         <tr *ngFor="let item of accionesObjetivoSel|paginador:p_Size:page">
                             <td style="text-align: center;">{{ item.idObjetivo }}</td>
                             <td style="text-align: center;">{{ item.descripcion }}</td>
-                            <td style="text-align: center;">{{ item.idEstado }}</td>
+                            <td style="text-align: center;">{{ obtenerestado(item.idEstado) }}</td>
                             <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click) = "editarAccion(item.id)"></td>
                             <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click) = "eliminarAccion(item.id)">
                             </td>
@@ -94,8 +94,7 @@
             <h2>{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
             <form [formGroup]="AccionesObjForm" autocomplete="off">
                 <label for="estado">Estado: *</label>
-                <select id="estado" formControlName="estado">
-                    <option value="0">--Seleccione una opcion--</option>
+                <select id="estado" formControlName="estado"> 
                     <option *ngFor="let item of estadoAcciones" value="{{item.id}}">{{item.estado}}</option>
                 </select><br><br>
 

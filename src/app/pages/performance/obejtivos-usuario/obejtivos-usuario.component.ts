@@ -32,7 +32,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
   nombrelider: string = "";
   ponderacionTotal: number = 0;
   claseIcono: string = '';
-  propietario: boolean = false;
+  propietario: boolean = true;
   p_Size = 5;
   page = 1;
   optionsPage = [5, 10, 30, 50];
@@ -42,12 +42,14 @@ export class ObejtivosUsuarioComponent implements OnInit {
   ArchivoUser!: File;
   rutaApi: string = "AccionesObjetivos";
   idaccion: number = 0;
+  objetivotitulo: string = '';
+  calificacionObjetivo: number = 0;
 
   AccionesObjForm: FormGroup = this.fb.group({
-    id: [0, []],
+    id: [0, []], 
     idusuario: [this.idusuario, Validators.required],
     idobjetivo: [0, Validators.required],
-    estado: [0, Validators.required],
+    estado: [4, Validators.required],
     calificacion: [0, []],
     descripcion: ['', []],
     comentarios: ['',],
@@ -67,6 +69,10 @@ export class ObejtivosUsuarioComponent implements OnInit {
   pageEvent(e: PageEvent) {
     this.p_Size = e.pageSize;
     this.page = e.pageIndex + 1;
+  }
+
+  obtenerestado(id: number) {
+    return this.estadoAcciones.filter(x => x.id == id)[0].estado;
   }
 
   async cargalistas() {
@@ -89,6 +95,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
     await this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
       this.estadoAcciones = respuesta.data;
+      console.log(this.estadoAcciones)
     })
 
   }
@@ -121,8 +128,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then((res: any) => { 
-            this.abrirModal(this.objetivo) 
+          }).then((res: any) => {
+            this.abrirModal(this.objetivo)
           });
         },
         (error) => {
@@ -131,7 +138,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
             title: 'Error',
             text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
           });
-          this.abrirModal(this.objetivo);           
+          this.abrirModal(this.objetivo);
         }
       );
   }
@@ -186,7 +193,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
             text: 'Codigo: ' + respuesta.estado.codigo
           }).then((res: any) => {
             this.abrirModal(this.objetivo);
-            
+
           });
         },
         (error) => {
@@ -212,27 +219,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     } else { return true }
   }
 
-  async rolSelect(event: any) {
-    this.acciones = false
-    const idseleccionado = event?.target?.value;
-    this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
 
-    if (this.usuario != undefined) {
-      this.nombrelider = this.usuarios.filter(x => x.usuarioId == this.usuario.jefeId)[0].nombre
-      if (this.idusuario != this.usuario.usuarioId) {
-        this.claseIcono = 'fas fa-check'
-        this.propietario = true
-        this.limpiarAcciones();
-      } else {
-        this.propietario = false
-        this.claseIcono = 'fas fa-plus'
-        this.limpiarAcciones();
-      }
-    } else {
-      this.limpiarAcciones();
-      this.limpiarForm();
-    }
-  }
 
   limpiarAcciones() {
     this.AccionesObjForm.get('id')?.setValue(0);
@@ -241,7 +228,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.AccionesObjForm.get('descripcion')?.setValue('');
     this.AccionesObjForm.get('evidencia')?.setValue('');
     this.AccionesObjForm.get('fechaAccion')?.setValue(this.obtenerFechaActual());
-    this.AccionesObjForm.get('estado')?.setValue(0);
+    this.AccionesObjForm.get('estado')?.setValue(4);
+    this.objetivotitulo = '';
     this.idaccion = 0;
     this.cargoToEdit = false;
     this.canva = false;
@@ -270,15 +258,63 @@ export class ObejtivosUsuarioComponent implements OnInit {
   }
 
   async abrirModal(objetivo: any) {
+    this.calificacionObjetivo = 0;
     this.objetivo = objetivo;
     this.acciones = true
     this.limpiarAcciones();
+    this.objetivotitulo = this.objetivo.titulo
+
     await this.loginServices.getUsersByBoss<any>('AccionesObjetivos/xIduser', this.usuario.usuarioId).subscribe((respuesta: ApiResponse<any>) => {
       this.accionesObjetivo = respuesta.data;
       this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
-      //this.acciones = this.accionesObjetivoSel.length > 0 ? true : false;
+      this.calificaObjetivo(this.accionesObjetivoSel);
     });
 
+  }
+  calificaObjetivo(objetivoSel: any) {
+    console.log(objetivoSel) 
+    let contador = 0;
+        for (let i = 0; i < objetivoSel.length ; i++){
+            this.calificacionObjetivo += objetivoSel[i].calificacion;
+            contador += 1;
+        }
+        if (contador != 0)
+        this.calificacionObjetivo = Number((this.calificacionObjetivo/contador).toFixed(2));
+  }
+
+
+
+
+  async rolSelect(event: any) {
+    this.acciones = false
+    const idseleccionado = event?.target?.value;
+    this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
+
+    if (this.usuario != undefined) {
+      this.nombrelider = this.usuarios.filter(x => x.usuarioId == this.usuario.jefeId)[0].nombre
+      if (this.idusuario != this.usuario.usuarioId) {
+        this.claseIcono = 'fas fa-check'
+        this.AccionesObjForm.controls['estado'].enable();
+        this.AccionesObjForm.controls['calificacion'].enable();
+        this.AccionesObjForm.controls['comentarios'].enable();
+        this.AccionesObjForm.controls['evidencia'].disable();
+        this.AccionesObjForm.controls['descripcion'].disable();
+        //this.propietario = true
+        this.limpiarAcciones();
+      } else {
+        //this.propietario = false
+        this.claseIcono = 'fas fa-plus'
+        this.AccionesObjForm.controls['estado'].disable();
+        this.AccionesObjForm.controls['calificacion'].disable();
+        this.AccionesObjForm.controls['comentarios'].disable();
+        this.AccionesObjForm.controls['evidencia'].enable();
+        this.AccionesObjForm.controls['descripcion'].enable();
+        this.limpiarAcciones();
+      }
+    } else {
+      this.limpiarAcciones();
+      this.limpiarForm();
+    }
   }
 
   obtenerFechaActual(): string {
