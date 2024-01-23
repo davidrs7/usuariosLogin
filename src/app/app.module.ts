@@ -55,6 +55,7 @@ import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.co
 import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component'; 
 import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario/obejtivos-usuario.component';
 import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
+import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas.component';
 
 
 
@@ -103,7 +104,7 @@ import { CompetenciasUsuarioComponent } from './pages/performance/competencias-u
     RutasPermisosComponent,
     AdminObjetivosComponent, 
     ObejtivosUsuarioComponent, 
-    CompetenciasUsuarioComponent  
+    CompetenciasUsuarioComponent, AdminPreguntasComponent  
   ],
   imports: [
     BrowserModule,

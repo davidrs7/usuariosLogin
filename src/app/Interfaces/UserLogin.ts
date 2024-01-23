@@ -80,3 +80,12 @@ export interface reqAccionesObjetivos
     comentarios: string,
     fechaaccion: Date
 }
+
+export interface reqPreguntas
+{
+    id: number,
+    pregunta: string,
+    estado: boolean,
+   // fecha_inicio: Date,
+    //fecha_fin: Date
+}

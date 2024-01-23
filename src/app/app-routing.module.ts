@@ -41,6 +41,7 @@ import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.co
 import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component';
 import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario/obejtivos-usuario.component'; 
 import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
+import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas.component';
 
 
 const routes: Routes =
@@ -99,6 +100,7 @@ const routes: Routes =
   { path: 'pages/adminobjetivos', component: AdminObjetivosComponent},
   { path: 'pages/performance/objetiveUser', component: ObejtivosUsuarioComponent}, 
   { path: 'pages/performance/compUser', component: CompetenciasUsuarioComponent}, 
+  { path: 'pages/adminPreguntas', component: AdminPreguntasComponent}, 
 ];
 
 @NgModule({

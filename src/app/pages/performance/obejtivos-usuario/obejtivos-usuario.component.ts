@@ -56,7 +56,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     evidencia: ['', []],
     fechaaccion: [this.obtenerFechaActual(), []]
   });
-  @ViewChild('archivoInput') archivoInput: ElementRef<any> | undefined;
+  @ViewChild('archivoInput') archivoInput: ElementRef<any> | undefined; 
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
 
@@ -111,8 +111,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
       idestado: Number(this.AccionesObjForm.get('estado')?.value),
       comentarios: this.AccionesObjForm.get('comentarios')?.value,
       fechaaccion: this.AccionesObjForm.get('fechaaccion')?.value,
-    };
-    console.log(body);
+    }; 
     if (this.validarcampos()) {
       console.log(body)
       let resp = this.cargoToEdit == true ? this.ActualizarAccion(body) : this.CrearAccion(body)
@@ -281,9 +280,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
         if (contador != 0)
         this.calificacionObjetivo = Number((this.calificacionObjetivo/contador).toFixed(2));
   }
-
-
-
 
   async rolSelect(event: any) {
     this.acciones = false

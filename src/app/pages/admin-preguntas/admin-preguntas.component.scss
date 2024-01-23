@@ -1,0 +1,84 @@
+// Estilo base para la tarjeta
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+}
+ 
+.card-container {
+    display: flex;
+    flex-wrap: wrap;  
+    justify-content: space-around;  
+}
+
+.barra-ponderacion {
+    height: 30px;  
+    background-color: #abd6bc; 
+    border-radius: 4px; 
+    overflow: hidden;  
+    font-size: 16px; 
+
+    &::after {
+        content: '';
+        display: block;
+        height: 100%;
+        width: 0;
+        background-color: #4caf50; // Color de la barra de ponderación (verde)
+        transition: width 0.5s ease; // Efecto de transición para la animación
+    } 
+
+}
+
+.card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    i {
+        cursor: pointer;
+        font-size: 4rem;
+        color: #06a536; 
+        transition: color 0.3s ease; 
+
+        &:hover {
+            color: #148a5c; 
+        }
+    }
+}
+  
+.modal {
+    width: 80% !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    background-color: rgba(255, 255, 255, 1) !important; 
+  }
+  
+  .modal-dialog {
+    width: 100%;
+    max-width: 100%;
+    margin: 10% auto;
+  }
+  
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  label{
+    color: #333;  
+    font-size: 16px;  
+    font-weight: bold;
+ }
