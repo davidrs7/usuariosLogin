@@ -89,3 +89,12 @@ export interface reqPreguntas
    // fecha_inicio: Date,
     //fecha_fin: Date
 }
+
+export interface reqRespuestas
+{
+    id:number,
+    idpregunta: number,
+    descripcion: string,
+    estado: boolean,
+    peso: number
+}
