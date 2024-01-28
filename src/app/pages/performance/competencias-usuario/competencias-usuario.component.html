@@ -1,6 +1,38 @@
 <app-navigation></app-navigation>
-
-<div class="container">
-    <h1>Competencias de los usuarios</h1>
+<br><br>
+<div class="container"> 
+    <div class="row">
+        <div class="col-4">
+            <h1>Competencias usuario:</h1><br>
+        </div>
+        <div class="col-8">
+            <select (change)="rolSelect($event)">
+                <option value="0">--Seleccione una opcion--</option>
+                <option *ngFor="let item of usuarios" [value]="item.usuarioId">{{item.nombre}} {{ Asingacion(item.usuarioId) }} </option>
+            </select>
+        </div>
+    </div><br>
     <hr>
+
+
+    <div class="card-container" *ngIf = "usuarioSel">
+        <div *ngFor="let item of preguntas; let i = index;" class="card">
+            <div class="card__header">
+                <label style="font-weight: bol;"> {{ i + 1 }} {{item.pregunta }} </label>
+            </div>
+            <br>
+            <div class="card__content">
+
+                <div *ngFor="let opcion of respuestas; let j = index;"> 
+                    <input type="radio" (click)="guardarRespuesta(opcion,item.id)" name="opcion{{i}}" [value]="opcion.descripcion" id="opcion{{i}}{{j}}" class="input-radio-especifico">
+                    <label>{{ opcion.descripcion }}</label>
+                </div>
+            </div> 
+            <br>
+            <div class="card__footer">
+                <textarea placeholder="Comentarios, justificación, oportunidades de mejora (si aplica)" id="comentario-{{item.id}}"></textarea> 
+            </div>
+        </div>
+    </div>
+
 </div>

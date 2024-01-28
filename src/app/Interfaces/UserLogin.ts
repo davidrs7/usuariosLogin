@@ -98,3 +98,13 @@ export interface reqRespuestas
     estado: boolean,
     peso: number
 }
+
+export interface reqRespuestasUser
+{
+    id: number,
+    id_pregunta: number,
+    id_respuesta: number,
+    comentarios: string,
+    id_usuario_califica: number,
+    id_usuario_calificado: number,
+}
