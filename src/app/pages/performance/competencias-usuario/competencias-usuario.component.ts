@@ -31,16 +31,16 @@ export class CompetenciasUsuarioComponent implements OnInit {
   usuarioSel: boolean = false;
   asignacion: string = "";
   apiUrl: string = "respuestas_usuario";
+  numPreguntas: number = 0;
+  numRespuestas: number = 0;
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
 
   ngOnInit(): void {
-
     this.cargalistas()
   }
 
   async cargalistas() {
-
 
     this.usuarios = [];
     this.idusuario = Number(localStorage.getItem('SEUID'));
@@ -58,7 +58,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
 
 
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data;
+      this.preguntas = respuesta.data; 
     });
 
     this.loginServices.GetAllData<any>('opciones_respuesta').subscribe((respuesta: ApiResponse<any>) => {
@@ -90,14 +90,14 @@ export class CompetenciasUsuarioComponent implements OnInit {
 
   }
 
- 
-  async  guardarRespuesta(opcion: any, idpregunta: number) {
+
+  async guardarRespuesta(opcion: any, idpregunta: number) {
 
     const idUsuarioCalifica = this.usuarioJefe.usuarioId
     const idUsuarioCalificado = Number(this.idusuario)
     const comentario = document.getElementById('comentario-' + idpregunta.toString()) as HTMLTextAreaElement;
     let existeRta: boolean = false
-    await this.obtenerrespuestasUsuario(idUsuarioCalificado)
+    await this.obtenerrespuestasUsuario(this.usuario.usuarioId);
     const body: reqRespuestasUser = {
       id: 0,
       id_pregunta: idpregunta,
@@ -107,11 +107,10 @@ export class CompetenciasUsuarioComponent implements OnInit {
       id_usuario_calificado: this.usuario.usuarioId
     }
 
-    console.log(this.respuestasUser)
-    //debugger;
+    console.log(this.respuestasUser);
     if (this.respuestasUser != undefined) {
       for (let i = 0; i < this.respuestasUser.length; i++) {
-        if (this.respuestasUser[i].id_pregunta == body.id_pregunta) {
+        if (this.respuestasUser[i].id_pregunta == idpregunta && this.respuestasUser[i].id_usuario_calificado == this.usuario.usuarioId) {
           existeRta = true;
           body.id = this.respuestasUser[i].id;
         }
@@ -119,7 +118,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
     }
 
 
-    existeRta ?  this.actualizardatos(body) : this.crearDatos(body);
+    existeRta ? this.actualizardatos(body) : this.crearDatos(body);
   }
 
   crearDatos(body: any) {
@@ -131,7 +130,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
           }).then((res: any) => {
-          //  console.log(respuesta);
+           this.validaExiste()
           });
         },
         (error) => {
@@ -153,7 +152,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
           }).then((res: any) => {
-            console.log("registro actualizado")
+            this.validaExiste()
           });
         },
         (error) => {
@@ -173,6 +172,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
     this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
 
     //this.obtenerrespuestasUsuario(idseleccionado);
+    this.validaExiste();
 
     if (this.usuario != undefined) {
       this.usuarioJefe = this.usuarios.filter(x => x.usuarioId == this.usuario.jefeId)[0];
@@ -186,19 +186,54 @@ export class CompetenciasUsuarioComponent implements OnInit {
 
   async obtenerrespuestasUsuario(idseleccionado: number) {
     return new Promise<void>((resolve, reject) => {
-        this.respuestasUser = [];
-        this.loginServices.getDatabyId<any>(this.apiUrl, idseleccionado).subscribe(
-            (respuesta: ApiResponse<any>) => {
-                this.respuestasUser = respuesta.data;
-                resolve();  
-            },
-            error => {
-                reject(error);  
-            }
-        );
+      this.respuestasUser = [];
+      this.loginServices.getDatabyId<any>(this.apiUrl, idseleccionado).subscribe(
+        (respuesta: ApiResponse<any>) => {
+          this.respuestasUser = respuesta.data;
+          resolve();
+        },
+        error => {
+          reject(error);
+        }
+      );
     });
-}
+  }
+
+  async validaExiste() {
+    let existe: boolean = false
+    await this.obtenerrespuestasUsuario(this.usuario.usuarioId);
+    this.limpiarFormulario()
+    
+    this.numPreguntas = this.preguntas.length;
+    this.numRespuestas = this.respuestasUser.length;
+
+    if (this.respuestasUser != undefined) {
+      for (let i = 0; i < this.respuestasUser.length; i++) {
+        const pregunta: HTMLInputElement = document.getElementById('pregunta-' + this.respuestasUser[i].id_pregunta + '|' + 'respuesta-' + this.respuestasUser[i].id_respuesta) as HTMLInputElement;
+        pregunta.checked = true;
+        const comentario = document.getElementById('comentario-' + this.preguntas[i].id.toString()) as HTMLTextAreaElement;
+        comentario.value = this.respuestasUser[i].comentarios || '';
+      }
+    }
+
+  }
 
 
+  limpiarFormulario() {
 
+    this.numPreguntas = 0;
+    this.numRespuestas = 0;
+
+    if (this.preguntas != undefined && this.respuestas != undefined) {
+      for (let i = 0; i < this.preguntas.length; i++) {
+        for (let j = 0; j < this.respuestas.length; j++) {
+          const pregunta: HTMLInputElement = document.getElementById('pregunta-' + this.preguntas[i].id.toString() + '|' + 'respuesta-' + this.respuestas[j].id.toString()) as HTMLInputElement;
+          pregunta.checked = false;
+          //console.log('pregunta-' + this.preguntas[i].id.toString() + '|' + 'respuesta-' + this.respuestas[j].id.toString());
+        }
+        const comentario = document.getElementById('comentario-' + this.preguntas[i].id.toString()) as HTMLTextAreaElement;
+        comentario.value = "";
+      }
+    }
+  }
 }
