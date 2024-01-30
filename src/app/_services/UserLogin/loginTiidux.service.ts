@@ -26,13 +26,13 @@ import { environment } from 'src/environments/environment';
     }
 
     UpdateData<T>(ruta: string,id: number,datos: T):Observable<ApiResponse<T>> {
-      console.log(datos);
+ 
       const url = `${this.baseApiUrl}/${ruta}/${id}`; 
       return this.http.put<ApiResponse<T>>(url,datos);
     }
 
     createData<T>(ruta: string, datos: T): Observable<ApiResponse<T>> {
-      console.log(datos);
+ 
       const url = `${this.baseApiUrl}/${ruta}`;
       return this.http.post<ApiResponse<T>>(url, datos);
     }
