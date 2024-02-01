@@ -62,12 +62,14 @@ export class ModulesComponent implements OnInit {
     );
   }
 
+ 
+
   openModule(module: string) {  
     let permiso = this.Permisos.filter(x => x.rutaAngular == module);
     let idRol = this.usario.rolId || 0;
     let idpermiso = permiso.length > 0 ? permiso[0].permisoId : 0;
     let existepermiso = this.rolesPermisos.filter(x => x.permisoID == idpermiso && x.rolID == idRol);
-
+       
     if (existepermiso.length > 0) {
       this.Acceso = false
       this.router.navigateByUrl(module);
@@ -78,6 +80,8 @@ export class ModulesComponent implements OnInit {
         text: 'No tienes acceso a este modulo, por favor comunicate con el administrador.'
       }); 
     }
+
+     
     this.closeModal();
   }
 
@@ -93,21 +97,18 @@ export class ModulesComponent implements OnInit {
 
   cargalistas() {
     this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
-      this.rolesPermisos = respuesta.data;
-      console.log(this.rolesPermisos)
+      this.rolesPermisos = respuesta.data; 
     });
 
     this.loginServices.GetAllData<any>('Permisos').subscribe((respuesta: ApiResponse<any>) => {
-      this.Permisos = respuesta.data;
-      console.log(this.Permisos)
+      this.Permisos = respuesta.data; 
 
     });
 
     var iduser = localStorage.getItem('SEUID');
 
     this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data
-      console.log(this.usario)
+      this.usario = respuesta.data 
 
     })
 

@@ -94,10 +94,14 @@
             background-color: $gray;
             color: $main;
             padding-top: 11%;
-            padding-bottom: 6%;
+            padding-bottom: 6%; 
         }
         & div:hover, & div:focus {
             background-color: $white;
         }
     }
+}
+
+.opacity-60 {
+    opacity: 0.6;
 }
