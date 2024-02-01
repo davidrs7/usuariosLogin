@@ -102,7 +102,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   asignarObjetivos(objetivos: any){
     this.objetivos = objetivos.filter( (x:any) => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual()));
-    console.log(this.objetivos.filter( x => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual())));
+     
   }
 
   guardaUsuarios() {
