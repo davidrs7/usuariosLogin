@@ -40,9 +40,20 @@
                     <br>
                     <div class="card__content">
                         <h3><strong>Descripción:</strong> {{ objetivo.descripcion }}</h3><br>
-                        <div class="barra-ponderacion" [style.width.%]="calcularAnchoPonderacion(objetivo.peso)">
-                            <p><strong>Peso:</strong> {{ calcularPorcentajePonderacion(objetivo.peso) }}% </p>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="barra-ponderacion"
+                                    [style.width.%]="calcularAnchoPonderacion(objetivo.peso)">
+                                    <p><strong>Peso:</strong> {{ calcularPorcentajePonderacion(objetivo.peso) }}% </p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h2> Fecha Inicio: {{ convertirFormatoFecha(objetivo.fechaInicio) }}  Fecha Fin:
+                                    {{convertirFormatoFecha(objetivo.fechaFin)}}</h2>
+
+                            </div>
                         </div>
+
                     </div>
                     <div class="card__footer">
 
@@ -71,8 +82,10 @@
                             <td style="text-align: center;">{{ item.idObjetivo }}</td>
                             <td style="text-align: center;">{{ item.descripcion }}</td>
                             <td style="text-align: center;">{{ obtenerestado(item.idEstado) }}</td>
-                            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click) = "editarAccion(item.id)"></td>
-                            <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar" (click) = "eliminarAccion(item.id)">
+                            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"
+                                (click)="editarAccion(item.id)"></td>
+                            <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar"
+                                (click)="eliminarAccion(item.id)">
                             </td>
                             <td>
                             </td>
@@ -87,14 +100,14 @@
                 </div>
 
             </div>
-            <button type="button" (click) = "guardaUsuarios()">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
+            <button type="button" (click)="guardaUsuarios()">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
                 }}</button> &nbsp;&nbsp;&nbsp;
             <button type="button">limpiar</button>
             <br><br><br>
             <h2>{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
             <form [formGroup]="AccionesObjForm" autocomplete="off">
                 <label for="estado">Estado: *</label>
-                <select id="estado" formControlName="estado"> 
+                <select id="estado" formControlName="estado">
                     <option *ngFor="let item of estadoAcciones" value="{{item.id}}">{{item.estado}}</option>
                 </select><br><br>
 
@@ -104,8 +117,8 @@
                 </div><br>
 
                 <label for="evidencia">Evidencia: * </label>
-                <input type="text"  formControlName="evidencia"><br><br>
-              
+                <input type="text" formControlName="evidencia"><br><br>
+
 
                 <label for="fechaaccion">Fecha Accion: * </label>
                 <input type="date" formControlName="fechaaccion" [attr.disabled]="true"><br><br>

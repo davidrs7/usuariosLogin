@@ -90,7 +90,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     });
 
     await this.loginServices.GetAllData<any>('Objetivos').subscribe((respuesta: ApiResponse<any>) => {
-      this.objetivos = respuesta.data;
+      this.asignarObjetivos(respuesta.data);
     })
 
     await this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
@@ -98,6 +98,11 @@ export class ObejtivosUsuarioComponent implements OnInit {
       console.log(this.estadoAcciones)
     })
 
+  }
+
+  asignarObjetivos(objetivos: any){
+    this.objetivos = objetivos.filter( (x:any) => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual()));
+    console.log(this.objetivos.filter( x => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual())));
   }
 
   guardaUsuarios() {
