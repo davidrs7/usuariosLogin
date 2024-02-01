@@ -63,7 +63,26 @@
         </div>
     </div>
 
-    <div class="col-6"> <br><br><br><br><br>
+    <div class="col-6">  
+
+        
+        <div class="notification-bell" (click) = "mostrarPopup()" >
+            <i class="fas fa-bell"></i>
+            <div class="notification-counter">{{ contadorMensajes }}</div>
+        </div>
+
+
+        <div class="overlay" id="overlay">
+            <div class="popup">
+                <h1>Notificaciones</h1> <hr>
+                <div *ngFor="let item of mensajesNotificacion">
+                      <h2>  <i class="fa-regular fa-comment"></i> {{ item.mensaje}}</h2>
+                </div> <br><br><br><br><br><br><br>
+                <button (click)="cerrarPopup()">Cerrar</button>
+            </div>
+        </div>
+
+        
         <h1>Mis acciones: {{ objetivotitulo || '' }}</h1><br>
         <div class="container" *ngIf="acciones">
             <div>

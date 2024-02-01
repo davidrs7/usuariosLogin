@@ -44,9 +44,11 @@ export class ObejtivosUsuarioComponent implements OnInit {
   idaccion: number = 0;
   objetivotitulo: string = '';
   calificacionObjetivo: number = 0;
+  contadorMensajes: number = 0;
+  mensajesNotificacion: any[] = [];
 
   AccionesObjForm: FormGroup = this.fb.group({
-    id: [0, []], 
+    id: [0, []],
     idusuario: [this.idusuario, Validators.required],
     idobjetivo: [0, Validators.required],
     estado: [4, Validators.required],
@@ -56,7 +58,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     evidencia: ['', []],
     fechaaccion: [this.obtenerFechaActual(), []]
   });
-  @ViewChild('archivoInput') archivoInput: ElementRef<any> | undefined; 
+  @ViewChild('archivoInput') archivoInput: ElementRef<any> | undefined;
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
 
@@ -100,9 +102,9 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   }
 
-  asignarObjetivos(objetivos: any){
-    this.objetivos = objetivos.filter( (x:any) => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual()));
-     
+  asignarObjetivos(objetivos: any) {
+    this.objetivos = objetivos.filter((x: any) => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual()));
+
   }
 
   guardaUsuarios() {
@@ -116,7 +118,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
       idestado: Number(this.AccionesObjForm.get('estado')?.value),
       comentarios: this.AccionesObjForm.get('comentarios')?.value,
       fechaaccion: this.AccionesObjForm.get('fechaaccion')?.value,
-    }; 
+    };
     if (this.validarcampos()) {
       console.log(body)
       let resp = this.cargoToEdit == true ? this.ActualizarAccion(body) : this.CrearAccion(body)
@@ -237,6 +239,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.idaccion = 0;
     this.cargoToEdit = false;
     this.canva = false;
+    this.mensajesNotificacion = [];
+    this.contadorMensajes = 0;
 
   }
 
@@ -247,6 +251,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.nombrelider = ''
     this.cargoToEdit = false;
     this.idaccion = 0;
+    this.mensajesNotificacion = [];
+    this.contadorMensajes = 0;
 
   }
 
@@ -276,17 +282,65 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   }
   calificaObjetivo(objetivoSel: any) {
-    console.log(objetivoSel) 
+    this.mensajesNotificacion = [];
     let contador = 0;
-        for (let i = 0; i < objetivoSel.length ; i++){
-            this.calificacionObjetivo += objetivoSel[i].calificacion;
-            contador += 1;
-        }
-        if (contador != 0)
-        this.calificacionObjetivo = Number((this.calificacionObjetivo/contador).toFixed(2));
+    let contadorcalificaciones = 0;
+    let contadorEvidencias = 0;
+    let mensaje = { mensaje: "", leido: false }
+    let faltanXdias = 0;
+    console.log(objetivoSel);
+    for (let i = 0; i < objetivoSel.length; i++) {
+      this.calificacionObjetivo += objetivoSel[i].calificacion;
+      objetivoSel[i].calificacion == 0 ? contadorcalificaciones += 1 : contadorcalificaciones
+      objetivoSel[i].evidencia.length == 0 ? contadorEvidencias += 1 : contadorEvidencias
+      contador += 1;
+    }
+
+    faltanXdias = this.diferenciaEnDias(this.convertirFormatoFecha(this.obtenerFechaActual()), this.convertirFormatoFecha(this.objetivo.fechaFin));
+
+    if (faltanXdias <= 30) {
+      mensaje = { mensaje: "Faltan " + faltanXdias + " dias para el cierre de objetivos", leido: false }
+      this.mensajesNotificacion.push(mensaje);
+    }
+
+    if (contador == 0) {
+      mensaje = { mensaje: "Se deben crear acciones para este objetivo", leido: false }
+      this.mensajesNotificacion.push(mensaje);
+    }
+    if (contadorcalificaciones > 0) {
+      mensaje = { mensaje: "El lider debe calificar todas tus acciones", leido: false }
+      this.mensajesNotificacion.push(mensaje);
+    }
+    if (contadorEvidencias > 0) {
+      mensaje = { mensaje: "Se deben subir las evidencias", leido: false }
+      this.mensajesNotificacion.push(mensaje);
+    }
+    if (contador > 0 && contadorcalificaciones == 0) {
+      mensaje = { mensaje: "Todos los objetivos se han calificado", leido: false }
+      this.mensajesNotificacion.push(mensaje);
+    }
+
+    if (contador != 0)
+      this.calificacionObjetivo = Number((this.calificacionObjetivo / contador).toFixed(2));
+    this.contadorMensajes = this.mensajesNotificacion.length;
+  }
+
+  diferenciaEnDias(fechaInicioStr: string, fechaFinStr: string): number {
+
+    const fechaInicio = new Date(fechaInicioStr);
+    const fechaFin = new Date(fechaFinStr);
+    console.log(fechaInicio);
+    console.log(fechaFin);
+    const diferenciaMs = fechaFin.getTime() - fechaInicio.getTime();
+
+    const dias = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+
+    return dias;
   }
 
   async rolSelect(event: any) {
+    this.mensajesNotificacion = [];
+    this.contadorMensajes = 0;
     this.acciones = false
     const idseleccionado = event?.target?.value;
     this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
@@ -343,6 +397,21 @@ export class ObejtivosUsuarioComponent implements OnInit {
     const modal = document.getElementById('myModal');
     if (modal) {
       modal.style.display = 'none';
+    }
+  }
+
+
+  mostrarPopup() {
+    const overlay = document.getElementById('overlay');
+    if (overlay) {
+      overlay.style.display = 'block';
+    }
+  }
+
+  cerrarPopup() {
+    const overlay = document.getElementById('overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
     }
   }
 
