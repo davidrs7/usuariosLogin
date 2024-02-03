@@ -43,6 +43,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
   rutaApi: string = "AccionesObjetivos";
   idaccion: number = 0;
   objetivotitulo: string = '';
+  mensajeCreaAccion: string = '';
   calificacionObjetivo: number = 0;
   contadorMensajes: number = 0;
   mensajesNotificacion: any[] = [];
@@ -126,55 +127,94 @@ export class ObejtivosUsuarioComponent implements OnInit {
   }
 
   ActualizarAccion(body: reqAccionesObjetivos) {
-    console.log(body);
-    this.loginServices.UpdateData(this.rutaApi, body.id, body)
-      .subscribe(
-        (respuesta: ApiResponse<any>) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Mensaje: ' + respuesta.estado.descripcion,
-            text: 'Codigo: ' + respuesta.estado.codigo
-          }).then((res: any) => {
-            this.abrirModal(this.objetivo)
-          });
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
-          });
-          this.abrirModal(this.objetivo);
-        }
-      );
+
+    if (this.validaCreacion(body)) {
+      this.loginServices.UpdateData(this.rutaApi, body.id, body)
+        .subscribe(
+          (respuesta: ApiResponse<any>) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Mensaje: ' + respuesta.estado.descripcion,
+              text: 'Codigo: ' + respuesta.estado.codigo
+            }).then((res: any) => {
+              this.abrirModal(this.objetivo)
+            });
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
+            });
+            this.abrirModal(this.objetivo);
+          }
+        );
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: this.mensajeCreaAccion,
+        text: ''
+      }).then((res: any) => {
+        this.abrirModal(this.objetivo)
+      });
+    }
+
   }
 
   CrearAccion(body: reqObjetivos) {
     this.canva = true
-    this.loginServices.createData(this.rutaApi, body)
-      .subscribe(
-        (respuesta: ApiResponse<any>) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Mensaje: ' + respuesta.estado.descripcion,
-            text: 'Codigo: ' + respuesta.estado.codigo
-          }).then((res: any) => {
-            console.log(this.objetivo);
+    if (this.validaCreacion(body)) {
+      this.loginServices.createData(this.rutaApi, body)
+        .subscribe(
+          (respuesta: ApiResponse<any>) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Mensaje: ' + respuesta.estado.descripcion,
+              text: 'Codigo: ' + respuesta.estado.codigo
+            }).then((res: any) => {
+              console.log(this.objetivo);
+              this.abrirModal(this.objetivo);
+            });
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
+            });
             this.abrirModal(this.objetivo);
-          });
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
-          });
-          this.abrirModal(this.objetivo);
-        }
-      );
+          }
+        );
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: this.mensajeCreaAccion,
+        text: ''
+      }).then((res: any) => {
+        this.abrirModal(this.objetivo)
+      });
+    }
 
   }
 
+  validaCreacion(body: any): boolean {
+    let validacion = true;
+    let mensaje: string = ""
+
+    if (this.accionesObjetivoSel.length >= 3 && !this.cargoToEdit) {
+      mensaje = "Maximo 3 acciones por objetivo";
+      validacion = false;
+    }
+    if (body.calificacion < 0 || body.calificacion > 100) {
+      console.log(body.calificacion);
+      mensaje = "La calificación debe ser de 1 a 100"
+      validacion = false;
+    } 
+
+    this.mensajeCreaAccion = mensaje;
+
+    return validacion
+  }
 
   editarAccion(id: number) {
     this.cargoToEdit = true;
@@ -186,6 +226,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.AccionesObjForm.get('descripcion')?.setValue(this.accionObjetivo[0].descripcion);
     this.AccionesObjForm.get('comentarios')?.setValue(this.accionObjetivo[0].comentarios);
     this.AccionesObjForm.get('peso')?.setValue(this.accionObjetivo[0].peso);
+    this.AccionesObjForm.get('calificacion')?.setValue(this.accionObjetivo[0].calificacion);
     this.AccionesObjForm.get('fechaaccion')?.setValue(this.convertirFormatoFecha(this.accionObjetivo[0].fechaAccion));
   }
 
