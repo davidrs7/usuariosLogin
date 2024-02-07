@@ -86,7 +86,17 @@
         <h1>Mis acciones: {{ objetivotitulo || '' }}</h1><br>
         <div class="container" *ngIf="acciones">
             <div>
-                <h1>Calificación Objetivo: {{ calificacionObjetivo }}</h1>
+
+                <div class="row">
+                
+                    <div class="col-6">
+                        <h1>Calificación Objetivo: {{ calificacionObjetivo }}</h1>
+                    </div>
+                    <div class="col-6">
+                        <h1>Peso logrado: {{ pesoActualObjetivos }} %</h1>
+                    </div>
+                </div>
+
                 <hr><br><br>
                 <table>
                     <thead>
@@ -94,6 +104,7 @@
                             <th>Objetivo</th>
                             <th>Accion</th>
                             <th>Estado</th>
+                            <th>Calificación</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,6 +112,7 @@
                             <td style="text-align: center;">{{ item.idObjetivo }}</td>
                             <td style="text-align: center;">{{ item.descripcion }}</td>
                             <td style="text-align: center;">{{ obtenerestado(item.idEstado) }}</td>
+                            <td style="text-align: center;">{{  item.calificacion }}</td>
                             <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"
                                 (click)="editarAccion(item.id)"></td>
                             <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar"

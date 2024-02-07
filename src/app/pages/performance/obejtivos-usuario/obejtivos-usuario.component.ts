@@ -46,6 +46,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
   mensajeCreaAccion: string = '';
   calificacionObjetivo: number = 0;
   contadorMensajes: number = 0;
+  pesoActualObjetivos: number = 0;
   mensajesNotificacion: any[] = [];
 
   AccionesObjForm: FormGroup = this.fb.group({
@@ -116,7 +117,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
       descripcion: this.AccionesObjForm.get('descripcion')?.value,
       calificacion: this.AccionesObjForm.get('calificacion')?.value,
       evidencia: this.AccionesObjForm.get('evidencia')?.value,
-      idestado: Number(this.AccionesObjForm.get('estado')?.value),
+      idestado: this.AccionesObjForm.get('calificacion')?.value > 0 ? this.estadoAcciones.filter(x => x.estado == 'calificado')[0].id : Number(this.AccionesObjForm.get('estado')?.value),
       comentarios: this.AccionesObjForm.get('comentarios')?.value,
       fechaaccion: this.AccionesObjForm.get('fechaaccion')?.value,
     };
@@ -336,6 +337,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
       objetivoSel[i].evidencia.length == 0 ? contadorEvidencias += 1 : contadorEvidencias
       contador += 1;
     }
+    
+    
 
     faltanXdias = this.diferenciaEnDias(this.convertirFormatoFecha(this.obtenerFechaActual()), this.convertirFormatoFecha(this.objetivo.fechaFin));
 
@@ -363,7 +366,9 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
     if (contador != 0)
       this.calificacionObjetivo = Number((this.calificacionObjetivo / contador).toFixed(2));
-    this.contadorMensajes = this.mensajesNotificacion.length;
+      let pesoObjetivos = Number(this.objetivo.peso)
+      this.pesoActualObjetivos = Number( ((this.calificacionObjetivo/100) * pesoObjetivos).toFixed(2))
+      this.contadorMensajes = this.mensajesNotificacion.length;
   }
 
   diferenciaEnDias(fechaInicioStr: string, fechaFinStr: string): number {
