@@ -1,6 +1,6 @@
 <app-navigation></app-navigation>
 <br><br>
-<div class="container"> 
+<div class="container">
     <div class="row">
         <div class="col-4">
             <h1>Competencias usuario:</h1><br>
@@ -8,32 +8,40 @@
         <div class="col-8">
             <select (change)="rolSelect($event)">
                 <option value="0">--Seleccione una opcion--</option>
-                <option *ngFor="let item of usuarios" [value]="item.usuarioId">{{item.nombre}} {{ Asingacion(item.usuarioId) }} </option>
+                <option *ngFor="let item of usuarios" [value]="item.usuarioId">{{item.nombre}} {{
+                    Asingacion(item.usuarioId) }} </option>
             </select>
         </div>
     </div><br>
     <hr>
-
-
-    <div class="card-container" *ngIf = "usuarioSel">
-        <h2> Preguntas: {{numPreguntas}} | Respuestas: {{numRespuestas}} | Por responder: {{ numPreguntas - numRespuestas }} </h2>
-        <div *ngFor="let item of preguntas; let i = index;" class="card">
+    <div class="card-container" *ngIf="usuarioSel">
+        <h2> Preguntas: {{numPreguntas}} | Respuestas: {{numRespuestas}} | Por responder: {{ numPreguntas -
+            numRespuestas }} </h2>
+        <div *ngFor="let item of preguntas ; let i = index;" class="card">
             <div class="card__header">
                 <label style="font-weight: bol;"> {{ i + 1 }} {{item.pregunta }} </label>
             </div>
             <br>
             <div class="card__content">
-
-                <div *ngFor="let opcion of respuestas; let j = index;"> 
-                    <input type="radio" (click)="guardarRespuesta(opcion,item.id)" name="opcion{{i}}"  [value]="opcion.descripcion" id="pregunta-{{item.id}}|respuesta-{{opcion.id}}" class="input-radio-especifico">
+                <div *ngFor="let opcion of respuestas; let j = index;">
+                    <input type="radio" (click)="guardarRespuesta(opcion,item.id)" name="opcion{{i}}"
+                        [value]="opcion.descripcion" id="pregunta-{{item.id}}|respuesta-{{opcion.id}}"
+                        class="input-radio-especifico">
                     <label>{{ opcion.descripcion }}</label>
                 </div>
-            </div> 
+            </div>
             <br>
             <div class="card__footer">
-                <textarea placeholder="Comentarios, justificación, oportunidades de mejora (si aplica)" id="comentario-{{item.id}}"></textarea> 
+                <textarea placeholder="Comentarios, justificación, oportunidades de mejora (si aplica)"
+                    id="comentario-{{item.id}}"></textarea>
+
             </div>
         </div>
+
+       <!-- <div>
+            <mat-paginator [length]="preguntas.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
+                (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+        </div> -->
     </div>
 
 </div>

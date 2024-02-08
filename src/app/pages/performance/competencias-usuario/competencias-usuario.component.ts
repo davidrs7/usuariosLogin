@@ -33,17 +33,24 @@ export class CompetenciasUsuarioComponent implements OnInit {
   apiUrl: string = "respuestas_usuario";
   numPreguntas: number = 0;
   numRespuestas: number = 0;
+  p_Size = 5;
+  page = 1;
+  optionsPage = [5, 10, 30, 50];
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
 
   ngOnInit(): void {
     this.cargalistas()
   }
-
+  pageEvent(e: PageEvent) {
+    this.p_Size = e.pageSize;
+    this.page = e.pageIndex + 1;
+  }
   async cargalistas() {
 
     this.usuarios = [];
     this.idusuario = Number(localStorage.getItem('SEUID'));
+    
 
     await this.loginServices.getUsersByBoss<any>('User/hierarchy', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.usuarios = respuesta.data;
@@ -54,8 +61,6 @@ export class CompetenciasUsuarioComponent implements OnInit {
         this.usuarios.push(respuesta.data);
       }
     });
-
-
 
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
       this.preguntas = respuesta.data; 

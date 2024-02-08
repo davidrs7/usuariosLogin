@@ -264,7 +264,16 @@ export class ObejtivosUsuarioComponent implements OnInit {
         text: 'Por favor valida los campos obligatorios'
       });
       return false;
-    } else { return true }
+    } 
+    else if (!this.propietario && !this.cargoToEdit) {
+      Swal.fire({
+        icon: 'info',
+        title: 'info',
+        text: 'No puedes crear acciones, selecciona una accion para calificar'
+      });
+      return false;
+    }   
+    else { return true }
   }
 
 
@@ -400,10 +409,10 @@ export class ObejtivosUsuarioComponent implements OnInit {
         this.AccionesObjForm.controls['comentarios'].enable();
         this.AccionesObjForm.controls['evidencia'].disable();
         this.AccionesObjForm.controls['descripcion'].disable();
-        //this.propietario = true
+        this.propietario = false
         this.limpiarAcciones();
       } else {
-        //this.propietario = false
+        this.propietario = true
         this.claseIcono = 'fas fa-plus'
         this.AccionesObjForm.controls['estado'].disable();
         this.AccionesObjForm.controls['calificacion'].disable();
