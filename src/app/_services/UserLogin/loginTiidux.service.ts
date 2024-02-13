@@ -61,6 +61,12 @@ import { environment } from 'src/environments/environment';
       const url = `${this.baseApiUrl}/${ruta}/${id}`;
       return this.http.get<ApiResponse<T>>(url);
     }
+
+
+    cargaMasivaUsers<T>(ruta: string, archivo: FormData): Observable<ApiResponse<T>>{
+      const url = `${this.baseApiUrl}/${ruta}`; 
+      return this.http.post<ApiResponse<T>>(url, archivo);
+    }
       
   }
 

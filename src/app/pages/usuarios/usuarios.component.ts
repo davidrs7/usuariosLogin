@@ -34,11 +34,14 @@ export class UsuariosComponent implements OnInit {
   usuarioToEdit = false;
   rutaApi = 'User'; 
   usuarioSeleccionado: any;
+  archivoUsers: File | null = null ;
 
   miControl = new FormControl();
   opciones: string[] = ['Opción 1', 'Opción 2', 'Opción 3']; 
   opcionesFiltradas: Observable<string[]> | undefined;
   filtroUsuarios: any = {};
+  tipoCargue: boolean = false;
+  cargueArchivo: boolean = false;
 
   usuariosForm: FormGroup = this.fb.group({
     usuarioId: [0, []],
@@ -85,6 +88,20 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarLista(); 
+  }
+
+  tipocargue(tipCargue: number){
+
+    if (tipCargue == 1){
+      this.cargueArchivo = true
+      this.tipoCargue = false
+    }
+
+    if (tipCargue == 2){ 
+      this.tipoCargue = true
+      this.cargueArchivo = false
+    }
+
   }
  
     buscarUsuarios(){
@@ -163,6 +180,8 @@ export class UsuariosComponent implements OnInit {
     this.cargarLista();
     this.canva = false
     this.usuarioToEdit = false;
+    this.cargueArchivo = false;
+    this.tipoCargue = false;
 
   }
  
@@ -273,6 +292,8 @@ export class UsuariosComponent implements OnInit {
 
   }
 
+ 
+
   editarUsuarios(id: number) {
     this.usuarioToEdit = true;
     this.usuario = this.usuarios.filter(x => x.usuarioId == id); 
@@ -316,5 +337,66 @@ export class UsuariosComponent implements OnInit {
   dosDigitos(n: number): string {
     return n < 10 ? '0' + n : '' + n;
   }
+
+  seleccionArchivo(event: any): void {
+    debugger;
+    this.archivoUsers = <File>event.target.files[0];
+  }
+
+  cargaUsers(): void { 
+    const inputElement = <HTMLInputElement>document.getElementById('archivoUser');
+    if (inputElement.files && inputElement.files.length > 0) {
+      this.archivoUsers = inputElement.files[0];
+    }
+    if (this.archivoUsers !== null && this.validarArchivo(this.archivoUsers)) { 
+      const fd = new FormData();
+      fd.append('file', this.archivoUsers, this.archivoUsers.name);
+      console.log(fd);       
+      this.canva = true;
+      this.loginServices.cargaMasivaUsers('User/cargar-usuarios',fd).subscribe(
+        (respuesta: ApiResponse<any>) => {
+          Swal.fire({
+            icon: 'success',
+            title:  respuesta.estado.descripcion,
+            text: 'Codigo: ' + respuesta.estado.codigo
+          }).then((res:any) => {
+            this.LimpiarFormulario();
+          });
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
+          });
+          this.LimpiarFormulario();
+        }
+      );
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'error: ' ,
+        text: 'Por favor selecciona un archivo valido (.csv) '  
+      }).then((res:any) => {
+        return;
+      });
+    }
+
+
+  }
+
+
+  validarArchivo(archivo: File): boolean{
+    let archivoValido = true; 
+
+    if (archivo.type != "text/csv"){
+        archivoValido = false 
+    }
+
+    return archivoValido;
+
+
+  }
+  
 
 }

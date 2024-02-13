@@ -1,43 +1,19 @@
 <app-navigation></app-navigation>
 <div class="container">
     <br>
-    <!--    <div class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombres</th>
-                    <th>Numero Documento</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let usuario of usuario|paginador:p_Size:page">
-                    <td style="text-align: center;">{{ usuario.usuarioId }}</td>
-                    <td style="text-align: center;">{{ usuario.nombre }}</td>
-                    <td style="text-align: center;">{{ usuario.numDocumento }}</td>
-                    <td style="text-align: center;">{{ usuario.estado ? 'Activo' : 'Inactivo' }}</td>
-                    <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"
-                        (click)="editarUsuarios(usuario.usuarioId)"></td>
-                    <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar"
-                        (click)="eliminarUsuarios(usuario.usuarioId)"></td>
-                    <td>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-
-        <br>
-        <hr>
-
-
-    </div>-->
-
-
     <br>
 
-    <form [formGroup]="usuariosForm" autocomplete="off" class="container">
+    <div class="row">
+        <div class="col-6"><button type="button" (click)="tipocargue(1)" title="por carga"> Carga masiva </button>
+        </div>
+        <div class="col-6"><button type="button" (click)="tipocargue(2)" title="individual"> Individual </button> </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+
+
+    <form [formGroup]="usuariosForm" autocomplete="off" class="container" *ngIf="tipoCargue">
 
         <label for="buscarDoc">Buscar Usuario</label>
         <div class="row">
@@ -103,7 +79,7 @@
                 <div>
                     <div>
                         <label for="autocompleteInput">Jefe Inmediato:</label>
-                        <input id="autocompleteInput" [formControl]="miControl" type="text" 
+                        <input id="autocompleteInput" [formControl]="miControl" type="text"
                             placeholder="Escribe para autocompletar" (input)="filtrarUsuarios($event)" />
                     </div>
 
@@ -137,12 +113,19 @@
 
             </div>
         </div>
- 
+
         <button type="button" (click)="guardaUsuarios()">{{ usuarioToEdit ? 'Editar Usuario' : 'Crear
             Usuario'}}</button> &nbsp;&nbsp;
-        <button type="button" *ngIf="usuarioToEdit" (click)="eliminarUsuarios(this.usuario[0].usuarioId)">Eliminar</button>
+        <button type="button" *ngIf="usuarioToEdit"
+            (click)="eliminarUsuarios(this.usuario[0].usuarioId)">Eliminar</button>
 
     </form>
+    <div *ngIf="cargueArchivo">
+        <label> Selecciona el archivo .csv </label> <br><br><br>
+        <input type="file" id="archivoUser"> <br><br><br><br>
+        <button (click)="cargaUsers()">Cargar</button>
+    </div>
+
     <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
 
 </div>
