@@ -51,7 +51,7 @@ export class AdminObjetivosComponent implements OnInit {
 
   cargarLista(): void {
     const idusuario = Number(localStorage.getItem("SEUID"));
-    this.loginServices.getObjetivosbyId<any>(this.rutaApi,idusuario).subscribe((respuesta: ApiResponse<any>) => {
+    this.loginServices.getObjetivosbyId<any>(this.rutaApi, idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.Objetivos = respuesta.data;
     });
   }
@@ -101,16 +101,40 @@ export class AdminObjetivosComponent implements OnInit {
       peso: this.ObjetivosForm.get('peso')?.value,
       fechainicio: this.ObjetivosForm.get('fechainicio')?.value,
       fechafin: this.ObjetivosForm.get('fechafin')?.value,
-      estado: Boolean(JSON.parse(this.ObjetivosForm.get('estado')?.value)) ,
+      estado: Boolean(JSON.parse(this.ObjetivosForm.get('estado')?.value)),
     };
 
-    if (this.validarcampos()) {
+    if (this.validarcampos() && this.calculaPesos(body)) {
       let resp = this.cargoToEdit == true ? this.ActualizarObjetivos(body) : this.CrearObjetivos(body)
     }
   }
 
+  calculaPesos(body: any) {
+
+    let sumaPesos = 0;
+    debugger;
+    for (let i = 0; i < this.Objetivos.length; i++) {
+      if (this.Objetivos[i].id != body.id) {
+        sumaPesos = sumaPesos + this.Objetivos[i].peso;
+      }
+    }
+    sumaPesos = sumaPesos + body.peso;
+
+    if (sumaPesos > 100) {
+      Swal.fire({
+        icon: 'info',
+        title: 'La suma de los pesos no puede superar el 100 %',
+        text: ''
+      });
+      return false;
+
+    } else {
+      return true;
+    }
+  }
 
   validarcampos() {
+
     if (!this.ObjetivosForm.valid) {
       Swal.fire({
         icon: 'error',
@@ -146,27 +170,35 @@ export class AdminObjetivosComponent implements OnInit {
   }
 
   CrearObjetivos(body: reqObjetivos) {
-    this.canva = true
-    this.loginServices.createData(this.rutaApi, body)
-      .subscribe(
-        (respuesta: ApiResponse<any>) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Mensaje: ' + respuesta.estado.descripcion,
-            text: 'Codigo: ' + respuesta.estado.codigo
-          }).then((res: any) => {
+    if (this.Objetivos.length < 5) {
+      this.canva = true
+      this.loginServices.createData(this.rutaApi, body)
+        .subscribe(
+          (respuesta: ApiResponse<any>) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Mensaje: ' + respuesta.estado.descripcion,
+              text: 'Codigo: ' + respuesta.estado.codigo
+            }).then((res: any) => {
+              this.LimpiarFormulario();
+            });
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
+            });
             this.LimpiarFormulario();
-          });
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
-          });
-          this.LimpiarFormulario();
-        }
-      );
+          }
+        );
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: 'Mensaje: No puedes crear mas de 5 objetivos ',
+        text: ''
+      })
+    }
 
   }
 

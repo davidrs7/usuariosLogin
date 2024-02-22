@@ -81,19 +81,20 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   async cargalistas() {
     this.usuarios = [];
-    this.idusuario = Number(localStorage.getItem('SEUID')); 
+    this.idusuario = Number(localStorage.getItem('SEUID'));
 
     await this.loginServices.getUsersByBoss<any>('User/hierarchy', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.usuarios = respuesta.data;
     });
 
+    /* 
     await this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) {
         this.usuarios.push(respuesta.data);
       }
-    });
-
-
+    });*/
+    
+    await this.cargaUsuariosPromise()
 
     await this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
       this.estadoAcciones = respuesta.data;
@@ -105,6 +106,22 @@ export class ObejtivosUsuarioComponent implements OnInit {
   asignarObjetivos(objetivos: any) {
     this.objetivos = objetivos.filter((x: any) => this.convertirFormatoFecha(x.fechaFin) >= this.convertirFormatoFecha(this.obtenerFechaActual()));
 
+  }
+
+  async cargaUsuariosPromise() {
+    return new Promise<void>((resolve, reject) => {
+      this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe(
+        (respuesta: ApiResponse<any>) => {
+          if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) {
+            this.usuarios.push(respuesta.data);
+          }
+          resolve();
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
   }
 
   guardaUsuarios() {
@@ -208,7 +225,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
       console.log(body.calificacion);
       mensaje = "La calificación debe ser de 1 a 100"
       validacion = false;
-    } 
+    }
 
     this.mensajeCreaAccion = mensaje;
 
@@ -262,7 +279,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
         text: 'Por favor valida los campos obligatorios'
       });
       return false;
-    } 
+    }
     else if (!this.propietario && !this.cargoToEdit) {
       Swal.fire({
         icon: 'info',
@@ -270,7 +287,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
         text: 'No puedes crear acciones, selecciona una accion para calificar'
       });
       return false;
-    }   
+    }
     else { return true }
   }
 
@@ -344,8 +361,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
       objetivoSel[i].evidencia.length == 0 ? contadorEvidencias += 1 : contadorEvidencias
       contador += 1;
     }
-    
-    
+
+
 
     faltanXdias = this.diferenciaEnDias(this.convertirFormatoFecha(this.obtenerFechaActual()), this.convertirFormatoFecha(this.objetivo.fechaFin));
 
@@ -373,9 +390,9 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
     if (contador != 0)
       this.calificacionObjetivo = Number((this.calificacionObjetivo / contador).toFixed(2));
-      let pesoObjetivos = Number(this.objetivo.peso)
-      this.pesoActualObjetivos = Number( ((this.calificacionObjetivo/100) * pesoObjetivos).toFixed(2))
-      this.contadorMensajes = this.mensajesNotificacion.length;
+    let pesoObjetivos = Number(this.objetivo.peso)
+    this.pesoActualObjetivos = Number(((this.calificacionObjetivo / 100) * pesoObjetivos).toFixed(2))
+    this.contadorMensajes = this.mensajesNotificacion.length;
   }
 
   diferenciaEnDias(fechaInicioStr: string, fechaFinStr: string): number {
@@ -391,8 +408,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
     return dias;
   }
 
-  async cargarObjetivosxUser(usuarioId: number){
-    await this.loginServices.getObjetivosbyId<any>('Objetivos',usuarioId).subscribe((respuesta: ApiResponse<any>) => {
+  async cargarObjetivosxUser(usuarioId: number) {
+    await this.loginServices.getObjetivosbyId<any>('Objetivos', usuarioId).subscribe((respuesta: ApiResponse<any>) => {
       this.asignarObjetivos(respuesta.data);
     })
   }

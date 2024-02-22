@@ -50,20 +50,23 @@ export class CompetenciasUsuarioComponent implements OnInit {
 
     this.usuarios = [];
     this.idusuario = Number(localStorage.getItem('SEUID'));
-    
+
 
     await this.loginServices.getUsersByBoss<any>('User/hierarchy', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.usuarios = respuesta.data;
     });
 
+    /*
     await this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) {
         this.usuarios.push(respuesta.data);
       }
-    });
+    }); */
+
+    await this.obtenerUsuarioPromise();
 
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data; 
+      this.preguntas = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('opciones_respuesta').subscribe((respuesta: ApiResponse<any>) => {
@@ -93,6 +96,23 @@ export class CompetenciasUsuarioComponent implements OnInit {
 
     return asignacion;
 
+  }
+
+  obtenerUsuarioPromise() {
+    new Promise<void>((resolve, reject) => { 
+      const subscription = this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe(
+        (respuesta: ApiResponse<any>) => { 
+          if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) { 
+            this.usuarios.push(respuesta.data);
+          } 
+          resolve(); 
+          subscription.unsubscribe();
+        },
+        (error) => { 
+          reject(error);
+        }
+      );
+    });
   }
 
 
@@ -135,7 +155,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
             title: 'Mensaje: ' + respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
           }).then((res: any) => {
-           this.validaExiste()
+            this.validaExiste()
           });
         },
         (error) => {
@@ -208,7 +228,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
     let existe: boolean = false
     await this.obtenerrespuestasUsuario(this.usuario.usuarioId);
     this.limpiarFormulario()
-    
+
     this.numPreguntas = this.preguntas.length;
     this.numRespuestas = this.respuestasUser.length;
 

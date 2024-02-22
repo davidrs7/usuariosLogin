@@ -3,16 +3,14 @@
 <div class="container">
     <table>
         <thead>
-            <tr>
-                <th>ID</th>
+            <tr> 
                 <th>titulo</th> 
                 <th>Peso</th>
                 <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of Objetivos|paginador:p_Size:page">
-                <td style="text-align: center;">{{ item.id }}</td>
+            <tr *ngFor="let item of Objetivos|paginador:p_Size:page"> 
                 <td style="text-align: center;">{{ item.titulo }}</td> 
                 <td style="text-align: center;">{{ item.peso }} %</td>
                 <td style="text-align: center;">{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
@@ -49,7 +47,7 @@
 
         <div>
             <label for="peso">% peso: *</label>
-            <input type="text" formControlName="peso" required>
+            <input type="number" formControlName="peso" required>
         </div><br>
 
         <label for="fechainicio">Fecha Inicio: * </label>
