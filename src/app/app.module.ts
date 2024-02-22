@@ -57,6 +57,7 @@ import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario
 import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
 import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas.component';
 import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas.component';
+import { ReportesComponent } from './pages/performance/reportes/reportes.component';
 
 
 
@@ -105,7 +106,7 @@ import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas
     RutasPermisosComponent,
     AdminObjetivosComponent, 
     ObejtivosUsuarioComponent, 
-    CompetenciasUsuarioComponent, AdminPreguntasComponent, AdminRepuestasComponent  
+    CompetenciasUsuarioComponent, AdminPreguntasComponent, AdminRepuestasComponent, ReportesComponent  
   ],
   imports: [
     BrowserModule,

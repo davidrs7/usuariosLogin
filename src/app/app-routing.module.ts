@@ -43,6 +43,7 @@ import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario
 import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
 import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas.component';
 import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas.component';
+import { ReportesComponent } from './pages/performance/reportes/reportes.component';
 
 
 const routes: Routes =
@@ -103,6 +104,7 @@ const routes: Routes =
   { path: 'pages/performance/compUser', component: CompetenciasUsuarioComponent}, 
   { path: 'pages/adminPreguntas', component: AdminPreguntasComponent}, 
   { path: 'pages/adminRespuestas', component: AdminRepuestasComponent}, 
+  { path: 'pages/performance/reportes', component: ReportesComponent}, 
 ];
 
 @NgModule({
