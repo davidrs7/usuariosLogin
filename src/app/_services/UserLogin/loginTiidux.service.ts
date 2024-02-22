@@ -15,6 +15,11 @@ import { environment } from 'src/environments/environment';
     private baseApiUrl = environment.apiUrlTiidux + 'api';
     constructor(private http: HttpClient) { }
 
+
+    getObjetivosbyId<T>(ruta: string,id: number): Observable<ApiResponse<T>>{
+      const url = `${this.baseApiUrl}/${ruta}/${id}`;
+      return this.http.get<ApiResponse<T>>(url);
+    } 
     Login<T>(ruta:string,datos: T): Observable<ApiResponse<T>>{
       const url = `${this.baseApiUrl}/${ruta}`; 
       return this.http.post<ApiResponse<T>>(url,datos);

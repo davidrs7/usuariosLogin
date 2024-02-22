@@ -50,7 +50,8 @@ export class AdminObjetivosComponent implements OnInit {
   }
 
   cargarLista(): void {
-    this.loginServices.GetAllData<any>(this.rutaApi).subscribe((respuesta: ApiResponse<any>) => {
+    const idusuario = Number(localStorage.getItem("SEUID"));
+    this.loginServices.getObjetivosbyId<any>(this.rutaApi,idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.Objetivos = respuesta.data;
     });
   }
@@ -77,7 +78,7 @@ export class AdminObjetivosComponent implements OnInit {
             title: respuesta.estado.codigo == "500" ? "Error: Objetivo asociado a usuarios." : respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
           }).then((res: any) => {
-            //this.LimpiarFormulario();
+            this.LimpiarFormulario();
           });
         },
         (error) => {
@@ -86,7 +87,7 @@ export class AdminObjetivosComponent implements OnInit {
             title: 'Error',
             text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
           });
-          //this.LimpiarFormulario();
+          this.LimpiarFormulario();
         }
       );
   }
@@ -94,6 +95,7 @@ export class AdminObjetivosComponent implements OnInit {
   guardaObjetivos() {
     const body: reqObjetivos = {
       id: this.ObjetivosForm.get('id')?.value,
+      idUsuario: Number(localStorage.getItem("SEUID")),
       titulo: this.ObjetivosForm.get('titulo')?.value,
       descripcion: this.ObjetivosForm.get('descripcion')?.value,
       peso: this.ObjetivosForm.get('peso')?.value,

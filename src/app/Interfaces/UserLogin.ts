@@ -60,6 +60,7 @@ export interface reqlogin {
 
 export interface reqObjetivos {
     id: string,
+    idUsuario: number,
     titulo: string,
     descripcion: string,
     peso: string,

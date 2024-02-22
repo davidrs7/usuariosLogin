@@ -81,7 +81,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   async cargalistas() {
     this.usuarios = [];
-    this.idusuario = Number(localStorage.getItem('SEUID'));
+    this.idusuario = Number(localStorage.getItem('SEUID')); 
 
     await this.loginServices.getUsersByBoss<any>('User/hierarchy', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.usuarios = respuesta.data;
@@ -93,9 +93,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
       }
     });
 
-    await this.loginServices.GetAllData<any>('Objetivos').subscribe((respuesta: ApiResponse<any>) => {
-      this.asignarObjetivos(respuesta.data);
-    })
+
 
     await this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
       this.estadoAcciones = respuesta.data;
@@ -393,12 +391,19 @@ export class ObejtivosUsuarioComponent implements OnInit {
     return dias;
   }
 
+  async cargarObjetivosxUser(usuarioId: number){
+    await this.loginServices.getObjetivosbyId<any>('Objetivos',usuarioId).subscribe((respuesta: ApiResponse<any>) => {
+      this.asignarObjetivos(respuesta.data);
+    })
+  }
+
   async rolSelect(event: any) {
     this.mensajesNotificacion = [];
     this.contadorMensajes = 0;
     this.acciones = false
     const idseleccionado = event?.target?.value;
     this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
+    this.cargarObjetivosxUser(idseleccionado);
 
     if (this.usuario != undefined) {
       this.nombrelider = this.usuarios.filter(x => x.usuarioId == this.usuario.jefeId)[0].nombre
