@@ -1,0 +1,60 @@
+<app-navigation></app-navigation>
+<br><br>
+<div class="container">
+
+    <h1> Modulo de administración categorias competencias.</h1>
+    <hr>
+    <br><br>
+    <table>
+        <thead>
+            <tr> 
+                <th>Competencia</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Competencias|paginador:p_Size:page"> 
+                <td style="text-align: center;">{{ item.competencia }}</td>
+                <td style="text-align: center;">{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
+                <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click)="editarCompetencias(item.id)">
+                </td>
+                <td class="fa-solid fa-trash action-button" ngbTooltip="Eliminar"
+                    (click)="eliminarCompetencias(item.id)"></td>
+
+                <td>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <div>
+        <mat-paginator [length]="Competencias.length" [pageSize]="p_Size" [pageSizeOptions]="optionsPage"
+            (page)="pageEvent($event)" aria-label="page" class="m-3"></mat-paginator>
+    </div>
+
+    <button type="button" (click)="guardaCompetencias()">{{ cargoToEdit ? 'Editar Competencia' : 'Crear Competencia'
+        }}</button> &nbsp;&nbsp;&nbsp;
+    <button type="button" (click)="LimpiarFormulario()">limpiar</button>
+
+    <br><br><br>
+    <h2>{{ cargoToEdit ? 'Editar competencia' : 'Crear competencia' }}</h2>
+    <form [formGroup]="CompetenciasForm" autocomplete="off">
+        <div>
+            <label for="competencia">Titulo: * </label>
+            <input type="text" formControlName="competencia" required>
+        </div><br>
+
+        <div>
+            <label for="estado">Estado:</label>
+            <select formControlName="estado" required>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+        </div><br>
+
+    </form>
+    <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>
+
+
+</div>
