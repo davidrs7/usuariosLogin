@@ -85,6 +85,7 @@ export interface reqAccionesObjetivos
 export interface reqPreguntas
 {
     id: number,
+    idcompetencia: number;
     pregunta: string,
     estado: boolean,
    // fecha_inicio: Date,

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../../dto/loginTiindux/genericResponse';
@@ -15,8 +15,11 @@ import Swal from 'sweetalert2';
 })
 export class AdminPreguntasComponent implements OnInit {
 
-  preguntas: any[] = []
-  rutaApi: string = 'Preguntas'
+  preguntas: any[] = [];
+  competencias: any[] = [];
+  rutaApi: string = 'Preguntas' 
+  @ViewChild('competenciaSelect') competenciaSelect!: ElementRef;
+
 
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
@@ -24,47 +27,74 @@ export class AdminPreguntasComponent implements OnInit {
   ngOnInit(): void {
     this.cargalistas();
   }
+ 
+ 
+
+  consultacompetencia(id: number){
+
+    return this.competencias.filter(x => x.id == id)[0].competencia
+
+  }
 
   cargalistas(){
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data;
-      console.log(respuesta.data)
+      this.preguntas = respuesta.data; 
+      console.log(respuesta.data); 
     });
+
+    this.loginServices.GetAllData<any>('Competencias').subscribe((respuesta: ApiResponse<any>) => {
+      this.competencias = respuesta.data;
+      console.log(this.competencias)
+    })
+
   }
 
   LimpiarFormulario(){
     this.cargalistas(); 
-  }
+  } 
 
   async agregarPregunta(){
     const fecha = this.obtenerFechaActual();
     const textareaElement = document.getElementById("pregunta") as HTMLTextAreaElement;
-    const body: reqPreguntas = {
-      id: 0,
-      pregunta : textareaElement.value,
-      estado: true
-    };
-
-    this.loginServices.createData('Preguntas', body)
-    .subscribe(
-      (respuesta: ApiResponse<any>) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Mensaje: ' + respuesta.estado.descripcion,
-          text: 'Codigo: ' + respuesta.estado.codigo
-        }).then((res:any) => {
+    const competencia = this.competenciaSelect.nativeElement.value;
+    console.log(competencia);
+    if (Number(competencia) == 0) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Mensaje: Por favor selecciona una competencia',
+        text: ''
+      })
+    } else {
+      const body: reqPreguntas = {
+        id: 0,
+        idcompetencia: Number(competencia),
+        pregunta : textareaElement.value,
+        estado: true
+      };
+  
+      this.loginServices.createData('Preguntas', body)
+      .subscribe(
+        (respuesta: ApiResponse<any>) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Mensaje: ' + respuesta.estado.descripcion,
+            text: 'Codigo: ' + respuesta.estado.codigo
+          }).then((res:any) => {
+            this.LimpiarFormulario();
+          });
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
+          });
           this.LimpiarFormulario();
-        });
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
-        });
-        this.LimpiarFormulario();
-      }
-    );
+        }
+      );
+    }
+
+ 
 
 
   }
@@ -98,6 +128,7 @@ export class AdminPreguntasComponent implements OnInit {
     console.log(textareaElement.value)
     const body: reqPreguntas = {
       id: id,
+      idcompetencia: 1,
       pregunta : textareaElement.value,
       estado: true
     };

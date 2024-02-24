@@ -7,13 +7,13 @@
     <br><br>
     <table>
         <thead>
-            <tr> 
+            <tr>
                 <th>Competencia</th>
                 <th>Estado</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of Competencias|paginador:p_Size:page"> 
+            <tr *ngFor="let item of Competencias|paginador:p_Size:page">
                 <td style="text-align: center;">{{ item.competencia }}</td>
                 <td style="text-align: center;">{{ item.estado ? 'Activo' : 'Inactivo' }}</td>
                 <td class="fa-solid fa-pen action-button" ngbTooltip="Editar" (click)="editarCompetencias(item.id)">
