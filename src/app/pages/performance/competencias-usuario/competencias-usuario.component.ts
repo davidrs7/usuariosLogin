@@ -22,6 +22,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
   respuestas: any[] = [];
   respuesta: any = {};
   usuarios: any[] = [];
+  competencias: any[] = []
   usuario: any;
   usuarioJefe: any;
   usuariosxJefe: any[] = [];
@@ -66,13 +67,23 @@ export class CompetenciasUsuarioComponent implements OnInit {
     await this.obtenerUsuarioPromise();
 
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data;
+      this.preguntas = respuesta.data.sort((a,b) => a.idcompetencia - b.idcompetencia);
     });
 
     this.loginServices.GetAllData<any>('opciones_respuesta').subscribe((respuesta: ApiResponse<any>) => {
       this.respuestas = respuesta.data;
     });
 
+    this.loginServices.GetAllData<any>('Competencias').subscribe((respuesta: ApiResponse<any>) => {
+      this.competencias = respuesta.data;
+      console.log(this.competencias)
+    })
+
+  }
+
+  consultacompetencia(id: number){ 
+    const competencia = this.competencias.filter(x => x.id == id)[0].competencia
+    return competencia;
 
   }
 
@@ -114,6 +125,8 @@ export class CompetenciasUsuarioComponent implements OnInit {
       );
     });
   }
+
+
 
 
   async guardarRespuesta(opcion: any, idpregunta: number) {

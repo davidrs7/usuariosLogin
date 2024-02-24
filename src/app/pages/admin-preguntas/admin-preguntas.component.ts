@@ -30,15 +30,15 @@ export class AdminPreguntasComponent implements OnInit {
  
  
 
-  consultacompetencia(id: number){
-
-    return this.competencias.filter(x => x.id == id)[0].competencia
+  consultacompetencia(id: number){ 
+    const competencia = this.competencias.filter(x => x.id == id)[0].competencia
+    return competencia;
 
   }
 
   cargalistas(){
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data; 
+      this.preguntas = respuesta.data.sort((a,b) => a.idcompetencia - b.idcompetencia); 
       console.log(respuesta.data); 
     });
 
@@ -123,12 +123,12 @@ export class AdminPreguntasComponent implements OnInit {
     );
   }
 
-  editarpregunta(id: number){
+  editarpregunta(id: number,idcomp: number){
     const textareaElement = document.getElementById(id.toString()) as HTMLTextAreaElement;
     console.log(textareaElement.value)
     const body: reqPreguntas = {
       id: id,
-      idcompetencia: 1,
+      idcompetencia: idcomp,
       pregunta : textareaElement.value,
       estado: true
     };
