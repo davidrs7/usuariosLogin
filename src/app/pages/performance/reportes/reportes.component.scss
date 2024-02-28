@@ -1,0 +1,23 @@
+.grafico-barras {
+    width: 300px; /* Ancho del gráfico */
+    height: 300px; /* Altura del gráfico */
+    display: flex;
+    flex-direction: column-reverse; /* Revertir la dirección de las barras */
+  }
+  
+  .barra {
+    width: 100%; /* Ancho completo */
+    background-color: #3498db; /* Color de la barra */
+    margin-bottom: 5px; /* Espacio entre barras */
+    text-align: center; /* Alinear texto al centro */
+    color: white; /* Color del texto */
+    font-weight: bold; /* Negrita para el texto */
+    transition: height 0.5s ease; /* Transición suave para el cambio de altura */
+  
+    span {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  
