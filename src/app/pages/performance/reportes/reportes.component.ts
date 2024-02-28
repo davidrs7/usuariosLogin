@@ -18,6 +18,11 @@ interface PorcentajeLogrado {
   porcentajeLogrado: number;
 }
 
+interface genericGraficaPie {
+  name: string,
+  value: number
+}
+
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -30,25 +35,63 @@ export class ReportesComponent implements OnInit {
   accionesObjetivos: any[] = [];
   objetivosUsuario: any[] = [];
   calificacion: any[] = [];
-  sumaTotalPorcentajeLogrado: number = 0;
+  sumaTotalPorcentajeLogrado: number = 0; 
+  graficaPorcentajeLogrado: genericGraficaPie[] = [] ;
+  graficaPorcentajeGeneral: genericGraficaPie[] = [] ;
 
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { 
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
+  //  Object.assign(this, { single });
+  }
 
   ngOnInit(): void {
     this.cargarListas();
   }
+  
+  //single: any[] = [];
+   reportePorcentajeLogrado = [
+    {
+      "name": "Certificaciones",
+      "value": 22.5
+    },
+    {
+      "name": "Puntualidad",
+      "value": 30
+    },
+    {
+      "name": "Informes",
+      "value": 30
+    }
+  ];
+  view: [number,number] = [700, 400];
+
+  // options
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+
+  colorScheme:any = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+ 
+
+  onSelect(data:any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data:any): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data:any): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
 
   async cargarListas() {
-
     const idusuario = Number(localStorage.getItem('SEUID'));
-
-
     await this.cargaAccionesObjetivosxUser(idusuario);
-
     await this.cargaObjetivosxUser(idusuario);
-
-
     await this.cargarReporte();
   }
 
@@ -81,6 +124,8 @@ export class ReportesComponent implements OnInit {
 
 
   async cargarReporte() {
+    this.graficaPorcentajeLogrado = []
+    this.graficaPorcentajeGeneral = []
     const calificacionesPromedioPorObjetivo: { idObjetivo: number; nombre: string, peso: number, promedioCalificaciones: number }[] = [];
 
     this.objetivosUsuario.forEach(objetivo => {
@@ -100,6 +145,9 @@ export class ReportesComponent implements OnInit {
         const calificacionTotal = accionesObjetivo.reduce((acc, accion) => acc + accion.calificacion, 0);
         const porcentajeTotal = ((calificacionTotal / accionesObjetivo.length) / 100) * objetivo.peso; // Calculamos el porcentaje total basado en el peso
         sumaTotalPorcentajeLogrado += porcentajeTotal; 
+        this.graficaPorcentajeLogrado.push({name: objetivo.titulo , value:porcentajeTotal });
+        this.graficaPorcentajeGeneral.push({name: objetivo.titulo , value:objetivo.peso });
+        //this.graficaPorcentajeGeneral.push({name: objetivo.titulo , value: objetivo.peso });
         porcentajeLogrado.push({ idObjetivo: objetivo.id, objetivo: objetivo.titulo, pesoObjetivo: objetivo.peso, porcentajeLogrado: porcentajeTotal });
       });
 

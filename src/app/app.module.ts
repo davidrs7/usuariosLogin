@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -59,12 +60,14 @@ import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas
 import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas.component';
 import { ReportesComponent } from './pages/performance/reportes/reportes.component';
 import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-competencias.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+ 
 
 
-
+ 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent,  
     HomeComponent,
     ModulesComponent,
     EmployeesComponent,
@@ -111,6 +114,7 @@ import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-com
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -122,7 +126,7 @@ import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-com
     NoopAnimationsModule,
     NgbModule,
     TreeModule,
-    
+    NgxChartsModule
   ],
   providers: [
     DatePipe,
