@@ -4,9 +4,16 @@
 <br>
 
 <div class="container">
-    <h1> Reporte de objetivos </h1>
+    <div class="row">
+        <div class="col-6">
+            <h1> Reporte de objetivos </h1>
+        </div>
+        <div class="col-6">
+            <button class="green-background" (click)="exportarObjetivosExcel()"> <i class="fa-regular fa-file-excel"></i>
+                Objetivos</button>
+        </div>
+    </div>
     <hr><br>
-
     <div class="row">
         <div class="col-6">
             <h1> Calificacion total: 100 % </h1>
@@ -29,6 +36,28 @@
 
     <br>
 
+    <div class="row">
+        <div class="col-6">
+            <h1> Reporte de competencias </h1>
+        </div>
+        <div class="col-6">
+            <button class="green-background" (click)="exportarCompetenciasExcel()"> <i class="fa-regular fa-file-excel"></i>
+                Competencias</button>
+        </div>
+    </div>
+    <hr><br>
+    <div class="row">
+        <div class="col-6"> 
+            <ngx-charts-pie-grid
+            [view]="view"
+            [scheme]="colorScheme"             
+            [results]="graficaCompetencias"
+            (select)="onSelect($event)"
+             >
+            
+          </ngx-charts-pie-grid> 
+        </div> 
+    </div>
 
 
 

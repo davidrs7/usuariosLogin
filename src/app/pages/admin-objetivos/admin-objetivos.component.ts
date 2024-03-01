@@ -111,8 +111,7 @@ export class AdminObjetivosComponent implements OnInit {
 
   calculaPesos(body: any) {
 
-    let sumaPesos = 0;
-    debugger;
+    let sumaPesos = 0; 
     for (let i = 0; i < this.Objetivos.length; i++) {
       if (this.Objetivos[i].id != body.id) {
         sumaPesos = sumaPesos + this.Objetivos[i].peso;
