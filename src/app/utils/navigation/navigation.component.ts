@@ -105,7 +105,7 @@ export class NavigationComponent implements OnInit {
     this.navigate['performance'] = [];
     this.navigate['performance'].push({ name: 'objetiveUser', title: 'Objetivos', faClass: 'fas fa-trophy', routing: 'pages/performance/objetiveUser' });
     this.navigate['performance'].push({ name: 'compUser', title: 'Competencias', faClass: 'fas fa-check-double', routing: 'pages/performance/compUser' });
-    this.navigate['performance'].push({ name: 'compUser', title: 'Reportes', faClass: 'fa-solid fa-square-poll-vertical', routing: 'pages/performance/reportes' });
+    this.navigate['performance'].push({ name: 'compUser', title: 'Resultados', faClass: 'fa-solid fa-square-poll-vertical', routing: 'pages/performance/reportes' });
 
   }
 

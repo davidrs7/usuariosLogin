@@ -1,0 +1,57 @@
+<app-navigation></app-navigation>
+<br>
+
+
+<div class="container">
+    <h1> Reportes desempeño: </h1>
+    <hr> <br>
+
+    <div class="row">
+        <div class="col-3">
+            <button (click)="activaReport(1)"> Reporte Objetivos</button>
+        </div>
+        <div class="col-3">
+            <button (click)="activaReport(2)"> Cargue masivo objetivos</button>
+        </div>
+        <div class="col-3">
+            <button (click)="activaReport(3)"> Reportes Competencias</button>
+        </div>
+        <div class="col-3">
+            <button (click)="activaReport(4)"> Cargue masivo competencias</button>
+        </div>
+    </div>
+
+    <br><br><br><br>
+
+    <div class="row" *ngIf="accion == 1 || accion == 3">
+        <div class="col-2">
+            <label> Reporte: {{ accion == 1? 'objetivos' :'competencias' }} </label>
+        </div>
+
+        <div class="col-5"> 
+            <select id = "filtro">
+                <option value="1">Todos</option>
+                <option value="2">Por cargo</option>
+                <option value="3">Por rol</option>
+                <option value="4">Sin calificacion</option>
+                <option value="5">Calificados</option>
+            </select>
+        </div>
+
+        <div class="col-5"> 
+            <button class="btn-green" (click)="generarReporte()"> <i class="fa-regular fa-file-excel"></i> Generar reporte</button>
+        </div>
+
+    </div>
+
+
+    <div *ngIf="accion == 2 || accion == 4">
+        <label> cargue: {{ accion == 2? 'objetivos' :'competencias' }} </label> <br>
+        <label> Selecciona el archivo .csv </label> <br><br><br>
+        <input type="file" id="archivoUser"> <br><br><br><br>
+        <button class="btn-green" (click)="generarReporte()">Cargar</button>
+    </div>
+
+
+
+</div>

@@ -45,6 +45,7 @@ import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas
 import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas.component';
 import { ReportesComponent } from './pages/performance/reportes/reportes.component';
 import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-competencias.component';
+import { ReportesUsuariosComponent } from './pages/reportes-usuarios/reportes-usuarios.component';
 
 
 const routes: Routes =
@@ -107,6 +108,7 @@ const routes: Routes =
   { path: 'pages/adminRespuestas', component: AdminRepuestasComponent}, 
   { path: 'pages/performance/reportes', component: ReportesComponent}, 
   { path: 'pages/adminCompetencias', component: AdminCompetenciasComponent}, 
+  { path: 'pages/reportes-usuarios', component: ReportesUsuariosComponent}, 
 ];
 
 @NgModule({

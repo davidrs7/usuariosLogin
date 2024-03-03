@@ -61,6 +61,7 @@ import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas
 import { ReportesComponent } from './pages/performance/reportes/reportes.component';
 import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-competencias.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ReportesUsuariosComponent } from './pages/reportes-usuarios/reportes-usuarios.component';
  
 
 
@@ -110,7 +111,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     RutasPermisosComponent,
     AdminObjetivosComponent, 
     ObejtivosUsuarioComponent, 
-    CompetenciasUsuarioComponent, AdminPreguntasComponent, AdminRepuestasComponent, ReportesComponent, AdminCompetenciasComponent  
+    CompetenciasUsuarioComponent, AdminPreguntasComponent, AdminRepuestasComponent, ReportesComponent, AdminCompetenciasComponent, ReportesUsuariosComponent  
   ],
   imports: [
     BrowserModule,
