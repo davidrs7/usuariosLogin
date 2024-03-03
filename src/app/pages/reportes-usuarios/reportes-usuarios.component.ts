@@ -55,6 +55,8 @@ export class ReportesUsuariosComponent implements OnInit {
       //usuarios
       this.loginServices.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
         this.usuarios = respuesta.data; 
+      console.log(this.usuarios)
+
       });
 
       this.loginServices.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
@@ -72,12 +74,27 @@ export class ReportesUsuariosComponent implements OnInit {
 
   cargarlistasObjetivos(){
     this.loginServices.GetAllData<any>('Objetivos').subscribe((respuesta: ApiResponse<any>) => {
-      this.usuarios = respuesta.data; 
+      this.objetivos = respuesta.data; 
+      console.log(this.objetivos)
+    });
+
+    this.loginServices.GetAllData<any>('AccionesObjetivos').subscribe((respuesta: ApiResponse<any>) => {
+      this.accionesObjetivos = respuesta.data; 
+      console.log(this.accionesObjetivos)
+
+    });
+
+    this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
+      this.estadoAcciones = respuesta.data; 
+      console.log(this.estadoAcciones)
+
     });
   }
 
   activaReport(accion: number) {
     this.accion = accion;
+
+    if (accion == 1) { this.cargarlistasObjetivos();}
   }
 
   generarReporte() {
@@ -90,7 +107,6 @@ export class ReportesUsuariosComponent implements OnInit {
   }
 
   generarReporteObjetivos() {
-    this.cargarlistasObjetivos();
     const filtroSelect = document.getElementById('filtro') as HTMLSelectElement;
     const optionSeleccionadoId = filtroSelect.value;
     const reporteObjetivos: ReporteObjetivos[] = [];
@@ -114,7 +130,7 @@ export class ReportesUsuariosComponent implements OnInit {
           cargo: cargo ? cargo.nombre : '',
           rol: rol ? rol.nombre : '',
           nombre_lider: lider ? lider.nombre : '',
-          objetivo: objetivo ? objetivo.titulo : '',
+          objetivo:  this.encontrarObjetivoPorId(accion.idObjetivo).titulo || '',
           descripcion: objetivo ? objetivo.descripcion : '',
           peso: objetivo ? objetivo.peso : 0,
           accion: accion.descripcion,
@@ -126,11 +142,11 @@ export class ReportesUsuariosComponent implements OnInit {
 
     console.log(reporteObjetivos);
 
-    /*
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.objetivos);
+   
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(reporteObjetivos);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'objetivos');
-    XLSX.writeFile(wb, 'objetivos.xlsx');*/
+    XLSX.writeFile(wb, 'objetivos.xlsx'); 
   }
 
   generarReportCompetencias() {
@@ -161,7 +177,7 @@ export class ReportesUsuariosComponent implements OnInit {
   }
 
   encontrarObjetivoPorId(id: number) {
-    return this.objetivos.find(objetivo => objetivo.idUsuario === id);
+    return this.objetivos.find(objetivo => objetivo.id === id);
   }
 
   encontrarAccionesObjetivoPorId(id: number) {
