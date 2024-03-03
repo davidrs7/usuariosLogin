@@ -106,9 +106,10 @@ export class ReportesUsuariosComponent implements OnInit {
     if (this.accion == 4) { this.cargueCompetencias(); }
   }
 
+
   generarReporteObjetivos() {
     const filtroSelect = document.getElementById('filtro') as HTMLSelectElement;
-    const optionSeleccionadoId = filtroSelect.value;
+    const optionSeleccionadoId = filtroSelect.value; 
     const reporteObjetivos: ReporteObjetivos[] = [];
 
     // Iterar sobre cada usuario y poblar la información en reporteObjetivos
@@ -138,15 +139,64 @@ export class ReportesUsuariosComponent implements OnInit {
           calificacion: accion.calificacion || 0
         });
       });
+
+      
+        // Si el usuario no tiene acciones, agregar una entrada en el reporte
+        if (acciones.length === 0) {
+          reporteObjetivos.push({
+              usuario: usuario.nombre,
+              tipo_documento: tipoDocumento ? tipoDocumento.descripcion : '',
+              documento: usuario.numDocumento,
+              correo: usuario.correoElectronico,
+              cargo: cargo ? cargo.nombre : '',
+              rol: rol ? rol.nombre : '',
+              nombre_lider: lider ? lider.nombre : '',
+              objetivo: objetivo ? objetivo.titulo : '',
+              descripcion: objetivo ? objetivo.descripcion : '',
+              peso: objetivo ? objetivo.peso : 0,
+              accion: '',
+              estado: '',
+              calificacion: 0
+          });
+      }
     });
+
 
     console.log(reporteObjetivos);
 
+    const reporteFiltrado = this.aplicarfiltro(Number(optionSeleccionadoId),reporteObjetivos);
+    
    
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(reporteObjetivos);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(reporteFiltrado);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'objetivos');
     XLSX.writeFile(wb, 'objetivos.xlsx'); 
+  }
+
+  aplicarfiltro(filtro: number,reporte: any){
+    var reporteFiltrado: any[] = [];
+
+    switch (filtro) { 
+      case 2: // Sin objetivos
+          reporteFiltrado = reporte.filter((item:any) => item.objetivo === '');
+          break;
+      case 3: // Sin acciones
+          reporteFiltrado = reporte.filter((item:any) => item.accion === '');
+          break;
+      case 4: // Sin calificación
+          reporteFiltrado = reporte.filter((item:any) => item.calificacion === 0);
+          break;
+      case 5: // Calificados
+          reporteFiltrado = reporte.filter((item:any) => item.calificacion > 0);
+          break;
+      default:
+          reporteFiltrado = [...reporte];
+          break;
+  }
+
+
+
+    return reporteFiltrado;
   }
 
   generarReportCompetencias() {
