@@ -14,16 +14,16 @@
             <button (click)="activaReport(2)"> Cargue masivo objetivos</button>
         </div>
         <div class="col-3">
-            <button (click)="activaReport(3)"> Reportes Competencias</button>
+            <button (click)="activaReport(3)"> Cargue masivo acciones  </button>
         </div>
         <div class="col-3">
-            <button (click)="activaReport(4)"> Cargue masivo competencias</button>
+            <button (click)="activaReport(4)"> Cargue masivo calificaciones </button>
         </div>
     </div>
 
     <br><br><br><br>
 
-    <div class="row" *ngIf="accion == 1 || accion == 3">
+    <div class="row" *ngIf="accion == 1">
         <div class="col-2">
             <label> Reporte: {{ accion == 1? 'objetivos' :'competencias' }} </label>
         </div>
@@ -45,10 +45,10 @@
     </div>
 
 
-    <div *ngIf="accion == 2 || accion == 4">
-        <label> cargue: {{ accion == 2? 'objetivos' :'competencias' }} </label> <br>
+    <div *ngIf="accion == 2 || accion == 3  || accion == 4">
+        <label> cargue: {{ accion == 2? 'objetivos' :'Acciones/calificaciones' }} </label> <br>
         <label> Selecciona el archivo .csv </label> <br><br><br>
-        <input type="file" id="archivoUser"> <br><br><br><br>
+        <input type="file" id="archivo"> <br><br><br><br>
         <button class="btn-green" (click)="generarReporte()">Cargar</button>
     </div>
 

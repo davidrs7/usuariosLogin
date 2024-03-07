@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
 import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
+import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 
 
@@ -43,7 +44,8 @@ export class ReportesUsuariosComponent implements OnInit {
   objetivos: any[] = [];
   accionesObjetivos: any[] = [];
   estadoAcciones: any[] = [];
-
+  archivoObjetivos: File | null = null ;
+  canva: boolean = false;
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
 
@@ -100,10 +102,10 @@ export class ReportesUsuariosComponent implements OnInit {
   generarReporte() {
     // objetivos
     if (this.accion == 1) { this.generarReporteObjetivos(); }
-    if (this.accion == 2) { this.cargueObjetivos(); }
+    if (this.accion == 2) { this.cargueObjetivos('Objetivos/cargar-objetivos'); }
     // competencias
-    if (this.accion == 3) { this.generarReportCompetencias(); }
-    if (this.accion == 4) { this.cargueCompetencias(); }
+    if (this.accion == 3 || this.accion == 4 ) { this.cargueObjetivos('AccionesObjetivos/cargar-acciones'); }
+ 
   }
 
 
@@ -202,12 +204,63 @@ export class ReportesUsuariosComponent implements OnInit {
   generarReportCompetencias() {
   }
 
-  cargueObjetivos() {
+  cargueObjetivos(rutaApi: string) {
+
+    const inputElement = <HTMLInputElement>document.getElementById('archivo');
+    if (inputElement.files && inputElement.files.length > 0) {
+      this.archivoObjetivos = inputElement.files[0];
+    }
+    if (this.archivoObjetivos !== null && this.validarArchivo(this.archivoObjetivos)) { 
+      const fd = new FormData();
+      fd.append('file', this.archivoObjetivos, this.archivoObjetivos.name);
+      console.log(fd);       
+      this.canva = true;
+      this.loginServices.cargaMasivaUsers(rutaApi,fd).subscribe(
+        (respuesta: ApiResponse<any>) => {
+          Swal.fire({
+            icon: 'success',
+            title:  respuesta.estado.descripcion,
+            text: 'Codigo: ' + respuesta.estado.codigo
+          }).then((res:any) => {
+            //this.LimpiarFormulario();
+          });
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
+          });
+          //this.LimpiarFormulario();
+        }
+      );
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'error: ' ,
+        text: 'Por favor selecciona un archivo valido (.csv) '  
+      }).then((res:any) => {
+        return;
+      });
+    }
+
+
+
   }
 
-  cargueCompetencias() {
+  validarArchivo(archivo: File): boolean{
+    let archivoValido = true; 
+
+    if (archivo.type != "text/csv"){
+        archivoValido = false 
+    }
+
+    return archivoValido;
+
+
   }
 
+  
 
   // inicia funciones reporte objetivos
   encontrarUsuarioPorId(id: number) {
