@@ -10,7 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
 import * as XLSX from 'xlsx';
-import Swal from "sweetalert2" 
+import Swal from "sweetalert2"  
+
 
 interface PorcentajeLogrado {
   idObjetivo: number;
@@ -41,6 +42,7 @@ interface genericGraficaPie {
 
 
 export class ReportesComponent implements OnInit {
+  @ViewChild('chart') chart!: ElementRef;
 
   // objetivos
   accionesObjetivos: any[] = [];
@@ -63,6 +65,19 @@ export class ReportesComponent implements OnInit {
   legendPosition: string = 'below';
   reportesCompetencia: any;
   reportesCompetencias: any[] = [];
+  opcionesrespuesta: any[] = [];
+  usuario: any = {};
+
+  //bar- horizontal
+  // Configuración del gráfico  
+  viewHor: [number, number] = [600, 300];
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Calificación';
+  showYAxisLabel: boolean = true;
+  yAxisLabel: string = 'Competencia';
+  nombreUsuario: any;
 
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) {
@@ -75,33 +90,61 @@ export class ReportesComponent implements OnInit {
   colorScheme: any = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
- 
+
   onSelect(data: any): void {
-   // //console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    // //// //console.log('Item clicked', JSON.parse(JSON.stringify(data)));
   }
 
   onActivate(data: any): void {
-    //console.log('Activate', JSON.parse(JSON.stringify(data)));
+    //// //console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   onDeactivate(data: any): void {
-    //console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    //// //console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
   async cargarListas() {
     const idusuario = Number(localStorage.getItem('SEUID'));
+
+    //usuario
+    await this.cargarUsuario(idusuario);
+
     //objetivos
     await this.cargaAccionesObjetivosxUser(idusuario);
     await this.cargaObjetivosxUser(idusuario);
     await this.cargarReporte();
     // competencias
+    await this.cargarOpcionesRespuesta();
     await this.cargarCompetencias(); // carga competencias parametrizadas por la compañia 
     await this.cargarPreguntas(); // carga preguntas globales de la compañía
     await this.cargarRespuestasComp(idusuario); // carga respuestas de la evaluación de competencias
     await this.calcularCompetencias();
-
   }
 
+  async cargarUsuario(idusuario: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.loginServices.getDatabyId<any>('User',idusuario)
+        .subscribe((respuesta: ApiResponse<any>) => {
+          this.usuario = respuesta.data; 
+          resolve(this.usuario);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
+
+
+  async cargarOpcionesRespuesta(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.loginServices.GetAllData<any>('opciones_respuesta')
+        .subscribe((respuesta: ApiResponse<any>) => {
+          this.opcionesrespuesta = respuesta.data; 
+          resolve(this.opcionesrespuesta);
+        }, error => {
+          reject(error);
+        });
+    });
+  }
 
   //competencias
   async cargarRespuestasComp(idusuario: number): Promise<any> {
@@ -109,7 +152,6 @@ export class ReportesComponent implements OnInit {
       this.loginServices.getDatabyId<any>('respuestas_usuario', idusuario)
         .subscribe((respuesta: ApiResponse<any>) => {
           this.respuestasCompetencias = respuesta.data;
-         // console.log(this.respuestasCompetencias);
           resolve(this.respuestasCompetencias);
         }, error => {
           reject(error);
@@ -121,8 +163,7 @@ export class ReportesComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.loginServices.GetAllData<any>('Competencias')
         .subscribe((respuesta: ApiResponse<any>) => {
-          this.competencias = respuesta.data;
-          //console.log(this.competencias);
+          this.competencias = respuesta.data; 
           resolve(this.competencias);
         }, error => {
           reject(error);
@@ -134,8 +175,7 @@ export class ReportesComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.loginServices.GetAllData<any>('Preguntas')
         .subscribe((respuesta: ApiResponse<any>) => {
-          this.preguntas = respuesta.data;
-          //console.log(this.preguntas);
+          this.preguntas = respuesta.data; 
           resolve(this.preguntas);
         }, error => {
           reject(error);
@@ -149,8 +189,7 @@ export class ReportesComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.loginServices.getAccionesObjetivosxIdusuario<any>('AccionesObjetivos/xIduser', idusuario)
         .subscribe((respuesta: ApiResponse<any>) => {
-          this.accionesObjetivos = respuesta.data;
-          //console.log(this.accionesObjetivos);
+          this.accionesObjetivos = respuesta.data; 
           resolve(this.accionesObjetivos);
         }, error => {
           reject(error);
@@ -163,8 +202,7 @@ export class ReportesComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.loginServices.getObjetivosbyId<any>('Objetivos', idusuario)
         .subscribe((respuesta: ApiResponse<any>) => {
-          this.objetivosUsuario = respuesta.data;
-          //console.log(this.objetivosUsuario);
+          this.objetivosUsuario = respuesta.data; 
           resolve(this.objetivosUsuario);
         }, error => {
           reject(error);
@@ -178,7 +216,7 @@ export class ReportesComponent implements OnInit {
     this.graficaPorcentajeGeneral = [];
     this.graficaCompetencias = [];
     this.calcularPorcentajeLogrado();
-    
+
   }
 
   calcularPorcentajeLogrado = (): PorcentajeLogrado[] => {
@@ -186,18 +224,18 @@ export class ReportesComponent implements OnInit {
     let sumaTotalPorcentajeLogrado = 0;
     this.objetivosUsuario.forEach(objetivo => {
       const accionesObjetivo = this.accionesObjetivos.filter(accion => accion.idObjetivo === objetivo.id);
-      const calificacionTotal = accionesObjetivo.reduce((acc, accion) => acc + accion.calificacion, 0);
-      const porcentajeTotal = ((calificacionTotal / accionesObjetivo.length) / 100) * objetivo.peso; // Calculamos el porcentaje total basado en el peso
+ 
+      const calificacionTotal =   accionesObjetivo.reduce((acc, accion) => acc + accion.calificacion , 0);
+      const numCalifObjetivos = accionesObjetivo.length > 0 ? accionesObjetivo.length : 1;
+      const porcentajeTotal = ((calificacionTotal / numCalifObjetivos) / 100) * objetivo.peso; // Calculamos el porcentaje total basado en el peso
       sumaTotalPorcentajeLogrado += porcentajeTotal;
-      this.graficaPorcentajeLogrado.push({ name: objetivo.titulo, value: porcentajeTotal });
+      this.graficaPorcentajeLogrado.push({ name: objetivo.titulo , value: porcentajeTotal });
       this.graficaPorcentajeGeneral.push({ name: objetivo.titulo, value: objetivo.peso });
       porcentajeLogrado.push({ idObjetivo: objetivo.id, objetivo: objetivo.titulo, pesoObjetivo: objetivo.peso, porcentajeLogrado: porcentajeTotal });
     });
 
     this.calificacion = porcentajeLogrado;
-    this.sumaTotalPorcentajeLogrado = sumaTotalPorcentajeLogrado
-    ////console.log(this.calificacion);
-    ////console.log(this.sumaTotalPorcentajeLogrado);
+    this.sumaTotalPorcentajeLogrado = sumaTotalPorcentajeLogrado 
     return porcentajeLogrado;
   };
 
@@ -205,30 +243,28 @@ export class ReportesComponent implements OnInit {
   async calcularCompetencias() {
     const reportesCompetencia: any[] = [];
     this.graficaCompetencias = [];
- 
-    this.competencias.forEach(competencia => { 
+
+    this.competencias.forEach(competencia => {
       const preguntasCompetencia = this.preguntas.filter(pregunta => pregunta.idcompetencia === competencia.id);
-     
+
       const respuestasCompetencia = this.respuestasCompetencias.filter(respuesta =>
         preguntasCompetencia.some(pregunta => pregunta.id === respuesta.id_pregunta)
-      );     
-
-      console.log(respuestasCompetencia);
-
-      const calificacionPromedio = respuestasCompetencia.reduce((total, respuesta) => total + respuesta.id_respuesta, 0) / respuestasCompetencia.length;
-     
-      const porcentajeLogrado = (calificacionPromedio / 5) * 100;  
-        
-      this.graficaCompetencias.push( {name: competencia.competencia, value : porcentajeLogrado} );
+      );
  
+
+      const calificacionPromedio = respuestasCompetencia.reduce((total, respuesta) => total + this.consultarPesoRta(respuesta.id_respuesta), 0) / respuestasCompetencia.length;
+
+      const porcentajeLogrado = (calificacionPromedio / 5) * 100;
+
+      this.graficaCompetencias.push({ name: competencia.competencia, value: porcentajeLogrado });
+
       reportesCompetencia.push({
         idusuario: this.respuestasCompetencias[0].id_usuario_calificado, // Reemplazar con el ID de usuario correspondiente
         competencia: competencia.competencia,
         calificacion: calificacionPromedio,
         porcentajeLogrado: porcentajeLogrado
-      });      
-    });    
-    console.log(reportesCompetencia);
+      });
+    }); 
     this.reportesCompetencias = this.filterData(reportesCompetencia);
   }
 
@@ -246,9 +282,18 @@ export class ReportesComponent implements OnInit {
     XLSX.writeFile(wb, 'competencias.xlsx');
   }
 
-   filterData = (data: any[]) => {
+  filterData = (data: any[]) => {
     return data.filter(item => item.name !== 'Total');
-  }; 
+  };
 
+  consultarPesoRta(idrespuesta: number) {
 
+    let respuesta = this.opcionesrespuesta.filter((x: any) => x.id == idrespuesta)[0].peso;
+    return respuesta || 0
+  }
+
+  exportToPdfCompetencias(){
+    window.print();
+  }
+ 
 }

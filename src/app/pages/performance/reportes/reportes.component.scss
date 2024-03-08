@@ -1,4 +1,37 @@
-.green-background {
-  background-color: rgb(54, 139, 46);  
-  width: auto;
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #fff; /* Agrega un fondo blanco */
+}
+
+.card__header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.card__title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.card__content {
+  padding: 10px 0;
+  font-size: 16px; /* Aumenta el tamaño de la letra en el contenido */
+}
+
+.card__description,
+.card__weight {
+  margin: 5px 0;
+}
+
+.card__footer {
+  text-align: right;
+  font-size: 16px; /* Aumenta el tamaño de la letra en el pie */
+}
+
+.card__date {
+  font-style: italic;
+  margin: 5px 0;
 }
