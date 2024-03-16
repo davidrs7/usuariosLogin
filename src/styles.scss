@@ -219,10 +219,10 @@ table {
     }
     & div {
         width: 100%;
-        padding-left: 2.5rem;
+        
     }
     & ul {
-        width: 100%;
+        width: 35%;
         background-color: $errorback;
         padding-top: 4px;
         padding-bottom: 2px;
@@ -242,11 +242,7 @@ table {
     justify-content: center;
     width: 100%;
     padding-top: 2%;
-    padding-bottom: 2%;
-    & button {
-        margin-left: 3rem;
-        margin-right: 3rem;
-    }
+    padding-bottom: 2%; 
 }
 
 .background-right {

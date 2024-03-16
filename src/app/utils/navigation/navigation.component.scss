@@ -1,7 +1,7 @@
 @import '../../../variables.scss';
 @import '../../../mixins.scss';
 .navbar {
-    background-color: $main;
+    background: $main;
     font-size: 1.8rem;
     font-family: 'Poppins';
     & .navbar-left-block {
