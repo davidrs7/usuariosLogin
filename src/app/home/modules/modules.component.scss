@@ -7,84 +7,88 @@
     display: grid;
     grid-template-columns: 40% 60%;
     grid-template-rows: 100vh;
+
     &__user {
         height: 100%;
-        width: 100%;
-        background-color: $main;
+        width: 60%; 
+        background-image: url(../../../assets/Fondo_panel_izquierdo.png);
         display: grid;
         grid-template-columns: 100%;
         grid-template-rows: 40% 40% 20%;
+
         &--logo {
             align-self: flex-start;
             justify-self: baseline;
-            height: 12vh;
-            margin-top: 5%;
-            margin-left: 5%;
+            margin-top: 20%;
+            margin-left: 39%;
+
             @media only screen and (max-width: $sm) {
                 height: 5vh;
                 transition: height 2s;
             }
         }
+
         &--message {
             & p {
                 &:first-child {
-                    font-size: 6.5rem;
-                    font-family: 'Questrial';
-                    font-weight: bold;
+                    font-size: 3.5rem;
+                    font-style: normal;
                     letter-spacing: .25rem;
                     margin-bottom: 5%;
+
                     @media only screen and (max-width: $sm) {
                         font-size: 3rem;
                         transition: font-size 2s;
                     }
                 }
+
                 &:last-child {
                     font-weight: 300;
                 }
+
                 & img {
-                    width: 10vw;
+                    width: 5vw;
                     border-radius: 50%;
                 }
+
                 font-size: 2.5rem;
                 color: $white;
                 text-align: center;
             }
         }
-        &--tiindux {
-            align-self: flex-end;
+
+        &--tiindux { 
             justify-self: center;
-            height: 5vh;
+            height: 8vh;
             margin-bottom: 5%;
         }
     }
 }
 
+ 
+
 .modules__card {
-    align-self: center;
-    justify-self: center;
-    height: 35rem;
-    width: 80%;
-    margin: 4% 10%;
-    display: grid;
+    align-self: center;  
+    margin: 4% 10%; 
     grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
     align-content: space-evenly;
+    font-size: 2rem;
+
     & div {
-        background-color: $main;
-        color: $white;
-        width: 100%;
-        padding-top: 15%;
-        padding-bottom: 15%;
-        text-align: center;
-        font-size: 2rem;
-        border-top-left-radius: 40px;
-        border-top-right-radius: 40px;
-        cursor: pointer;
+        background-color: $color6;
+        color: $colorNegro;
+        width: 100%;   
+        cursor: pointer; 
+        border-radius: 1rem;
     }
-    & div:hover, & div:focus {
-        background-color: $color3;
+
+    & div:hover,
+    & div:focus {
+        background-color: $color7;
+        color: $white;
     }
 }
 
@@ -94,9 +98,11 @@
             background-color: $gray;
             color: $main;
             padding-top: 11%;
-            padding-bottom: 6%; 
+            padding-bottom: 6%;
         }
-        & div:hover, & div:focus {
+
+        & div:hover,
+        & div:focus {
             background-color: $white;
         }
     }
@@ -104,4 +110,8 @@
 
 .opacity-60 {
     opacity: 0.6;
+}
+ 
+.img-seleccion{
+    width: 10rem; 
 }

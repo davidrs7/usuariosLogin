@@ -16,13 +16,14 @@ export class ModulesComponent implements OnInit {
   modalReference: any = {};
   userName: string = '';
   user!: UserDTO;
-  canva: boolean = true;
+  canva: boolean = false;
   Permisos: any[] = [];
   Permiso: any;
   rolesPermisos: any[] = [];
   rolPermiso: any;
   usario: any;
   Acceso: boolean = false;
+  rutaFoto: string =  ''
 
   constructor(private modalService: NgbModal, private router: Router, private userService: UserService, private loginServices: loginTiinduxService) { }
 
@@ -39,6 +40,8 @@ export class ModulesComponent implements OnInit {
         this.router.navigateByUrl('');
       }
     }
+
+    console.log(this.user);
   }
 
 
@@ -94,6 +97,19 @@ export class ModulesComponent implements OnInit {
       this.modalReference.close();
   }
 
+  rutaImagen(ruta: string){
+    
+    let rutaImg = ''
+
+    if (ruta == 'rrhh') { rutaImg = '../../assets/Icono_RRHH_2.png' }
+    if (ruta == 'BIENESTAR') { rutaImg = '../../assets/Icono_Bienestar.png' }
+    if (ruta == 'SST') { rutaImg = '../../assets/Icono_SST.png' }
+    if (ruta == 'GESCON') { rutaImg = '../../assets/Icono_Gestion_de_conocimiento.png' }
+    if (ruta == 'ADMON') { rutaImg = '../../assets/Icono_Administracion.png' }
+
+    return rutaImg;
+  }
+
 
   cargalistas() {
     this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
@@ -115,5 +131,33 @@ export class ModulesComponent implements OnInit {
 
 
   }
+
+  nuevoLogout() {
+    var token = localStorage.getItem('SESST');
+    if (localStorage.getItem('SESSL') != '1') {
+      this.router.navigateByUrl('');
+    } else {
+      var token = localStorage.getItem('SESST');
+      if (token != null && token != '') {
+        var userId = localStorage.getItem('SEUID');
+        this.loginServices.eliminarDato('Sesion', Number(userId)).subscribe(
+          (respuesta: ApiResponse<any>) => {
+            //console.log(respuesta.data)
+            this.destroySession();
+          }
+        );
+      } else {
+        this.destroySession();
+      }
+    }
+
+  }
+
+
+  destroySession() {
+    localStorage.setItem('SESSL', '0');
+    this.router.navigateByUrl('');
+  }
+ 
 
 }

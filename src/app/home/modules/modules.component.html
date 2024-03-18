@@ -1,19 +1,22 @@
 <div class="modules background-right">
-    <div class="modules__user background-left">
-        <img src="../../assets/asecofin_logo.png" alt="Asecofin Logo" class="modules__user--logo">
+    <div class="modules__user">
+        <img src="../../assets/Logotipo.png" alt="Asecofin Logo" class="modules__user--logo">
         <span class="modules__user--message">
-            <p>¡Bienvenido!</p>
-            <p><img src="{{ (user.photoUrl != null && user.photoUrl != '') ? user.photoUrl : '../../assets/avatar.png' }}" alt="Asecofin Logo" class="modules__user--profile"></p>
+            <p>¡Bienvenid@!</p>
+            <p><img src="../../assets/avatar.png"  class="modules__user--profile"></p>
             <p>{{ userName }}</p>
+            <p (click)="nuevoLogout()" style="cursor: pointer;"><b> Salir </b> <span class="fas fa-right-from-bracket fa-lg"></span></p>
+      
         </span>
         <img src="../../assets/tiindux_logo.png" alt="Tiindux Logo" class="modules__user--tiindux">
     </div>
     <div class="modules__card">
-        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)">RRHH</div>
-        <div class="modules__card--bienestar ">BIENESTAR</div>
-        <div class="modules__card--sst">SST</div>
-        <div class="modules__card--conocimiento">GESTIÓN DE CONOCIMIENTO</div>
-        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)">ADMINISTRACION</div>
+       
+        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)"> <img src="{{rutaImagen('rrhh')}}" class="img-seleccion">    RRHH </div><br>
+        <div class="modules__card--bienestar "> <img src="{{rutaImagen('BIENESTAR')}}" class="img-seleccion"> BIENESTAR</div><br>
+        <div class="modules__card--sst"><img src="{{rutaImagen('SST')}}" class="img-seleccion">SST</div><br>
+        <div class="modules__card--conocimiento"><img src="{{rutaImagen('GESCON')}}" class="img-seleccion">GESTIÓN DE CONOCIMIENTO</div><br>
+        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)"><img src="{{rutaImagen('ADMON')}}" class="img-seleccion">ADMINISTRACION</div><br>
     </div>
 </div>
 
@@ -43,7 +46,7 @@
         </div>
         <div class="modal-form"> 
             <div class="modules__card"> 
-                <div class="modules__card--rol" (click)="openModule('pages/roles')" >Roles</div>
+                <div class="modules__card--rol" (click)="openModule('pages/roles')" >Roles</div> 
                 <div class="modules__card--rol" (click)="openModule('pages/cargos')">Cargos</div>
                 <div class="modules__card--rol" (click)="openModule('pages/permisos')">Permisos</div>
                 <div class="modules__card--rol" (click)="openModule('pages/rutaspermisos')">Accesos</div>

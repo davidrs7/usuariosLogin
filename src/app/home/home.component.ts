@@ -111,6 +111,33 @@ export class HomeComponent implements OnInit {
       this.loginValid = false;
     }
   }
+
+  nuevoLogout() {
+    var token = localStorage.getItem('SESST');
+    if (localStorage.getItem('SESSL') != '1') {
+      this.router.navigateByUrl('');
+    } else {
+      var token = localStorage.getItem('SESST');
+      if (token != null && token != '') {
+        var userId = localStorage.getItem('SEUID');
+        this.loginServices.eliminarDato('Sesion', Number(userId)).subscribe(
+          (respuesta: ApiResponse<any>) => {
+            //console.log(respuesta.data)
+            this.destroySession();
+          }
+        );
+      } else {
+        this.destroySession();
+      }
+    }
+
+  }
+
+
+  destroySession() {
+    localStorage.setItem('SESSL', '0');
+    this.router.navigateByUrl('');
+  }
  
 
 } 
