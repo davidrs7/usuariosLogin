@@ -1,4 +1,5 @@
 // Estilo base para la tarjeta
+@import '../../../../variables.scss';
 .card {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -20,6 +21,8 @@
     display: flex;
     flex-wrap: wrap;  
     justify-content: space-around;  
+    background-color: $color2;
+    border-radius: 8px;
 }
 
 .barra-ponderacion {
@@ -139,3 +142,10 @@
 button:hover {
     background-color: #879db6;
 }
+
+.btn-users{
+    width: 100%;
+    &:hover{
+        background-color: #f36e21;
+    }
+ }

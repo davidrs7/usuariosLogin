@@ -23,7 +23,8 @@ export class ModulesComponent implements OnInit {
   rolPermiso: any;
   usario: any;
   Acceso: boolean = false;
-  rutaFoto: string =  ''
+  rutaFoto: string = ''
+  
 
   constructor(private modalService: NgbModal, private router: Router, private userService: UserService, private loginServices: loginTiinduxService) { }
 
@@ -65,26 +66,26 @@ export class ModulesComponent implements OnInit {
     );
   }
 
- 
 
-  openModule(module: string) {  
+
+  openModule(module: string) {
     let permiso = this.Permisos.filter(x => x.rutaAngular == module);
     let idRol = this.usario.rolId || 0;
     let idpermiso = permiso.length > 0 ? permiso[0].permisoId : 0;
     let existepermiso = this.rolesPermisos.filter(x => x.permisoID == idpermiso && x.rolID == idRol);
-       
+
     if (existepermiso.length > 0) {
       this.Acceso = false
       this.router.navigateByUrl(module);
-    }else {
+    } else {
       Swal.fire({
         icon: 'warning',
         title: 'Error',
         text: 'No tienes acceso a este modulo, por favor comunicate con el administrador.'
-      }); 
+      });
     }
 
-     
+
     this.closeModal();
   }
 
@@ -97,34 +98,53 @@ export class ModulesComponent implements OnInit {
       this.modalReference.close();
   }
 
-  rutaImagen(ruta: string){
-    
+  rutaImagen(ruta: string) {
+
     let rutaImg = ''
 
-    if (ruta == 'rrhh') { rutaImg = '../../assets/Icono_RRHH_2.png' }
-    if (ruta == 'BIENESTAR') { rutaImg = '../../assets/Icono_Bienestar.png' }
-    if (ruta == 'SST') { rutaImg = '../../assets/Icono_SST.png' }
-    if (ruta == 'GESCON') { rutaImg = '../../assets/Icono_Gestion_de_conocimiento.png' }
-    if (ruta == 'ADMON') { rutaImg = '../../assets/Icono_Administracion.png' }
+    if (ruta == 'rrhh'      ) { rutaImg = '../../assets/Icono_RRHH_2.png' } 
+    if (ruta == 'BIENESTAR' ) { rutaImg = '../../assets/Icono_Bienestar.png' } 
+    if (ruta == 'SST'       ) { rutaImg = '../../assets/Icono_SST.png' } 
+    if (ruta == 'GESCON'    ) { rutaImg = '../../assets/Icono_Gestion_de_conocimiento.png' } 
+    if (ruta == 'ADMON'     ) { rutaImg = '../../assets/Icono_Administracion.png' } 
 
     return rutaImg;
   }
 
+  cambiarImagen(elemento: any, ruta: string) {
+    const divElement = event.target as HTMLDivElement;
+    const imgElement = divElement.querySelector('img') as HTMLImageElement; 
+    if (ruta == 'rrhh') { imgElement.src = '../../assets/Icono_RRHH.png' }
+    if (ruta == 'BIENESTAR') { imgElement.src = '../../assets/Icono_Bienestar_2.png' }
+    if (ruta == 'SST') { imgElement.src = '../../assets/Icono_SST_2.png' }
+    if (ruta == 'GESCON') { imgElement.src = '../../assets/Icono_Gestion_de conocimiento_2.png' }
+    if (ruta == 'ADMON') { imgElement.src = '../../assets/Icono_Administracion_2.png' }
+  }
+
+  restaurarImagen(elemento:any,ruta: string) {
+    const divElement = event.target as HTMLDivElement;
+    const imgElement = divElement.querySelector('img') as HTMLImageElement;
+    if (ruta == 'rrhh'      ) { imgElement.src = '../../assets/Icono_RRHH_2.png' } 
+    if (ruta == 'BIENESTAR' ) { imgElement.src = '../../assets/Icono_Bienestar.png' } 
+    if (ruta == 'SST'       ) { imgElement.src = '../../assets/Icono_SST.png' } 
+    if (ruta == 'GESCON'    ) { imgElement.src = '../../assets/Icono_Gestion_de_conocimiento.png' } 
+    if (ruta == 'ADMON'     ) { imgElement.src = '../../assets/Icono_Administracion.png' } 
+  }
 
   cargalistas() {
     this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
-      this.rolesPermisos = respuesta.data; 
+      this.rolesPermisos = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('Permisos').subscribe((respuesta: ApiResponse<any>) => {
-      this.Permisos = respuesta.data; 
+      this.Permisos = respuesta.data;
 
     });
 
     var iduser = localStorage.getItem('SEUID');
 
     this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data 
+      this.usario = respuesta.data
 
     })
 
@@ -158,6 +178,6 @@ export class ModulesComponent implements OnInit {
     localStorage.setItem('SESSL', '0');
     this.router.navigateByUrl('');
   }
- 
+
 
 }

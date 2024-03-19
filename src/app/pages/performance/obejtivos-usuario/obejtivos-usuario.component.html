@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <h2> Fecha Inicio: {{ convertirFormatoFecha(objetivo.fechaInicio) }}  Fecha Fin:
+                                <h2> Fecha Inicio: {{ convertirFormatoFecha(objetivo.fechaInicio) }} Fecha Fin:
                                     {{convertirFormatoFecha(objetivo.fechaFin)}}</h2>
 
                             </div>
@@ -63,10 +63,10 @@
         </div>
     </div>
 
-    <div class="col-6">  
+    <div class="col-6">
 
-        
-        <div class="notification-bell" (click) = "mostrarPopup()" >
+
+        <div class="notification-bell" (click)="mostrarPopup()">
             <i class="fas fa-bell"></i>
             <div class="notification-counter">{{ contadorMensajes }}</div>
         </div>
@@ -74,21 +74,22 @@
 
         <div class="overlay" id="overlay">
             <div class="popup">
-                <h1>Notificaciones</h1> <hr>
+                <h1>Notificaciones</h1>
+                <hr>
                 <div *ngFor="let item of mensajesNotificacion">
-                      <h2>  <i class="fa-regular fa-comment"></i> {{ item.mensaje}}</h2>
+                    <h2> <i class="fa-regular fa-comment"></i> {{ item.mensaje}}</h2>
                 </div> <br><br><br><br><br><br><br>
                 <button (click)="cerrarPopup()">Cerrar</button>
             </div>
         </div>
 
-        
+
         <h1>Mis acciones: {{ objetivotitulo || '' }}</h1><br>
         <div class="container" *ngIf="acciones">
             <div>
 
                 <div class="row">
-                
+
                     <div class="col-6">
                         <h1>Calificación Objetivo: {{ calificacionObjetivo }}</h1>
                     </div>
@@ -112,8 +113,8 @@
                             <td style="text-align: center;">{{ item.idObjetivo }}</td>
                             <td style="text-align: center;">{{ item.descripcion }}</td>
                             <td style="text-align: center;">{{ obtenerestado(item.idEstado) }}</td>
-                            <td style="text-align: center;">{{  item.calificacion }}</td>
-                            <td  class="fa-solid fa-pen action-button" ngbTooltip="Editar"
+                            <td style="text-align: center;">{{ item.calificacion }}</td>
+                            <td class="fa-solid fa-pen action-button" ngbTooltip="Editar"
                                 (click)="editarAccion(item.id)"></td>
                             <td *ngIf="propietario" class="fa-solid fa-trash action-button" ngbTooltip="Eliminar"
                                 (click)="eliminarAccion(item.id)">
@@ -130,10 +131,18 @@
                         class="m-3"></mat-paginator>
                 </div>
 
+            </div><br>
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn-users" (click)="guardaUsuarios()">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
+                        }}</button>
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn-users" >limpiar</button>
+
+                </div>
             </div>
-            <button type="button" (click)="guardaUsuarios()">{{ cargoToEdit ? 'Editar Accion' : 'Crear Accion'
-                }}</button> &nbsp;&nbsp;&nbsp;
-            <button type="button">limpiar</button>
+
             <br><br><br>
             <h2>{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
             <form [formGroup]="AccionesObjForm" autocomplete="off">

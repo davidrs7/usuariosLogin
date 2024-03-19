@@ -12,23 +12,28 @@
     </div>
     <div class="modules__card">
        
-        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)"> <img src="{{rutaImagen('rrhh')}}" class="img-seleccion">    RRHH </div><br>
-        <div class="modules__card--bienestar "> <img src="{{rutaImagen('BIENESTAR')}}" class="img-seleccion"> BIENESTAR</div><br>
-        <div class="modules__card--sst"><img src="{{rutaImagen('SST')}}" class="img-seleccion">SST</div><br>
-        <div class="modules__card--conocimiento"><img src="{{rutaImagen('GESCON')}}" class="img-seleccion">GESTIÓN DE CONOCIMIENTO</div><br>
-        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)"><img src="{{rutaImagen('ADMON')}}" class="img-seleccion">ADMINISTRACION</div><br>
+        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)" (mouseenter)="cambiarImagen($event,'rrhh')" (mouseleave)="restaurarImagen($event,'rrhh')"> <img src="{{rutaImagen('rrhh')}}" class="img-seleccion">    RRHH (Recursos Humanos) </div><br>
+        <div class="modules__card--bienestar" (mouseenter)="cambiarImagen($event,'BIENESTAR')" (mouseleave)="restaurarImagen($event,'BIENESTAR')"> <img src="{{rutaImagen('BIENESTAR')}}"  class="img-seleccion"> Bienestar</div><br>
+        <div class="modules__card--sst" (mouseenter)="cambiarImagen($event,'SST')" (mouseleave)="restaurarImagen($event,'SST')"><img src="{{rutaImagen('SST')}}"  class="img-seleccion">SST (Seguridad y Saludo en el Trabajo)</div><br>
+        <div class="modules__card--conocimiento" (mouseenter)="cambiarImagen($event,'GESCON')" (mouseleave)="restaurarImagen($event,'GESCON')"><img src="{{rutaImagen('GESCON')}}" class="img-seleccion"> Gestion del conocimiento</div><br>
+        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)" (mouseenter)="cambiarImagen($event,'ADMON')" (mouseleave)="restaurarImagen($event,'ADMON')"><img src="{{rutaImagen('ADMON')}}"  class="img-seleccion">Administración</div><br>
     </div>
 </div>
-
+          
 
 <ng-template #modalFuncionarios let-modal>
     <div class="modal-body">
         <div class="modal-close" (click)="closeModal()">
-            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+           Cerrar Ventana <i class="fa-regular fa-circle-xmark"></i>
+        </div>
+        <div class="encabezado">
+            <img  src="../../../assets/Icono_RRHH_ventana_emergente.png">
+            <p class="titulo__modal"><b>RRHH</b></p>
+            <p>Selecciona una categoria para ingresar</p>
         </div>
         <div class="modal-form">
             <div class="modules__card">
-                <div class="modules__card--estorg" (click)="openModule('employees/employee/list')">Estructura Organizacional</div>
+                <div class="modules__card--estorg" (click)="openModule('employees/employee/list')">Estructura Organizacional</div> 
                 <div class="modules__card--personal" (click)="openModule('recruiter/vacancy/list')">Selección de personal</div>
                 <div class="modules__card--desempeno" (click)="openModule('pages/performance/objetiveUser')" >Desempeño</div>
                 <div class="modules__card--adminpersonal">Administración de personal</div>
@@ -41,8 +46,13 @@
 
 <ng-template #modalConfig let-modal>
     <div class="modal-body">
-        <div class="modal-close" (click) ="closeModal()">
-            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        <div class="modal-close" (click)="closeModal()">
+           Cerrar Ventana <i class="fa-regular fa-circle-xmark"></i>
+        </div>
+        <div class="encabezado">
+            <img  src="../../../assets/Icono_Administracion_ventana_emergente.png">
+            <p class="titulo__modal"><b>ADMINISTRACIÓN</b></p>
+            <p>Selecciona una categoria para ingresar</p>
         </div>
         <div class="modal-form"> 
             <div class="modules__card"> 
