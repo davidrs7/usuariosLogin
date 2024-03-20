@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc", 
+    "outDir": "E:/david/Freelance/Tindux/Transmilenio/usuarios_api/usuarios/usuarios.api/wwwroot", 
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "noImplicitReturns": true,

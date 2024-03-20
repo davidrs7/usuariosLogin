@@ -93,12 +93,11 @@ export class ObejtivosUsuarioComponent implements OnInit {
         this.usuarios.push(respuesta.data);
       }
     });*/
-    
+
     await this.cargaUsuariosPromise()
 
     await this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
       this.estadoAcciones = respuesta.data;
-      console.log(this.estadoAcciones)
     })
 
   }
@@ -137,7 +136,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
       fechaaccion: this.AccionesObjForm.get('fechaaccion')?.value,
     };
     if (this.validarcampos()) {
-      console.log(body)
       let resp = this.cargoToEdit == true ? this.ActualizarAccion(body) : this.CrearAccion(body)
     }
   }
@@ -188,7 +186,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
               title: 'Mensaje: ' + respuesta.estado.descripcion,
               text: 'Codigo: ' + respuesta.estado.codigo
             }).then((res: any) => {
-              console.log(this.objetivo);
               this.abrirModal(this.objetivo);
             });
           },
@@ -222,7 +219,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
       validacion = false;
     }
     if (body.calificacion < 0 || body.calificacion > 100) {
-      console.log(body.calificacion);
       mensaje = "La calificación debe ser de 1 a 100"
       validacion = false;
     }
@@ -236,7 +232,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.cargoToEdit = true;
     this.idaccion = id;
     this.accionObjetivo = this.accionesObjetivo.filter(x => x.id == id);
-    console.log(this.accionObjetivo[0])
     this.AccionesObjForm.get('estado')?.setValue(this.accionObjetivo[0].idEstado);
     this.AccionesObjForm.get('evidencia')?.setValue(this.accionObjetivo[0].evidencia);
     this.AccionesObjForm.get('descripcion')?.setValue(this.accionObjetivo[0].descripcion);
@@ -342,9 +337,14 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
     await this.loginServices.getUsersByBoss<any>('AccionesObjetivos/xIduser', this.usuario.usuarioId).subscribe((respuesta: ApiResponse<any>) => {
       this.accionesObjetivo = respuesta.data;
-      this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
-      this.calificaObjetivo(this.accionesObjetivoSel);
+      console.log(respuesta.data.length);
+        this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
+      if (this.accionesObjetivoSel.length > 0) {
+        this.calificaObjetivo(this.accionesObjetivoSel);
+        this.editarAccion(this.accionesObjetivoSel[0].id); // solamente una accion para TM - eliminar esta linea para retomar varias acciones por objetivos.
+      }
     });
+
 
   }
   calificaObjetivo(objetivoSel: any) {
@@ -354,7 +354,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
     let contadorEvidencias = 0;
     let mensaje = { mensaje: "", leido: false }
     let faltanXdias = 0;
-    console.log(objetivoSel);
     for (let i = 0; i < objetivoSel.length; i++) {
       this.calificacionObjetivo += objetivoSel[i].calificacion;
       objetivoSel[i].calificacion == 0 ? contadorcalificaciones += 1 : contadorcalificaciones
@@ -372,17 +371,18 @@ export class ObejtivosUsuarioComponent implements OnInit {
     }
 
     if (contador == 0) {
-      mensaje = { mensaje: "Se deben crear acciones para este objetivo", leido: false }
+      mensaje = { mensaje: "Se deben asociar el resultado esperado para este objetivo", leido: false }
       this.mensajesNotificacion.push(mensaje);
     }
     if (contadorcalificaciones > 0) {
-      mensaje = { mensaje: "El lider debe calificar todas tus acciones", leido: false }
+      mensaje = { mensaje: "El lider debe calificar tus objetivos", leido: false }
       this.mensajesNotificacion.push(mensaje);
     }
+    /*
     if (contadorEvidencias > 0) {
       mensaje = { mensaje: "Se deben subir las evidencias", leido: false }
       this.mensajesNotificacion.push(mensaje);
-    }
+    }*/ 
     if (contador > 0 && contadorcalificaciones == 0) {
       mensaje = { mensaje: "Todos los objetivos se han calificado", leido: false }
       this.mensajesNotificacion.push(mensaje);
@@ -399,8 +399,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
     const fechaInicio = new Date(fechaInicioStr);
     const fechaFin = new Date(fechaFinStr);
-    console.log(fechaInicio);
-    console.log(fechaFin);
     const diferenciaMs = fechaFin.getTime() - fechaInicio.getTime();
 
     const dias = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
