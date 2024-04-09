@@ -20,8 +20,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   usuarios: any[] = [];
   usuario: any;
-  usuariosxJefe: any[] = [];
-  usuarioxJefe: any;
+  usuariosJefe: any[] = [];
+  usuarioJefe: any;
   objetivos: any[] = [];
   objetivo: any;
   accionesObjetivo: any[] = [];
@@ -83,9 +83,14 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.usuarios = [];
     this.idusuario = Number(localStorage.getItem('SEUID'));
 
+
+
     await this.loginServices.getUsersByBoss<any>('User/hierarchy', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       this.usuarios = respuesta.data;
+      this.cargaUsuariosPromise(this.idusuario);
+
     });
+    
 
     /* 
     await this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
@@ -94,7 +99,6 @@ export class ObejtivosUsuarioComponent implements OnInit {
       }
     });*/
 
-    await this.cargaUsuariosPromise()
 
     await this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
       this.estadoAcciones = respuesta.data;
@@ -107,12 +111,28 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   }
 
-  async cargaUsuariosPromise() {
+  async cargaUsuariosPromise(iduser: number) {
     return new Promise<void>((resolve, reject) => {
-      this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe(
+      this.loginServices.getDatabyId<any>('User', iduser).subscribe(
         (respuesta: ApiResponse<any>) => {
-          if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) {
-            this.usuarios.push(respuesta.data);
+          if (this.usuarios.filter(x => x.usuarioId == iduser).length == 0) {           
+            this.usuarios.push(respuesta.data);           }
+          resolve();
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  }
+
+  async cargaUsuariosJefePromise(iduser: number) {
+    return new Promise<void>((resolve, reject) => {
+      this.loginServices.getDatabyId<any>('User', iduser).subscribe(
+        (respuesta: ApiResponse<any>) => {
+          if (this.usuariosJefe.filter(x => x.usuarioId == iduser).length == 0) { 
+              this.usuariosJefe = [];
+              this.usuariosJefe.push(respuesta.data); 
           }
           resolve();
         },
@@ -275,6 +295,8 @@ export class ObejtivosUsuarioComponent implements OnInit {
       });
       return false;
     }
+    // david, descomentar para implementar OKR's por petición de TM se cambia funcionalidad OKRs.
+    /* 
     else if (!this.propietario && !this.cargoToEdit) {
       Swal.fire({
         icon: 'info',
@@ -282,7 +304,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
         text: 'No puedes crear acciones, selecciona una accion para calificar'
       });
       return false;
-    }
+    } */ 
     else { return true }
   }
 
@@ -328,7 +350,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.ponderacionTotal = this.objetivos.reduce((total, objetivo) => total + objetivo.peso, 0);
   }
 
-  async abrirModal(objetivo: any) {
+  async abrirModal(objetivo: any) { 
     this.calificacionObjetivo = 0;
     this.objetivo = objetivo;
     this.acciones = true
@@ -408,20 +430,24 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   async cargarObjetivosxUser(usuarioId: number) {
     await this.loginServices.getObjetivosbyId<any>('Objetivos', usuarioId).subscribe((respuesta: ApiResponse<any>) => {
+ 
       this.asignarObjetivos(respuesta.data);
+
     })
   }
 
-  async rolSelect(event: any) {
+  async rolSelect(event: any) { 
     this.mensajesNotificacion = [];
     this.contadorMensajes = 0;
     this.acciones = false
     const idseleccionado = event?.target?.value;
     this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
+     
     this.cargarObjetivosxUser(idseleccionado);
+    await this.cargaUsuariosJefePromise(this.usuario.jefeId);
 
     if (this.usuario != undefined) {
-      this.nombrelider = this.usuarios.filter(x => x.usuarioId == this.usuario.jefeId)[0].nombre
+      this.nombrelider = this.usuariosJefe.filter(x => x.usuarioId == this.usuario.jefeId)[0].nombre
       if (this.idusuario != this.usuario.usuarioId) {
         this.claseIcono = 'fas fa-check'
         this.AccionesObjForm.controls['estado'].enable();

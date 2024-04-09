@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7243/',
-  apiUrlTiidux: 'http://localhost:5000/'  
-};
+  apiUrl: 'http://localhost:5000/',
+  apiUrlTiidux: 'https://localhost:7243/'  
+}; 

@@ -41,7 +41,7 @@
         </div><br>
 
         <div>
-            <label for="descripcion">Descripción: *</label>
+            <label for="descripcion">Descripción - resultado esperado: *</label>
             <textarea formControlName="descripcion" name="descripcion" required></textarea>
         </div><br>
 
@@ -56,7 +56,7 @@
         <label for="fechafin">Fecha Fin: * </label>
         <input type="date" formControlName="fechafin" required><br><br>
 
-        <div>
+        <div style="display: none;">
             <label for="estado">Estado:</label>
             <select formControlName="estado" required>
                 <option value="true">Activo</option>

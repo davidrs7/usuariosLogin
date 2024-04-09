@@ -43,11 +43,11 @@ export class EmployeesComponent implements OnInit {
   }
 
   employeesMethod(page: number) {
+    
     this.canva = true;
     this.employeeCriteria.page = page;
     this.employees = [];
     this.pagesArray = [];
-
     this.employeeService.employeesEndpoint(this.employeeCriteria).subscribe(
       (employeesResponse: EmployeeBasicDTO[]) => {
         this.employees = employeesResponse;

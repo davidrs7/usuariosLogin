@@ -39,7 +39,7 @@
                     </div> <br>
                     <br>
                     <div class="card__content">
-                        <h3><strong>Descripción:</strong> {{ objetivo.descripcion }}</h3><br>
+                        <h3><strong>Descripción - resultado esperado:</strong><br> {{ objetivo.descripcion }}</h3><br>
                         <div class="row">
                             <div class="col-6">
                                 <div class="barra-ponderacion"
@@ -137,7 +137,7 @@
             <h2 style="display: none;">{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
             <form [formGroup]="AccionesObjForm" autocomplete="off">                
 
-                <div>
+                <div style="display: none;">
                     <label for="descripcion">Resultado esperado: *</label>
                     <textarea formControlName="descripcion" name="descripcion" required></textarea>
                 </div><br>
@@ -147,8 +147,8 @@
                     <option *ngFor="let item of estadoAcciones" value="{{item.id}}">{{item.estado}}</option>
                 </select><br><br>
                 <div>
-                    <div>
-                        <label for="calificacion">calificacion: *</label>
+                    <div style="display: none;">
+                        <label for="calificacion" >calificacion: *</label>
                         <input type="number" formControlName="calificacion">
                     </div><br>
 
@@ -165,7 +165,7 @@
                 <label for="fechaaccion" style="display: none;">Fecha Accion: * </label>
                 <input type="date" style="display: none;" formControlName="fechaaccion" [attr.disabled]="true"><br><br>
                 <br>
-                <div class="row">
+                <div class="row" *ngIf="!propietario">
                     <div class="col-6">
                         <button type="button" class="btn-users" (click)="guardaUsuarios()">{{ cargoToEdit ? 'Editar' :
                             'Guardar'

@@ -113,10 +113,12 @@ export class EmployeeService {
   }
 
   private getGenericFormDataCriteria(employeeCriteria: EmployeeCriteriaDTO): FormData {
+    
+
     var formData = new FormData();
     formData.append("departmentId", this.stringValue(employeeCriteria.departmentId));
-    formData.append("name", this.stringValue(employeeCriteria.name));
-    formData.append("doc", this.stringValue(employeeCriteria.doc));
+    formData.append("name", this.stringValue(employeeCriteria.name || ''));
+    formData.append("doc", this.stringValue(employeeCriteria.doc || ''));
     formData.append("page", this.stringValue(employeeCriteria.page));
     formData.append("activePaginator", employeeCriteria.activePaginator ? 'true' : 'false');
     return formData;
