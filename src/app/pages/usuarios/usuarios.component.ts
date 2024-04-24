@@ -78,6 +78,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   seleccionarUsuario(usuario: any) {  
+    debugger;
     this.usuariosForm.get('jefeid')?.setValue(usuario.usuarioId);
     this.miControl.setValue(usuario.nombre); 
     this.filtroUsuarios = []
@@ -303,6 +304,7 @@ export class UsuariosComponent implements OnInit {
  
 
   editarUsuarios(id: number) {
+    debugger;
     this.usuarioToEdit = true;
     this.usuario = this.usuarios.filter(x => x.usuarioId == id); 
     this.usuariosForm.get('usuarioId')?.setValue(this.usuario[0].usuarioId);
@@ -322,7 +324,7 @@ export class UsuariosComponent implements OnInit {
     this.usuariosForm.get('empresaid')?.setValue(this.usuario[0].empresaId);
     this.usuariosForm.get('ususarioopcionalId')?.setValue(this.usuario[0].usuarioIdOpcional || 1);
     this.usuariosForm.get('estado')?.setValue(this.usuario[0].estado);
-    this.seleccionarUsuario(this.usuarios.filter(x=> x.jefeId == this.usuario[0].jefeId)[0]);
+    this.seleccionarUsuario(this.usuarios.filter(x=> x.usuarioId == this.usuario[0].jefeId)[0]);
   }
 
   obtenerFechaActual(): string {
