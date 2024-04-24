@@ -26,8 +26,7 @@ export class MySurveyComponent implements OnInit {
   initListsurvey() {
     this.surveyService.surveyListByUserEndpoint(this.user.id).subscribe(
       (surveyListResult: SurveyHeaderDTO[]) => {
-        this.surveyList = surveyListResult;
-        console.log(this.surveyList);
+        this.surveyList = surveyListResult; 
         this.canva = false;
       }
     );

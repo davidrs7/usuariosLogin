@@ -54,8 +54,7 @@ export class CargosComponent implements OnInit {
 
   editarcargos(id: number) {
     this.cargoToEdit = true;
-    this.cargo = this.cargos.filter(x => x.cargoId == id);
-    console.log(this.cargo)
+    this.cargo = this.cargos.filter(x => x.cargoId == id); 
     this.cargoForm.get('cargoId')?.setValue(this.cargo[0].cargoId);
     this.cargoForm.get('empresaId')?.setValue(this.cargo[0].empresaId);
     this.cargoForm.get('nombre')?.setValue(this.cargo[0].nombre);

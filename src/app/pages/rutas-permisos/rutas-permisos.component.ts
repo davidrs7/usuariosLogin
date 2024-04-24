@@ -46,14 +46,12 @@ export class RutasPermisosComponent implements OnInit {
   cargarLista(): void {
     this.loginServices.GetAllData<any>(this.rutaApi).subscribe((respuesta: ApiResponse<any>) => {
       this.permisos = respuesta.data;
-    });
-    console.log(this.permisos);
+    }); 
   }
 
   editarPermisos(id: number) { 
     this.permisoToEdit = true;
-    this.permiso = this.permisos.filter(x => x.permisoId == id);
-    console.log(this.permiso[0])   
+    this.permiso = this.permisos.filter(x => x.permisoId == id); 
     this.permisosForm.get('nombre')?.setValue(this.permiso[0].nombre);
     this.permisosForm.get('descripcion')?.setValue(this.permiso[0].descripcion);
     this.permisosForm.get('rutaangular')?.setValue(this.permiso[0].rutaAngular);

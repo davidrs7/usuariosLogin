@@ -57,7 +57,7 @@ export class RolesComponent implements OnInit {
         (respuesta: ApiResponse<any>) => {
           Swal.fire({
             icon: respuesta.estado.codigo == "500" ? 'warning' : 'success',
-            title: respuesta.estado.codigo == "500" ? "Error: Usuarios asociados a este rol" : respuesta.estado.descripcion,
+            title: respuesta.estado.codigo == "500" ? "Error: Usuarios o permisos asociados a este rol" : respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
           }).then((res:any) => {
             this.LimpiarFormulario();

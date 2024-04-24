@@ -38,13 +38,12 @@ export class AdminRepuestasComponent implements OnInit {
 
   cargarLista(): void {
     this.loginServices.GetAllData<any>(this.rutaApi).subscribe((respuesta: ApiResponse<any>) => {
-      this.respuestas = respuesta.data;
-      console.log(this.respuestas)
+      this.respuestas = respuesta.data; 
     });
   }
 
   editarrespuesta(id:number){
-    console.log('editar id- ' + id.toString())
+    //console.log('editar id- ' + id.toString())
     const descripcion = document.getElementById(id.toString()) as HTMLTextAreaElement;
     const peso = document.getElementById('peso-'+id.toString()) as HTMLTextAreaElement;
     const body: reqRespuestas  = {
@@ -77,7 +76,7 @@ export class AdminRepuestasComponent implements OnInit {
   }
 
   eliminarrespuesta(id:number){
-    console.log('eliminar id- ' + id.toString())
+   // console.log('eliminar id- ' + id.toString())
     this.loginServices.eliminarDato(this.rutaApi, id)
     .subscribe(
       (respuesta: ApiResponse<any>) => {

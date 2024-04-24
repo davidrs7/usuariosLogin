@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
             this.loginValid = true;
             this.userService.createSessionEndpoint(this.user).subscribe(
               (session: SessionDTO) => {
-                console.log(session);
+                //console.log(session);
                 if (session != null && session.token != '') {
                   localStorage.setItem('SESSL', '1');
                   localStorage.setItem('SESST', session.token);

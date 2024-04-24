@@ -154,8 +154,7 @@ export class AddPstComponent implements OnInit {
     }
   }
 
-  savePostulate() {
-    console.log(this.postulate);
+  savePostulate() { 
     if(this.postulateId > 0) {
       this.postulateService.editPostulateEndpoint(this.postulate).subscribe(
         (rsp: any) => {

@@ -58,8 +58,7 @@ export class AdminObjetivosComponent implements OnInit {
 
   editarObjetivos(id: number) {
     this.cargoToEdit = true;
-    this.Objetivo = this.Objetivos.filter(x => x.id == id);
-    console.log(this.Objetivo)
+    this.Objetivo = this.Objetivos.filter(x => x.id == id); 
     this.ObjetivosForm.get('id')?.setValue(this.Objetivo[0].id);
     this.ObjetivosForm.get('titulo')?.setValue(this.Objetivo[0].titulo);
     this.ObjetivosForm.get('descripcion')?.setValue(this.Objetivo[0].descripcion);
@@ -144,8 +143,7 @@ export class AdminObjetivosComponent implements OnInit {
     } else { return true }
   }
 
-  ActualizarObjetivos(body: reqObjetivos) {
-    console.log(body);
+  ActualizarObjetivos(body: reqObjetivos) { 
     this.loginServices.UpdateData(this.rutaApi, this.Objetivo[0].id, body)
       .subscribe(
         (respuesta: ApiResponse<any>) => {

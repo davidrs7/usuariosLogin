@@ -358,8 +358,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.objetivotitulo = this.objetivo.titulo
 
     await this.loginServices.getUsersByBoss<any>('AccionesObjetivos/xIduser', this.usuario.usuarioId).subscribe((respuesta: ApiResponse<any>) => {
-      this.accionesObjetivo = respuesta.data;
-      console.log(respuesta.data.length);
+      this.accionesObjetivo = respuesta.data; 
         this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
       if (this.accionesObjetivoSel.length > 0) {
         this.calificaObjetivo(this.accionesObjetivoSel);

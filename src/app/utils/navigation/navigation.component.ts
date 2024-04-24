@@ -38,8 +38,6 @@ export class NavigationComponent implements OnInit {
     const urlGroup: UrlSegmentGroup = urlTree.root.children[PRIMARY_OUTLET];
     const urlSegments: UrlSegment[] = urlGroup.segments;
 
-    //console.log(urlSegments)
-
     if (urlSegments.length > 2 && urlSegments[0].path != '' && urlSegments[0].path == 'pages')
       this.component = urlSegments[1].path;
 
@@ -162,8 +160,7 @@ export class NavigationComponent implements OnInit {
       if (token != null && token != '') {
         var userId = localStorage.getItem('SEUID');
         this.loginTiindux.eliminarDato('Sesion', Number(userId)).subscribe(
-          (respuesta: ApiResponse<any>) => {
-            //console.log(respuesta.data)
+          (respuesta: ApiResponse<any>) => { 
             this.destroySession();
           }
         );
@@ -181,10 +178,8 @@ export class NavigationComponent implements OnInit {
       var token = localStorage.getItem('SESST');
       if (token != null && token != '') {
         this.loginTiindux.tokenSesion('Sesion/token', token).subscribe(
-          (respuesta: ApiResponse<any>) => {
-            //console.log(respuesta)
-            if (respuesta.data == null) {
-              console.log(respuesta);
+          (respuesta: ApiResponse<any>) => { 
+            if (respuesta.data == null) { 
               this.nuevoLogout();
               this.destroySession();
             } else {               

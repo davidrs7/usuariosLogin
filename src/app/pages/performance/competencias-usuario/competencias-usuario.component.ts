@@ -75,8 +75,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
     });
 
     this.loginServices.GetAllData<any>('Competencias').subscribe((respuesta: ApiResponse<any>) => {
-      this.competencias = respuesta.data;
-      console.log(this.competencias)
+      this.competencias = respuesta.data; 
     })
 
   }
@@ -144,8 +143,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
       id_usuario_califica: Number(this.idusuario),
       id_usuario_calificado: this.usuario.usuarioId
     }
-
-    console.log(this.respuestasUser);
+ 
     if (this.respuestasUser != undefined) {
       for (let i = 0; i < this.respuestasUser.length; i++) {
         if (this.respuestasUser[i].id_pregunta == idpregunta && this.respuestasUser[i].id_usuario_calificado == this.usuario.usuarioId) {

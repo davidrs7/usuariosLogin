@@ -38,13 +38,11 @@ export class AdminPreguntasComponent implements OnInit {
 
   cargalistas(){
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data.sort((a,b) => a.idcompetencia - b.idcompetencia); 
-      console.log(respuesta.data); 
+      this.preguntas = respuesta.data.sort((a,b) => a.idcompetencia - b.idcompetencia);  
     });
 
     this.loginServices.GetAllData<any>('Competencias').subscribe((respuesta: ApiResponse<any>) => {
-      this.competencias = respuesta.data;
-      console.log(this.competencias)
+      this.competencias = respuesta.data; 
     })
 
   }
@@ -57,7 +55,7 @@ export class AdminPreguntasComponent implements OnInit {
     const fecha = this.obtenerFechaActual();
     const textareaElement = document.getElementById("pregunta") as HTMLTextAreaElement;
     const competencia = this.competenciaSelect.nativeElement.value;
-    console.log(competencia);
+    //console.log(competencia);
     if (Number(competencia) == 0) {
       Swal.fire({
         icon: 'info',
@@ -125,7 +123,7 @@ export class AdminPreguntasComponent implements OnInit {
 
   editarpregunta(id: number,idcomp: number){
     const textareaElement = document.getElementById(id.toString()) as HTMLTextAreaElement;
-    console.log(textareaElement.value)
+    //console.log(textareaElement.value)
     const body: reqPreguntas = {
       id: id,
       idcompetencia: idcomp,

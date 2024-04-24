@@ -56,8 +56,7 @@ export class ReportesUsuariosComponent implements OnInit {
   cargarlista(){
       //usuarios
       this.loginServices.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
-        this.usuarios = respuesta.data; 
-      console.log(this.usuarios)
+        this.usuarios = respuesta.data;  
 
       });
 
@@ -77,18 +76,15 @@ export class ReportesUsuariosComponent implements OnInit {
   cargarlistasObjetivos(){
     this.loginServices.GetAllData<any>('Objetivos').subscribe((respuesta: ApiResponse<any>) => {
       this.objetivos = respuesta.data; 
-      console.log(this.objetivos)
     });
 
     this.loginServices.GetAllData<any>('AccionesObjetivos').subscribe((respuesta: ApiResponse<any>) => {
-      this.accionesObjetivos = respuesta.data; 
-      console.log(this.accionesObjetivos)
+      this.accionesObjetivos = respuesta.data;  
 
     });
 
     this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
-      this.estadoAcciones = respuesta.data; 
-      console.log(this.estadoAcciones)
+      this.estadoAcciones = respuesta.data;  
 
     });
   }
@@ -163,8 +159,7 @@ export class ReportesUsuariosComponent implements OnInit {
       }
     });
 
-
-    console.log(reporteObjetivos);
+ 
 
     const reporteFiltrado = this.aplicarfiltro(Number(optionSeleccionadoId),reporteObjetivos);
     
@@ -212,8 +207,7 @@ export class ReportesUsuariosComponent implements OnInit {
     }
     if (this.archivoObjetivos !== null && this.validarArchivo(this.archivoObjetivos)) { 
       const fd = new FormData();
-      fd.append('file', this.archivoObjetivos, this.archivoObjetivos.name);
-      console.log(fd);       
+      fd.append('file', this.archivoObjetivos, this.archivoObjetivos.name); 
       this.canva = true;
       this.loginServices.cargaMasivaUsers(rutaApi,fd).subscribe(
         (respuesta: ApiResponse<any>) => {

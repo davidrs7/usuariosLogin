@@ -41,8 +41,7 @@ export class ModulesComponent implements OnInit {
         this.router.navigateByUrl('');
       }
     }
-
-    console.log(this.user);
+ 
   }
 
 

@@ -48,17 +48,17 @@ export class UsuariosComponent implements OnInit {
     nombre: ['', Validators.required],
     tipodocumento: [0, []],
     numdocumento: ['', Validators.required],
-    correoelectronico: ['', Validators.required],
+    correoelectronico: [''],
     contraseña: ['', Validators.required],
-    telefono: ['', Validators.required],
-    direccion: ['', Validators.required],
-    fechanacimiento: ['', Validators.required], 
+    telefono: [''],
+    direccion: [''],
+    fechanacimiento: [''], 
     fechacreacion: [this.obtenerFechaActual(), []],
     sexoid: [0, Validators.required],
-    jefeid: [0, Validators.required], 
+    jefeid: [0], 
     rolid: [0, Validators.required],
     cargoid: [0, Validators.required],
-    empresaid: [0, Validators.required],
+    empresaid: [0],
     ususarioopcionalId: [1,[]],
     estado: [true, Validators.required],
     buscarDoc: ['', []],
@@ -70,16 +70,14 @@ export class UsuariosComponent implements OnInit {
 
 
 
-  filtrarUsuarios(event: any) {
-    console.log(this.usuarios)
+  filtrarUsuarios(event: any) { 
     const filtro = event.target.value.toLowerCase();
     this.filtroUsuarios = this.usuarios.filter(usuario =>
       usuario.nombre.toLowerCase().includes(filtro)
     );
   }
 
-  seleccionarUsuario(usuario: any) { 
-    console.log(`ID del usuario seleccionado: ${usuario.usuarioId}`);
+  seleccionarUsuario(usuario: any) {  
     this.usuariosForm.get('jefeid')?.setValue(usuario.usuarioId);
     this.miControl.setValue(usuario.nombre); 
     this.filtroUsuarios = []
@@ -97,7 +95,7 @@ export class UsuariosComponent implements OnInit {
       this.tipoCargue = false
     }
 
-    if (tipCargue == 2){ 
+    if (tipCargue == 2){  
       this.tipoCargue = true
       this.cargueArchivo = false
     }
@@ -105,8 +103,7 @@ export class UsuariosComponent implements OnInit {
   }
  
     buscarUsuarios(){
-      let documento = this.usuariosForm.get('buscarDoc')?.value
-      console.log(documento)
+      let documento = this.usuariosForm.get('buscarDoc')?.value 
       this.usuario =  this.usuarios.filter(x => x.numDocumento == documento);
       if (this.usuario.length > 0 )
        this.editarUsuarios(this.usuario[0].usuarioId);
@@ -141,8 +138,7 @@ export class UsuariosComponent implements OnInit {
     });
 
     this.loginServices.GetAllData<any>('Cargos').subscribe((respuesta: ApiResponse<any>) => {
-      this.Cargos = respuesta.data; 
-      console.log(this.Cargos);
+      this.Cargos = respuesta.data;  
     });
 
     this.loginServices.GetAllData<any>('Roles').subscribe((respuesta: ApiResponse<any>) => {
@@ -227,23 +223,35 @@ export class UsuariosComponent implements OnInit {
       empresaId: Number(this.usuariosForm.get('empresaid')?.value),
       usuarioIdOpcional: this.usuariosForm.get('ususarioopcionalId')?.value,
       estado: this.usuariosForm.get('estado')?.value == "true" ? true : false,
-    }; 
-    console.log(body);
+    };  
     if (this.validarcampos()) {
       let resp = this.usuarioToEdit == true ? this.ActualizarUsuarios(body) : this.CrearUsuarios(body)
     }
   }
- 
-  validarcampos() {
-    if (!this.usuariosForm.valid) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor valida los campos obligatorios'
-      });
-      return false;
-    } else { return true }
+
+  
+  validarcampos(): boolean { 
+    debugger;
+    const formControls = this.usuariosForm.controls;
+    for (const controlName in formControls) {
+      if (formControls.hasOwnProperty(controlName)) {
+        const control = formControls[controlName];
+        if (control.validator && control.validator({} as any) && control.validator({} as any).required) {
+          if (control.value === null || control.value === undefined || control.value === '') {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Por favor valida los campos obligatorios'
+            });
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
+
+
   ActualizarUsuarios(body: ReqUsuarios) {
     this.loginServices.UpdateData(this.rutaApi, this.usuario[0].usuarioId, body)
       .subscribe(
@@ -350,8 +358,7 @@ export class UsuariosComponent implements OnInit {
     }
     if (this.archivoUsers !== null && this.validarArchivo(this.archivoUsers)) { 
       const fd = new FormData();
-      fd.append('file', this.archivoUsers, this.archivoUsers.name);
-      console.log(fd);       
+      fd.append('file', this.archivoUsers, this.archivoUsers.name);   
       this.canva = true;
       this.loginServices.cargaMasivaUsers('User/cargar-usuarios',fd).subscribe(
         (respuesta: ApiResponse<any>) => {

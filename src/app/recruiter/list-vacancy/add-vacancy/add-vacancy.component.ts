@@ -268,8 +268,7 @@ export class AddVacancyComponent implements OnInit {
   saveVacantSteps() {
     for(var i = 0; i < this.stepList.length; i++)
       if(this.stepList[i].vacantId != null && this.stepList[i].vacantId != 0) {
-        this.stepList[i].vacantId = this.vacantId;
-        console.log(this.stepList[i]);
+        this.stepList[i].vacantId = this.vacantId; 
         this.vacantService.mergeVacantStepRelEndpoint(this.stepList[i]).subscribe();
       }
   }
