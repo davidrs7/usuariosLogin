@@ -52,8 +52,7 @@ export class PermisosComponent implements OnInit {
   ngOnInit(): void {
     this.cargarLista();
   }
-  onChange(event: any) {
-    //debugger;
+  onChange(event: any) { 
     this.idrol = this.PermisosForm.get('rolId')?.value
     if (event.check && event.rolpermisoId > 0) {
       this.eliminarRolPermisos(event.rolpermisoId, event.rolid);
@@ -134,8 +133,7 @@ export class PermisosComponent implements OnInit {
     this.rolSeleccionado = true;
     let premisosRol = this.rolesPermisos.filter(x => x.rolID == this.idrol);
 
-    for (let i = 0; i < this.Permisos.length; i++) {
-      //debugger;
+    for (let i = 0; i < this.Permisos.length; i++) { 
       let check = false
       let rolPermisoId: any;
 

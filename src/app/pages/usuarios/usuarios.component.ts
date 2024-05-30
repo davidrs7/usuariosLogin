@@ -77,8 +77,7 @@ export class UsuariosComponent implements OnInit {
     );
   }
 
-  seleccionarUsuario(usuario: any) {  
-    debugger;
+  seleccionarUsuario(usuario: any) {   
     this.usuariosForm.get('jefeid')?.setValue(usuario.usuarioId);
     this.miControl.setValue(usuario.nombre); 
     this.filtroUsuarios = []
@@ -231,8 +230,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   
-  validarcampos(): boolean { 
-    debugger;
+  validarcampos(): boolean {  
     const formControls = this.usuariosForm.controls;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
@@ -303,8 +301,7 @@ export class UsuariosComponent implements OnInit {
 
  
 
-  editarUsuarios(id: number) {
-    debugger;
+  editarUsuarios(id: number) { 
     this.usuarioToEdit = true;
     this.usuario = this.usuarios.filter(x => x.usuarioId == id); 
     this.usuariosForm.get('usuarioId')?.setValue(this.usuario[0].usuarioId);
@@ -348,8 +345,7 @@ export class UsuariosComponent implements OnInit {
     return n < 10 ? '0' + n : '' + n;
   }
 
-  seleccionArchivo(event: any): void {
-    debugger;
+  seleccionArchivo(event: any): void { 
     this.archivoUsers = <File>event.target.files[0];
   }
 

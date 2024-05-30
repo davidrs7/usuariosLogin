@@ -87,8 +87,7 @@ export class AdminCompetenciasComponent implements OnInit {
   }
 
 
-  guardaCompetencias() {
-   // debugger;
+  guardaCompetencias() { 
     const body: any = {
       id: this.CompetenciasForm.get('id')?.value,
       competencia: this.CompetenciasForm.get('competencia')?.value,
