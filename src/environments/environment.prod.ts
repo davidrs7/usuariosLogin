@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://apitransmilenio.tiindux.com/',
+  apiUrl: 'https://api.asecofinvirtual.com/',
 };

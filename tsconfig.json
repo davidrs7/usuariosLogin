@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "E:/david/Freelance/Tindux/Transmilenio/usuarios_api/usuarios/usuarios.api/wwwroot", 
+    "outDir": "C:/Users/david/OneDrive/Documentos/David/www",
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "noImplicitReturns": true,
