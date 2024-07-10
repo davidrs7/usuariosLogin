@@ -16,21 +16,21 @@
     }
 
 }
- 
+
 .card-container {
     display: flex;
-    flex-wrap: wrap;  
-    justify-content: space-around;  
+    flex-wrap: wrap;
+    justify-content: space-around;
     background-color: $color2;
     border-radius: 8px;
 }
 
 .barra-ponderacion {
-    height: 30px;  
-    background-color: #abd6bc; 
-    border-radius: 4px; 
-    overflow: hidden;  
-    font-size: 16px; 
+    height: 30px;
+    background-color: #abd6bc;
+    border-radius: 4px;
+    overflow: hidden;
+    font-size: 16px;
 
     &::after {
         content: '';
@@ -39,7 +39,7 @@
         width: 0;
         background-color: #4caf50; // Color de la barra de ponderación (verde)
         transition: width 0.5s ease; // Efecto de transición para la animación
-    } 
+    }
 
 }
 
@@ -51,38 +51,38 @@
     i {
         cursor: pointer;
         font-size: 4rem;
-        color: #06a536; 
-        transition: color 0.3s ease; 
+        color: #06a536;
+        transition: color 0.3s ease;
 
         &:hover {
-            color: #148a5c; 
+            color: #148a5c;
         }
     }
 }
-  
+
 .modal {
     width: 80% !important;
     max-width: none !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    background-color: rgba(255, 255, 255, 1) !important; 
+    background-color: rgba(255, 255, 255, 1) !important;
   }
-  
+
   .modal-dialog {
     width: 100%;
     max-width: 100%;
     margin: 10% auto;
   }
-  
+
   .modal-content {
     width: 100%;
     max-width: 100%;
     margin: 0;
   }
-  
+
   label{
-    color: #333;  
-    font-size: 16px;  
+    color: #333;
+    font-size: 16px;
     font-weight: bold;
  }
 
@@ -122,8 +122,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);  
-    z-index: 999;  
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
 }
 
 .popup {
@@ -137,7 +137,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
- 
+
 
 button:hover {
     background-color: #879db6;
@@ -149,3 +149,35 @@ button:hover {
         background-color: #f36e21;
     }
  }
+
+ .notificacion{
+  width: 40%;
+ }
+
+ .download-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 200px; /* Ajusta el ancho del botón según sea necesario */
+  height: 100px; /* Ajusta la altura del botón según sea necesario */
+  background-color: #0054cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.download-button i {
+  font-size: 2em; /* Ajusta el tamaño del ícono según sea necesario */
+  margin-bottom: 10px; /* Espacio entre el ícono y el texto */
+}
+
+.download-button span {
+  font-size: 1em; /* Ajusta el tamaño del texto según sea necesario */
+  text-align: center;
+}

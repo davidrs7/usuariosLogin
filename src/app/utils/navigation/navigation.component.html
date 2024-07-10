@@ -6,10 +6,10 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <div class="navbar-left-block d-flex">
                 <div (click)="open('modules')" class="navbar-brand me-2 mb-1 d-flex align-items-center">
-                    <img src="../../assets/Logotipo menu superior.png" height="50" alt="Asecofin Logo" loading="lazy" style="margin-top: 2px;" />
+                    <img src="../../assets/Logotipo.png" height="50" alt="Asecofin Logo" loading="lazy" style="margin-top: 2px;" />
                 </div>
             </div>
-            
+
             <ul class="navbar-center-block navbar-nav flex-row d-none d-md-flex">
                 <li *ngFor="let nav of navigate[component]" [class]="nav.name == selected ? 'nav-item me-3 me-lg-1 active' : 'nav-item me-3 me-lg-1'">
                     <div (click)="open(nav.routing)" class="nav-link">
@@ -18,7 +18,7 @@
                     </div>
                 </li>
             </ul>
-    
+
             <ul class="navbar-right-block navbar-nav flex-row">
                 <li class="nav-item me-3 me-lg-1">
                     <div class="nav-link d-sm-flex align-items-sm-center">

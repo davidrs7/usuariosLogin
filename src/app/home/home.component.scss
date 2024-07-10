@@ -3,7 +3,7 @@
 
 .login {
     background-color: $gray;
-    background-image: url(../../assets/Fotografia_fondo.png);
+    background-image: url(../../assets/Fotografia_fondo_asecofin.png);
     background-repeat: initial;
     background-size: cover;
     width: 100%;
@@ -78,10 +78,10 @@
                     padding-right: 0;
 
                     & input {
-                        font-size: 3rem;
+                        //font-size: 3rem;
                         height: 5rem;
-                        padding-left: 3rem;
-                        padding-right: 1rem; 
+                        //padding-left: 3rem;
+                        padding-right: 1rem;
                     }
                 }
 
@@ -90,7 +90,7 @@
                     grid-template-columns: 100%;
                     align-items: center;
                     justify-content: space-between;
-                    
+
                     & button {
                         width: 70%;
                         margin-top: 3rem;
@@ -134,25 +134,23 @@
     width: 35%;
     border: none;
     outline: none;
-    background-color: transparent; // Fondo transparente
-    border-bottom: 2px solid white; // Línea de borde inferior de color blanco
-    color: white; // Color del texto
-    font-size: 2rem;
+    background-color: transparent;
+    border-bottom: 0px solid white;
+    color: white;
     font-style: italic;
     font-weight: 100;
-    padding: 0.5rem;
 
     &::placeholder {
-        color: white; // Color del placeholder
+        color: white;
     }
 }
 
 .btn-login {
     width: 13% !important;
     height: 22%;
-    background-color: #f36e21;
+    background-color: #ffb700;
     font-size: 2rem;
-    border-radius: 0;
+    border-radius: 5rem;
     font-weight: 500;
 }
 

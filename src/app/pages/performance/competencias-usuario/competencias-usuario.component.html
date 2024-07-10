@@ -15,7 +15,7 @@
     </div><br>
     <hr>
     <div class="card-container" *ngIf="usuarioSel">
-        <h2> Preguntas: {{numPreguntas}} | Respuestas: {{numRespuestas}} | Por responder: {{ numPreguntas -
+        <h2 class="resumen"> Preguntas: {{numPreguntas}} | Respuestas: {{numRespuestas}} | Por responder: {{ numPreguntas -
             numRespuestas }} </h2>
         <div *ngFor="let item of preguntas ; let i = index;" class="card">
             <div class="card__header">
