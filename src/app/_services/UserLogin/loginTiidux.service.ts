@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import {  ApiResponse } from '../../dto/loginTiindux/genericResponse'; 
+import {  ApiResponse } from '../../dto/loginTiindux/genericResponse';
 
-import { Observable } from 'rxjs'; 
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -12,32 +12,32 @@ import { environment } from 'src/environments/environment';
 })
 
   export class loginTiinduxService {
-    private baseApiUrl = environment.apiUrl + 'api';
+    private baseApiUrl = environment.apiUrlTiidux + 'api';
     constructor(private http: HttpClient) { }
 
 
     getObjetivosbyId<T>(ruta: string,id: number): Observable<ApiResponse<T>>{
       const url = `${this.baseApiUrl}/${ruta}/${id}`;
       return this.http.get<ApiResponse<T>>(url);
-    } 
+    }
     Login<T>(ruta:string,datos: T): Observable<ApiResponse<T>>{
-      const url = `${this.baseApiUrl}/${ruta}`; 
+      const url = `${this.baseApiUrl}/${ruta}`;
       return this.http.post<ApiResponse<T>>(url,datos);
     }
 
     GetAllData<T>(ruta: string): Observable<ApiResponse<T>> {
-      const url = `${this.baseApiUrl}/${ruta}`; 
+      const url = `${this.baseApiUrl}/${ruta}`;
       return this.http.get<ApiResponse<T>>(url);
     }
 
     UpdateData<T>(ruta: string,id: number,datos: T):Observable<ApiResponse<T>> {
- 
-      const url = `${this.baseApiUrl}/${ruta}/${id}`; 
+
+      const url = `${this.baseApiUrl}/${ruta}/${id}`;
       return this.http.put<ApiResponse<T>>(url,datos);
     }
 
     createData<T>(ruta: string, datos: T): Observable<ApiResponse<T>> {
- 
+
       const url = `${this.baseApiUrl}/${ruta}`;
       return this.http.post<ApiResponse<T>>(url, datos);
     }
@@ -50,10 +50,15 @@ import { environment } from 'src/environments/environment';
     getDatabyId<T>(ruta: string,id: number): Observable<ApiResponse<T>>{
       const url = `${this.baseApiUrl}/${ruta}/${id}`;
       return this.http.get<ApiResponse<T>>(url);
-    } 
+    }
 
     tokenSesion<T>(ruta: string, token: string): Observable<ApiResponse<T>> {
       const url = `${this.baseApiUrl}/${ruta}/${token}`;
+      return this.http.get<ApiResponse<T>>(url);
+    }
+
+    getColorId<T>(ruta: string, color : string): Observable<ApiResponse<T>> {
+      const url = `${this.baseApiUrl}/${ruta}/${color.replace('#','%23')}`;
       return this.http.get<ApiResponse<T>>(url);
     }
 
@@ -69,10 +74,10 @@ import { environment } from 'src/environments/environment';
 
 
     cargaMasivaUsers<T>(ruta: string, archivo: FormData): Observable<ApiResponse<T>>{
-      const url = `${this.baseApiUrl}/${ruta}`; 
+      const url = `${this.baseApiUrl}/${ruta}`;
       return this.http.post<ApiResponse<T>>(url, archivo);
     }
-      
+
   }
 
 

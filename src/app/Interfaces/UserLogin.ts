@@ -2,6 +2,7 @@ export interface ReqRoles{
     rolId?: number,
     nombre?: string,
     descripcion?: string,
+    idColor?: number,
     empresaId?: number,
     estado?: boolean
 }
@@ -16,27 +17,27 @@ export interface ReqCargos{
 
 export interface ReqEmpresas{
     empresaId?: number,
-    nombre?: string, 
+    nombre?: string,
     estado?: boolean
 }
 export interface ReqPermisos{
     permisoId?: number,
-    nombre?: string, 
-    descripcion?: string, 
-    rutaAngular?: string, 
+    nombre?: string,
+    descripcion?: string,
+    rutaAngular?: string,
     estado?: boolean
 }
 export interface ReqUsuarios{
     usuarioId?: number,
-    nombre?: string, 
-    tipoDocumento?: number, 
-    numDocumento?: string, 
-    correoElectronico?: string, 
-    contraseña?: string, 
-    telefono?: string, 
-    direccion?: string, 
-    fechaNacimiento?: Date, 
-    fechaCreacion?: Date, 
+    nombre?: string,
+    tipoDocumento?: number,
+    numDocumento?: string,
+    correoElectronico?: string,
+    contraseña?: string,
+    telefono?: string,
+    direccion?: string,
+    fechaNacimiento?: Date,
+    fechaCreacion?: Date,
     sexoId?: number,
     jefeId?: number,
     rolId?: number,
@@ -49,12 +50,12 @@ export interface ReqUsuarios{
 export interface reqrolespermisos{
     rolpermisoid: number,
     rolid?: number,
-    permisoid?: number    
+    permisoid?: number
 }
 
 export interface reqlogin {
        usuario: string,
-       pw: string 
+       pw: string
 }
 
 
@@ -69,7 +70,7 @@ export interface reqObjetivos {
     estado: boolean
 }
 
-export interface reqAccionesObjetivos 
+export interface reqAccionesObjetivos
 {
     id:number,
     idobjetivo:number,

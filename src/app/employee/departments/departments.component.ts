@@ -61,6 +61,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   saveMethod() {
+    debugger;
     this.addDepartment.colorHex = this.getRandomColor();
     this.departmentService.addEndpoint(this.addDepartment).subscribe(
       (response: any) => {

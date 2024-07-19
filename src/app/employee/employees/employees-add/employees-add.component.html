@@ -116,8 +116,7 @@
                         <div>
                             <select formControlName="sex" name="sex" id="basicEmployeeSex">
                         <option value=""></option>
-                        <option>Masculino</option>
-                        <option>Femenino</option>
+                        <option *ngFor="let param of paramSex">{{ param.name }}</option>
                       </select>
                             <ul *ngIf="errors.validate(sex)">
                                 <li *ngFor="let message of errors.getErrors(sex)">{{ message }}</li>

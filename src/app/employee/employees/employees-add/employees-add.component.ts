@@ -10,6 +10,8 @@ import { AdminMsgErrors, FileRel } from '../../../dto/utils.dto';
 import { EmployeeService } from '../../../_services/employee/employee.service';
 import { JobService } from '../../../_services/employee/job.service';
 import { ParamsService } from '../../../_services/params.service';
+import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
+import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
 
 @Component({
   selector: 'app-employees-add',
@@ -37,6 +39,7 @@ export class EmployeesAddComponent implements OnInit {
   paramEmployees: EmployeeBasicDTO[] = [];
   paramDocType: ParamsDTO[] = [];
   paramCity: ParamsDTO[] = [];
+  paramSex: ParamsDTO[] = [];
   paramMaritalStatus: ParamsDTO[] = [];
   paramHousingType: ParamsDTO[] = [];
   paramEducationalLevel: ParamsDTO[] = [];
@@ -44,7 +47,8 @@ export class EmployeesAddComponent implements OnInit {
   paramContractType: ParamsDTO[] = [];
   paramBankingEntity: ParamsDTO[] = [];
   paramTransportation: ParamsDTO[] = [];
-  paramJob: JobBasicDTO[] = [];
+  paramJob1: JobBasicDTO[] = [];
+  paramJob: ParamsDTO[] = [];
   paramFileTypes: EmployeeFileTypeDTO[] = [];
   paramFileTypesLevel1: EmployeeFileTypeDTO[] = [];
   paramFileTypesLevel2: EmployeeFileTypeDTO[] = [];
@@ -62,7 +66,7 @@ export class EmployeesAddComponent implements OnInit {
   bornDate!:string|null;
 
   constructor(private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
-      private employeeService: EmployeeService, private jobService: JobService, private paramsService: ParamsService, private fb: FormBuilder, public datepipe: DatePipe) {}
+      private employeeService: EmployeeService,private usuariosService: loginTiinduxService, private jobService: JobService, private paramsService: ParamsService, private fb: FormBuilder, public datepipe: DatePipe) {}
 
   ngOnInit(): void {
     this.initFormBasic();
@@ -301,7 +305,7 @@ export class EmployeesAddComponent implements OnInit {
 
   openSection(section: String) {
     var suscribeLoad = false;
-    this.canva = true;
+    //this.canva = true;
     this.section = section;
     this.closeModal();
 
@@ -322,12 +326,15 @@ export class EmployeesAddComponent implements OnInit {
         }
 
         this.getBasicParams();
+        /*
         this.jobService.jobsEndpoint().subscribe(
           (jobResponse: JobBasicDTO[]) => {
             this.paramJob = jobResponse;
             this.canva = false;
           }
-        );
+        );*/
+
+
         console.log("-----------getEmployeeSons------------");
         if(this.employeeId != null ){
           console.log("-----------getEmployeeSons------------");
@@ -409,13 +416,86 @@ export class EmployeesAddComponent implements OnInit {
       this.canva = false;
   }
 
+
+  // metodo para poblar campos select desde el backend Crud usuarios. Integración DavRo
+  addParamsforTipDocs(data: any[]) {
+    let paramResponse: ParamsDTO[] = [];
+
+    if (data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+            let param: ParamsDTO = {
+                id: data[i].tipoDocumento,
+                name: data[i].descripcion,
+                available: data[i].estado
+            };
+            paramResponse.push(param);
+        }
+    }
+
+    return paramResponse;
+}
+
+addParamsforCargos(data: any[]) {
+  let paramResponse: ParamsDTO[] = [];
+
+  if (data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+          let param: ParamsDTO = {
+              id: data[i].cargoId,
+              name: data[i].nombre,
+              available: data[i].estado
+          };
+          paramResponse.push(param);
+      }
+  }
+
+  return paramResponse;
+}
+
+addParamsforSex(data: any[]) {
+  let paramResponse: ParamsDTO[] = [];
+
+  if (data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+          let param: ParamsDTO = {
+              id: data[i].sexoId,
+              name: data[i].descripcion,
+              available: data[i].estado
+          };
+          paramResponse.push(param);
+      }
+  }
+
+  return paramResponse;
+}
+
   getBasicParams() {
+    /*
     this.paramsService.docTypeEndpoint().subscribe(
       (paramResponse: ParamsDTO[]) => {
         this.paramDocType = paramResponse;
         this.canva = false;
       }
-    );
+    );*/
+
+    // lista integracion
+    this.usuariosService.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
+      this.paramDocType = this.addParamsforTipDocs(respuesta.data);
+      this.canva = false;
+    });
+
+    this.usuariosService.GetAllData<any>('Cargos').subscribe((respuesta: ApiResponse<any>) => {
+      this.paramJob = this.addParamsforCargos(respuesta.data);
+      console.log(respuesta.data);
+      this.canva = false;
+    });
+
+    this.usuariosService.GetAllData<any>('Sexo').subscribe((respuesta: ApiResponse<any>) => {
+      this.paramSex = this.addParamsforSex(respuesta.data);
+      console.log(respuesta.data);
+      this.canva = false;
+    });
+
 
     this.paramsService.maritalStatusEndpoint().subscribe(
       (paramResponse: ParamsDTO[]) => {
@@ -683,9 +763,6 @@ export class EmployeesAddComponent implements OnInit {
   }
 
   saveSons(employeeId: number){
-    console.log('+++++++++++');
-    console.log(employeeId);
-    console.log(this.employeeSonsAge);
     for(var i=0; i < this.employeeSonsAge.length; i++){
       this.employeeSonsAge[i].employeeGeneralId=employeeId;
       console.log(this.employeeSonsAge[i]);
