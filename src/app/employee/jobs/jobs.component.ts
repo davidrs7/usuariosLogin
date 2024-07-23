@@ -28,11 +28,13 @@ export class JobsComponent implements OnInit {
   }
 
   openAdd() {
-    this.router.navigateByUrl('employees/job/add');
+    //this.router.navigateByUrl('employees/job/add'); //antes de integración
+    this.router.navigateByUrl('pages/cargos');
   }
 
   openEdit(id: number) {
-    this.router.navigateByUrl('employees/job/edit/' + id);
+   // this.router.navigateByUrl('employees/job/edit/' + id); //antes de integración
+   this.router.navigateByUrl('pages/cargos');
   }
 
 }

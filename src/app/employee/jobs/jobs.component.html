@@ -14,7 +14,7 @@
           <tr *ngFor="let job of jobs">
             <td class="jobs__content__table--fc">
               <div>
-                <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="openEdit(job.id)"></span>
+                <span ngbTooltip="Editar" style="display:none" class="fa-solid fa-pen action-button" (click)="openEdit(job.id)"></span>
                 <span>{{ job.name }}</span>
               </div>
             </td>
@@ -23,7 +23,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="jobs__content__add"><button (click)="openAdd()">Agregar</button></div>
+      <div class="jobs__content__add"><button (click)="openAdd()">Administrar cargos</button></div>
   </div>
 </div>
 

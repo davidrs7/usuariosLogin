@@ -5,6 +5,8 @@ import { DepartmentDTO } from '../../dto/employee/department.dto';
 import { DepartmentService } from '../../_services/employee/department.service';
 import { AdminMsgErrors } from '../../dto/utils.dto';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
+import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
 
 @Component({
   selector: 'app-departments',
@@ -22,11 +24,12 @@ export class DepartmentsComponent implements OnInit {
   errors: AdminMsgErrors = new AdminMsgErrors();
   formAdd!: FormGroup;
 
-  constructor(private modalService: NgbModal, private departmentService: DepartmentService, private router: Router) { }
+  constructor(private modalService: NgbModal,private loginService: loginTiinduxService, private departmentService: DepartmentService, private router: Router) { }
 
   ngOnInit(): void {
     this.initFormAdd();
     this.departmentsMethod();
+    this.cargaRoles();
   }
 
   get name() { return this.formAdd.get('name'); }
@@ -34,6 +37,18 @@ export class DepartmentsComponent implements OnInit {
   initFormAdd() {
     this.formAdd = new FormGroup({
       name: new FormControl(null, Validators.required)
+    });
+  }
+
+  cargaRoles(){
+    this.loginService.GetAllData('Roles').subscribe((respuesta: ApiResponse<any>) => {
+      console.log(respuesta.data);
+    });
+    this.loginService.GetAllData('Colores').subscribe((respuesta: ApiResponse<any>) => {
+      console.log(respuesta.data);
+    });
+    this.loginService.GetAllData('User').subscribe((respuesta: ApiResponse<any>) => {
+      console.log(respuesta.data);
     });
   }
 
@@ -107,4 +122,7 @@ export class DepartmentsComponent implements OnInit {
     return color.toUpperCase();
   }
 
+  adminRoles(){
+    this.router.navigate(['pages/roles']);
+  }
 }

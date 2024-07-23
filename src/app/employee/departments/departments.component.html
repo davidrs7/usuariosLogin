@@ -12,7 +12,7 @@
           <tr *ngFor="let department of departments">
             <td class="departments__content__table--fc">
               <div>
-                <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="editMethod(department.id)"></span>
+                <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" style="display: none;" (click)="editMethod(department.id)"></span>
                 <span>{{department.name}}</span>
                 <div [style.background-color]="department.colorHex"></div>
               </div>
@@ -22,7 +22,7 @@
         </tbody>
       </table>
       <div class="departments__content__add" *ngIf="!saveDepartments">
-        <button data-bs-toggle="modal" data-bs-target="#modalAddDepartment" (click)="openModal(modalAddDepartment)">Agregar departamento</button>
+        <button data-bs-toggle="modal" style="display: none;" data-bs-target="#modalAddDepartment" (click)="adminRoles()">Administrar departamentos</button>
       </div>
       <div class="departments__content__add" *ngIf="saveDepartments">
         <button (click)="saveMethod()">Agregar</button>
@@ -31,7 +31,7 @@
   </div>
 </div>
 
-
+<!-- Para versión sin integración (click)="openModal(modalAddDepartment)" en el button Administrar departamentos -->
 <ng-template #modalAddDepartment let-modal>
   <div class="modal-body">
     <div class="modal-close" (click)="closeModal()">

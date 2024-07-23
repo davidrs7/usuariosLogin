@@ -2,7 +2,7 @@ export interface ReqRoles{
     rolId?: number,
     nombre?: string,
     descripcion?: string,
-    idColor?: number,
+    ColorId?: number,
     empresaId?: number,
     estado?: boolean
 }

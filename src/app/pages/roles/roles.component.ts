@@ -76,70 +76,67 @@ export class RolesComponent implements OnInit {
       );
   }
 
-  guardaRoles() {
+  async guardaRoles() {
+    let idColor = await this.obtenerIdColor(this.roleForm.get('color')?.value);
+    console.log(idColor);
 
-    console.log();
-    let idColor = this.obtenerIdColor(this.roleForm.get('color')?.value);
     const body: ReqRoles = {
-      rolId: this.roleForm.get('rolId')?.value,
-      nombre: this.roleForm.get('nombre')?.value,
-      descripcion: this.roleForm.get('descripcion')?.value,
-      idColor: idColor,
-      empresaId: 1, //this.roleForm.get('empresaId')?.value,
-      estado: this.roleForm.get('estado')?.value == "true" ? true : false,
+        rolId: this.roleForm.get('rolId')?.value,
+        nombre: this.roleForm.get('nombre')?.value,
+        descripcion: this.roleForm.get('descripcion')?.value,
+        ColorId: idColor,
+        empresaId: 1, // this.roleForm.get('empresaId')?.value,
+        estado: this.roleForm.get('estado')?.value == "true" ? true : false,
     };
 
     if (this.validarcampos()) {
-      // let resp = this.roleToEdit == true ? this.ActualizarRoles(body) : this.CrearRoles(body)
+        let resp = this.roleToEdit ? await this.ActualizarRoles(body) : await this.CrearRoles(body);
     }
-  }
+}
 
-  obtenerIdColor(colorHex: string) {
-    let idColor:number;
+  async obtenerIdColor(colorHex: string): Promise<number> {
+    let idColor: number;
     this.colorResp = [];
     console.log('color defecto --' + colorHex);
 
-    this.loginServices.getColorId<any>('Colores/colorHex',colorHex).subscribe((respuesta: ApiResponse<any>) => {
-      this.colorResp.push(respuesta.data);
-      idColor = this.colorResp[0].id == 0? this.crearColor() :  this.colorResp[0].id;
+    return new Promise<number>((resolve, reject) => {
+        this.loginServices.getColorId<any>('Colores/colorHex', colorHex).subscribe(
+            async (respuesta: ApiResponse<any>) => {
+                this.colorResp.push(respuesta.data);
+                if (this.colorResp[0].id == 0) {
+                    idColor = await this.crearColor();
+                } else {
+                    idColor = this.colorResp[0].id;
+                }
+                resolve(idColor);
+            },
+            (error) => {
+                reject(error);
+            }
+        );
     });
-    return idColor;
-  }
+}
 
-  crearColor(){
-    const bodyColor: any = {
-      id: 0,
-      Hex: this.getRandomColor() ,
-      Avalaible: 1,
-    }
+crearColor(): Promise<number> {
+  return new Promise<number>((resolve, reject) => {
+      const bodyColor: any = {
+          id: 0,
+          Hex: this.getRandomColor(),
+          Avalaible: 1,
+      };
 
-    console.log(bodyColor);
-
-    this.loginServices.createData('Colores',bodyColor)
-    .subscribe(
-      (respuesta: ApiResponse<any>) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Mensaje: ' + respuesta.estado.descripcion,
-          text: 'Codigo: ' + respuesta.estado.codigo
-        }).then((res: any) => {
-          console.log('color creado');
-          this.obtenerIdColor(bodyColor.Hex);
-        });
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Hubo un problema al realizar la solicitud. Por favor, inténtalo nuevamente.'
-        });
-        console.log('color no creado');
-
-      }
-    );
-    return 1;
-  }
-
+      this.loginServices.createData<any>('Colores', bodyColor).subscribe(
+          async (respuesta: ApiResponse<any>) => {
+              console.log('color creado');
+              const newIdColor = await this.obtenerIdColor(bodyColor.Hex);
+              resolve(newIdColor);
+          },
+          (error) => {
+              reject(error);
+          }
+      );
+  });
+}
   getRandomColor(): string {
     var r = Math.abs(Math.floor(Math.random() * 251)).toString(16);
     var g = Math.abs(Math.floor(Math.random() * 252)).toString(16);
@@ -156,6 +153,23 @@ export class RolesComponent implements OnInit {
     return color.toUpperCase();
   }
 
+  async obtenerHexColor(idColor: number): Promise<string> {
+    let colorHex:string;
+    this.colorResp = [];
+
+    return new Promise<string>((resolve, reject) => {
+        this.loginServices.getDatabyId<any>('Colores', idColor).subscribe(
+            async (respuesta: ApiResponse<any>) => {
+                this.colorResp.push(respuesta.data);
+                colorHex = this.colorResp[0].hex;
+                resolve(colorHex);
+            },
+            (error) => {
+                reject(colorHex);
+            }
+        );
+    });
+}
 
 
   validarcampos() {
@@ -216,12 +230,15 @@ export class RolesComponent implements OnInit {
 
   }
 
-  editarRoles(rolesId: number) {
+  async editarRoles(rolesId: number) {
+    console.log(this.rol[0]);
     this.roleToEdit = true;
     this.rol = this.roles.filter(x => x.rolId == rolesId);
+    let colorHex = await this.obtenerHexColor(this.rol[0].colorId);
     this.roleForm.get('rolId')?.setValue(this.rol[0].rolId);
     this.roleForm.get('empresaId')?.setValue(this.rol[0].empresaId);
     this.roleForm.get('nombre')?.setValue(this.rol[0].nombre);
+    this.roleForm.get('color')?.setValue(colorHex);
     this.roleForm.get('descripcion')?.setValue(this.rol[0].descripcion);
     this.roleForm.get('estado')?.setValue(this.rol[0].estado == "true" ? true : false);
   }
