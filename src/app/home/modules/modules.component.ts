@@ -24,7 +24,7 @@ export class ModulesComponent implements OnInit {
   usario: any;
   Acceso: boolean = false;
   rutaFoto: string = ''
-  
+
 
   constructor(private modalService: NgbModal, private router: Router, private userService: UserService, private loginServices: loginTiinduxService) { }
 
@@ -41,7 +41,7 @@ export class ModulesComponent implements OnInit {
         this.router.navigateByUrl('');
       }
     }
- 
+
   }
 
 
@@ -101,18 +101,18 @@ export class ModulesComponent implements OnInit {
 
     let rutaImg = ''
 
-    if (ruta == 'rrhh'      ) { rutaImg = '../../assets/Icono_RRHH_2.png' } 
-    if (ruta == 'BIENESTAR' ) { rutaImg = '../../assets/Icono_Bienestar.png' } 
-    if (ruta == 'SST'       ) { rutaImg = '../../assets/Icono_SST.png' } 
-    if (ruta == 'GESCON'    ) { rutaImg = '../../assets/Icono_Gestion_de_conocimiento.png' } 
-    if (ruta == 'ADMON'     ) { rutaImg = '../../assets/Icono_Administracion.png' } 
+    if (ruta == 'rrhh'      ) { rutaImg = '../../assets/Icono_RRHH_2.png' }
+    if (ruta == 'BIENESTAR' ) { rutaImg = '../../assets/Icono_Bienestar.png' }
+    if (ruta == 'SST'       ) { rutaImg = '../../assets/Icono_SST.png' }
+    if (ruta == 'GESCON'    ) { rutaImg = '../../assets/Icono_Gestion_de_conocimiento.png' }
+    if (ruta == 'ADMON'     ) { rutaImg = '../../assets/Icono_Administracion.png' }
 
     return rutaImg;
   }
 
   cambiarImagen(elemento: any, ruta: string) {
     const divElement = event.target as HTMLDivElement;
-    const imgElement = divElement.querySelector('img') as HTMLImageElement; 
+    const imgElement = divElement.querySelector('img') as HTMLImageElement;
     if (ruta == 'rrhh') { imgElement.src = '../../assets/Icono_RRHH.png' }
     if (ruta == 'BIENESTAR') { imgElement.src = '../../assets/Icono_Bienestar_2.png' }
     if (ruta == 'SST') { imgElement.src = '../../assets/Icono_SST_2.png' }
@@ -123,11 +123,11 @@ export class ModulesComponent implements OnInit {
   restaurarImagen(elemento:any,ruta: string) {
     const divElement = event.target as HTMLDivElement;
     const imgElement = divElement.querySelector('img') as HTMLImageElement;
-    if (ruta == 'rrhh'      ) { imgElement.src = '../../assets/Icono_RRHH_2.png' } 
-    if (ruta == 'BIENESTAR' ) { imgElement.src = '../../assets/Icono_Bienestar.png' } 
-    if (ruta == 'SST'       ) { imgElement.src = '../../assets/Icono_SST.png' } 
-    if (ruta == 'GESCON'    ) { imgElement.src = '../../assets/Icono_Gestion_de_conocimiento.png' } 
-    if (ruta == 'ADMON'     ) { imgElement.src = '../../assets/Icono_Administracion.png' } 
+    if (ruta == 'rrhh'      ) { imgElement.src = '../../assets/Icono_RRHH_2.png' }
+    if (ruta == 'BIENESTAR' ) { imgElement.src = '../../assets/Icono_Bienestar.png' }
+    if (ruta == 'SST'       ) { imgElement.src = '../../assets/Icono_SST.png' }
+    if (ruta == 'GESCON'    ) { imgElement.src = '../../assets/Icono_Gestion_de_conocimiento.png' }
+    if (ruta == 'ADMON'     ) { imgElement.src = '../../assets/Icono_Administracion.png' }
   }
 
   cargalistas() {
@@ -161,7 +161,6 @@ export class ModulesComponent implements OnInit {
         var userId = localStorage.getItem('SEUID');
         this.loginServices.eliminarDato('Sesion', Number(userId)).subscribe(
           (respuesta: ApiResponse<any>) => {
-            //console.log(respuesta.data)
             this.destroySession();
           }
         );

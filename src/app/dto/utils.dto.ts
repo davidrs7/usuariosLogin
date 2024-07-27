@@ -33,7 +33,6 @@ export class AdminMsgErrors {
               break;
             default:
               errors.push('Error inesperado.');
-              console.log(index);
           }
     return errors;
   }
@@ -132,13 +131,13 @@ export class AdminExtraForms {
     var formGroup = new FormGroup({});
     for(let field of fields) {
       var formControl = new FormControl(field.fieldValue);
-      
+
       if(field.isRequired)
         formControl.addValidators(Validators.required);
 
       if(field.fieldType == 'number')
         formControl.addValidators(Validators.pattern('^[0-9]*$'));
-      
+
       if(field.config != null && field.config.length > 0) {
         for(let configField of field.config) {
           switch(configField.name) {
@@ -173,7 +172,7 @@ export class AdminExtraForms {
       for(var i = 0; i < items.length; i++) {
         var set = items[i].split(':');
         var obj: FormFieldConfigIndex = { name: set[0], title: this.getTitleByName(set[0]), value: set[1] };
-        
+
         var list = set[1].split(',');
         if(list.length > 1 || stepField.fieldType == 'list') {
           obj.list = list;

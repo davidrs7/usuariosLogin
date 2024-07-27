@@ -43,7 +43,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   employeesMethod(page: number) {
-    
+
     this.canva = true;
     this.employeeCriteria.page = page;
     this.employees = [];
@@ -101,7 +101,6 @@ export class EmployeesComponent implements OnInit {
       this.pagesArray.push(this.employeeCriteria.page + 2);
     }
     this.showEmployees = true;
-    console.log(this.pagesArray);
   }
 
   openModal(content: any) {

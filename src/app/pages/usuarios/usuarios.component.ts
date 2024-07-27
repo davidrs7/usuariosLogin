@@ -10,6 +10,8 @@ import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.ser
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { EmployeeService } from 'src/app/_services/employee/employee.service';
+import { EmployeeDTO } from 'src/app/dto/employee/employee.dto';
 
 @Component({
   selector: 'app-usuarios',
@@ -21,9 +23,9 @@ export class UsuariosComponent implements OnInit {
   usuarios: any[] = [];
   TipDocs: any[] = [];
   Sexo: any[] = [];
-  Jefe: any[] = []; 
-  Roles: any[] = []; 
-  Empresa: any[] = []; 
+  Jefe: any[] = [];
+  Roles: any[] = [];
+  Empresa: any[] = [];
   estado: any;
   usuario: any[] = [];
   Cargos: any[] = [];
@@ -32,12 +34,12 @@ export class UsuariosComponent implements OnInit {
   page = 1;
   optionsPage = [5, 10, 30, 50];
   usuarioToEdit = false;
-  rutaApi = 'User'; 
+  rutaApi = 'User';
   usuarioSeleccionado: any;
   archivoUsers: File | null = null ;
 
   miControl = new FormControl();
-  opciones: string[] = ['Opción 1', 'Opción 2', 'Opción 3']; 
+  opciones: string[] = ['Opción 1', 'Opción 2', 'Opción 3'];
   opcionesFiltradas: Observable<string[]> | undefined;
   filtroUsuarios: any = {};
   tipoCargue: boolean = false;
@@ -52,10 +54,10 @@ export class UsuariosComponent implements OnInit {
     contraseña: ['', Validators.required],
     telefono: [''],
     direccion: [''],
-    fechanacimiento: [''], 
+    fechanacimiento: [''],
     fechacreacion: [this.obtenerFechaActual(), []],
     sexoid: [0, Validators.required],
-    jefeid: [0], 
+    jefeid: [0],
     rolid: [0, Validators.required],
     cargoid: [0, Validators.required],
     empresaid: [0],
@@ -64,28 +66,28 @@ export class UsuariosComponent implements OnInit {
     buscarDoc: ['', []],
   });
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) 
-  {  
-  } 
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService,private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService)
+  {
+  }
 
 
 
-  filtrarUsuarios(event: any) { 
+  filtrarUsuarios(event: any) {
     const filtro = event.target.value.toLowerCase();
     this.filtroUsuarios = this.usuarios.filter(usuario =>
       usuario.nombre.toLowerCase().includes(filtro)
     );
   }
 
-  seleccionarUsuario(usuario: any) {   
+  seleccionarUsuario(usuario: any) {
     this.usuariosForm.get('jefeid')?.setValue(usuario.usuarioId);
-    this.miControl.setValue(usuario.nombre); 
+    this.miControl.setValue(usuario.nombre);
     this.filtroUsuarios = []
 
   }
 
   ngOnInit(): void {
-    this.cargarLista(); 
+    this.cargarLista();
   }
 
   tipocargue(tipCargue: number){
@@ -95,15 +97,15 @@ export class UsuariosComponent implements OnInit {
       this.tipoCargue = false
     }
 
-    if (tipCargue == 2){  
+    if (tipCargue == 2){
       this.tipoCargue = true
       this.cargueArchivo = false
     }
 
   }
- 
+
     buscarUsuarios(){
-      let documento = this.usuariosForm.get('buscarDoc')?.value 
+      let documento = this.usuariosForm.get('buscarDoc')?.value
       this.usuario =  this.usuarios.filter(x => x.numDocumento == documento);
       if (this.usuario.length > 0 )
        this.editarUsuarios(this.usuario[0].usuarioId);
@@ -126,19 +128,19 @@ export class UsuariosComponent implements OnInit {
 
     //usuarios
     this.loginServices.GetAllData<any>(this.rutaApi).subscribe((respuesta: ApiResponse<any>) => {
-      this.usuarios = respuesta.data; 
+      this.usuarios = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
       this.TipDocs = respuesta.data;
     });
- 
+
     this.loginServices.GetAllData<any>('Sexo').subscribe((respuesta: ApiResponse<any>) => {
       this.Sexo = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('Cargos').subscribe((respuesta: ApiResponse<any>) => {
-      this.Cargos = respuesta.data;  
+      this.Cargos = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('Roles').subscribe((respuesta: ApiResponse<any>) => {
@@ -149,7 +151,7 @@ export class UsuariosComponent implements OnInit {
     this.loginServices.GetAllData<any>('Empresas').subscribe((respuesta: ApiResponse<any>) => {
       this.Empresa = respuesta.data;
 
-    }); 
+    });
   }
 
   LimpiarFormulario() {
@@ -180,7 +182,7 @@ export class UsuariosComponent implements OnInit {
     this.tipoCargue = false;
 
   }
- 
+
   eliminarUsuarios(rolesId: number) {
     this.loginServices.eliminarDato(this.rutaApi, rolesId)
       .subscribe(
@@ -223,14 +225,14 @@ export class UsuariosComponent implements OnInit {
       empresaId: Number(this.usuariosForm.get('empresaid')?.value),
       usuarioIdOpcional: this.usuariosForm.get('ususarioopcionalId')?.value,
       estado: this.usuariosForm.get('estado')?.value == "true" ? true : false,
-    };  
+    };
     if (this.validarcampos()) {
       let resp = this.usuarioToEdit == true ? this.ActualizarUsuarios(body) : this.CrearUsuarios(body)
     }
   }
 
-  
-  validarcampos(): boolean {  
+
+  validarcampos(): boolean {
     const formControls = this.usuariosForm.controls;
     for (const controlName in formControls) {
       if (formControls.hasOwnProperty(controlName)) {
@@ -274,11 +276,68 @@ export class UsuariosComponent implements OnInit {
       );
   }
 
-  CrearUsuarios(body: ReqUsuarios) { 
-    this.canva = true
+  crearDataEmployee(body: any): Promise<number> {
+
+    return new Promise<number>((resolve, reject) => {
+      const bodyEmployee: any = {
+        id: body.usuarioId,
+        department: "",
+        jobId: body.cargoId,
+        jobName: "",
+        jobProfile: "",
+        statusId: 1,
+        statusName: "",
+        maritalStatusName: "",
+        docTypeId: body.tipoDocumento,
+        docTypeName: "",
+        docIssueCityName: "",
+        contractTypeId: "",
+        contractTypeName: "",
+        jobCityName: "",
+        bankingEntityName: "",
+        doc: body.numDocumento,
+        docIssueDate: body.fechaNacimiento,
+        name: body.nombre,
+        sex: this.Sexo.filter(x => x.sexoId == body.sexoId)[0].descripcion,
+        birthDate: body.fechaNacimiento,
+        rh: "",
+        corpCellPhone: "",
+        cellPhone: body.telefono,
+        phone: body.telefono,
+        email: body.correoElectronico,
+        employmentDate: body.fechaCreacion,
+        bankAccount: "",
+        bankAccountType: "",
+        hasVaccine: false,
+        vaccineMaker: "",
+        vaccineDose: "",
+        hasVaccineBooster: false,
+        photoUrl: "",
+        colorHex: "",
+        photo: undefined
+      };
+
+      this.employeeService.addEndpoint(bodyEmployee).subscribe(
+        (employeeId: number ) => {
+          console.log(employeeId);
+          resolve(employeeId);
+        },
+        (error: any) => {
+          reject(error);
+        }
+      );
+    });
+  }
+
+  async CrearUsuarios(body: ReqUsuarios) {
+    //this.canva = true
+    let idEmployee= await  this.crearDataEmployee(body);
+    console.log(idEmployee);
+    body.usuarioIdOpcional  = idEmployee;
     this.loginServices.createData(this.rutaApi, body)
       .subscribe(
         (respuesta: ApiResponse<any>) => {
+
           Swal.fire({
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,
@@ -299,11 +358,11 @@ export class UsuariosComponent implements OnInit {
 
   }
 
- 
 
-  editarUsuarios(id: number) { 
+
+  editarUsuarios(id: number) {
     this.usuarioToEdit = true;
-    this.usuario = this.usuarios.filter(x => x.usuarioId == id); 
+    this.usuario = this.usuarios.filter(x => x.usuarioId == id);
     this.usuariosForm.get('usuarioId')?.setValue(this.usuario[0].usuarioId);
     this.usuariosForm.get('nombre')?.setValue(this.usuario[0].nombre);
     this.usuariosForm.get('tipodocumento')?.setValue(this.usuario[0].tipoDocumento);
@@ -325,38 +384,38 @@ export class UsuariosComponent implements OnInit {
   }
 
   obtenerFechaActual(): string {
-    const fechaActual: Date = new Date(); 
+    const fechaActual: Date = new Date();
     const fechaFormateada: string = `${fechaActual.getFullYear()}-${this.dosDigitos(fechaActual.getMonth() + 1)}-${this.dosDigitos(fechaActual.getDate())}`;
     return fechaFormateada;
   }
 
    convertirFormatoFecha(fechaISO: string): string {
     const fechaObj = new Date(fechaISO);
-    
+
     const año = fechaObj.getFullYear();
     const mes = ('0' + (fechaObj.getMonth() + 1)).slice(-2);
     const dia = ('0' + fechaObj.getDate()).slice(-2);
-  
+
     return `${año}-${mes}-${dia}`;
   }
-  
+
 
   dosDigitos(n: number): string {
     return n < 10 ? '0' + n : '' + n;
   }
 
-  seleccionArchivo(event: any): void { 
+  seleccionArchivo(event: any): void {
     this.archivoUsers = <File>event.target.files[0];
   }
 
-  cargaUsers(): void { 
+  cargaUsers(): void {
     const inputElement = <HTMLInputElement>document.getElementById('archivoUser');
     if (inputElement.files && inputElement.files.length > 0) {
       this.archivoUsers = inputElement.files[0];
     }
-    if (this.archivoUsers !== null && this.validarArchivo(this.archivoUsers)) { 
+    if (this.archivoUsers !== null && this.validarArchivo(this.archivoUsers)) {
       const fd = new FormData();
-      fd.append('file', this.archivoUsers, this.archivoUsers.name);   
+      fd.append('file', this.archivoUsers, this.archivoUsers.name);
       this.canva = true;
       this.loginServices.cargaMasivaUsers('User/cargar-usuarios',fd).subscribe(
         (respuesta: ApiResponse<any>) => {
@@ -381,7 +440,7 @@ export class UsuariosComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'error: ' ,
-        text: 'Por favor selecciona un archivo valido (.csv) '  
+        text: 'Por favor selecciona un archivo valido (.csv) '
       }).then((res:any) => {
         return;
       });
@@ -392,16 +451,16 @@ export class UsuariosComponent implements OnInit {
 
 
   validarArchivo(archivo: File): boolean{
-    let archivoValido = true; 
+    let archivoValido = true;
 
     if (archivo.type != "text/csv"){
-        archivoValido = false 
+        archivoValido = false
     }
 
     return archivoValido;
 
 
   }
-  
+
 
 }

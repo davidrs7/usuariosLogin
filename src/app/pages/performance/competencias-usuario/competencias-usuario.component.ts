@@ -75,12 +75,12 @@ export class CompetenciasUsuarioComponent implements OnInit {
     });
 
     this.loginServices.GetAllData<any>('Competencias').subscribe((respuesta: ApiResponse<any>) => {
-      this.competencias = respuesta.data; 
+      this.competencias = respuesta.data;
     })
 
   }
 
-  consultacompetencia(id: number){ 
+  consultacompetencia(id: number){
     const competencia = this.competencias.filter(x => x.id == id)[0].competencia
     return competencia;
 
@@ -109,16 +109,16 @@ export class CompetenciasUsuarioComponent implements OnInit {
   }
 
   obtenerUsuarioPromise() {
-    new Promise<void>((resolve, reject) => { 
+    new Promise<void>((resolve, reject) => {
       const subscription = this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe(
-        (respuesta: ApiResponse<any>) => { 
-          if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) { 
+        (respuesta: ApiResponse<any>) => {
+          if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) {
             this.usuarios.push(respuesta.data);
-          } 
-          resolve(); 
+          }
+          resolve();
           subscription.unsubscribe();
         },
-        (error) => { 
+        (error) => {
           reject(error);
         }
       );
@@ -143,7 +143,7 @@ export class CompetenciasUsuarioComponent implements OnInit {
       id_usuario_califica: Number(this.idusuario),
       id_usuario_calificado: this.usuario.usuarioId
     }
- 
+
     if (this.respuestasUser != undefined) {
       for (let i = 0; i < this.respuestasUser.length; i++) {
         if (this.respuestasUser[i].id_pregunta == idpregunta && this.respuestasUser[i].id_usuario_calificado == this.usuario.usuarioId) {

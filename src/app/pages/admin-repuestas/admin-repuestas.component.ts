@@ -25,8 +25,8 @@ export class AdminRepuestasComponent implements OnInit {
   respuestasForm: FormGroup = this.fb.group({
     id: [0, []],
     idpregunta: ['', Validators.required],
-    descripcion: ['', [Validators.required]], 
-    peso: [0, [Validators.required]], 
+    descripcion: ['', [Validators.required]],
+    peso: [0, [Validators.required]],
     estado: [true, []]
   });
 
@@ -38,12 +38,11 @@ export class AdminRepuestasComponent implements OnInit {
 
   cargarLista(): void {
     this.loginServices.GetAllData<any>(this.rutaApi).subscribe((respuesta: ApiResponse<any>) => {
-      this.respuestas = respuesta.data; 
+      this.respuestas = respuesta.data;
     });
   }
 
   editarrespuesta(id:number){
-    //console.log('editar id- ' + id.toString())
     const descripcion = document.getElementById(id.toString()) as HTMLTextAreaElement;
     const peso = document.getElementById('peso-'+id.toString()) as HTMLTextAreaElement;
     const body: reqRespuestas  = {
@@ -76,7 +75,6 @@ export class AdminRepuestasComponent implements OnInit {
   }
 
   eliminarrespuesta(id:number){
-   // console.log('eliminar id- ' + id.toString())
     this.loginServices.eliminarDato(this.rutaApi, id)
     .subscribe(
       (respuesta: ApiResponse<any>) => {
@@ -137,6 +135,6 @@ export class AdminRepuestasComponent implements OnInit {
       }
     );
 
-  } 
+  }
 
 }

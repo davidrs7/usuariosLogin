@@ -12,6 +12,8 @@ import { JobService } from '../../../_services/employee/job.service';
 import { ParamsService } from '../../../_services/params.service';
 import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
 import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
+import { ReqUsuarios } from 'src/app/Interfaces/UserLogin';
+
 
 @Component({
   selector: 'app-employees-add',
@@ -335,10 +337,7 @@ export class EmployeesAddComponent implements OnInit {
         );*/
 
 
-        console.log("-----------getEmployeeSons------------");
         if(this.employeeId != null ){
-          console.log("-----------getEmployeeSons------------");
-          console.log(this.employeeSonsAge);
           this.getEmployeeSons();
         }
         suscribeLoad = true;
@@ -486,13 +485,11 @@ addParamsforSex(data: any[]) {
 
     this.usuariosService.GetAllData<any>('Cargos').subscribe((respuesta: ApiResponse<any>) => {
       this.paramJob = this.addParamsforCargos(respuesta.data);
-      console.log(respuesta.data);
       this.canva = false;
     });
 
     this.usuariosService.GetAllData<any>('Sexo').subscribe((respuesta: ApiResponse<any>) => {
       this.paramSex = this.addParamsforSex(respuesta.data);
-      console.log(respuesta.data);
       this.canva = false;
     });
 
@@ -719,13 +716,9 @@ addParamsforSex(data: any[]) {
 
     }else{
       this.employeeSonData=[];
-      console.log('zzzzzzz');
-      console.log(this.sonForm.get('sonName')?.value);
-      console.log('zzzzzzz');
       this.sonForm.setValue({sonName: null,id: 0,sonBornDate: null,employeeGeneralId:this.employeeId});
       /* this.employeeSonsAge=[]; */
     }
-    console.log(this.employeeSonData.length);
     this.sonsForm=!this.sonsForm;
   }
 
@@ -765,7 +758,6 @@ addParamsforSex(data: any[]) {
   saveSons(employeeId: number){
     for(var i=0; i < this.employeeSonsAge.length; i++){
       this.employeeSonsAge[i].employeeGeneralId=employeeId;
-      console.log(this.employeeSonsAge[i]);
       this.employeeService.updateSonDataEndPoint(this.employeeSonsAge[i]).subscribe(
 
       );
@@ -786,6 +778,34 @@ addParamsforSex(data: any[]) {
       this.filesRel[index].file = event.target.files[0];
   }
 
+  saveUser(usuario:any, idEmployee: number){
+    //david
+    const body: ReqUsuarios = {
+      usuarioId: 0,
+      nombre: usuario.name.toString(),
+      tipoDocumento: Number(usuario.docTypeId),
+      numDocumento: usuario.doc.toString(),
+      correoElectronico: usuario.email.toString(),
+      contraseña: usuario.doc.toString(),
+      telefono: usuario.cellPhone.toString(),
+      direccion: "",
+      fechaNacimiento: usuario.birthDate,
+      fechaCreacion: usuario.docIssueDate,
+      sexoId: Number(this.paramSex.filter(x => x.name == usuario.sex)[0].id),
+      jefeId: Number(1),
+      rolId: Number(1),
+      cargoId: Number(usuario.jobId) || 0,
+      empresaId: Number(1),
+      usuarioIdOpcional: Number(idEmployee),
+      estado: true,
+    };
+
+    this.usuariosService.createData('User',body).subscribe((respuesta: ApiResponse<any>) => {
+      console.log(respuesta);
+    });
+
+  }
+
   saveAndNext() {
     if(this.employeeId == null) {
       switch(this.section) {
@@ -795,6 +815,7 @@ addParamsforSex(data: any[]) {
               this.employee.id = employeeId;
               this.employeeGeneral.employeeId = employeeId;
               this.employeeAcademic.employeeId = employeeId;
+              this.saveUser(this.employee,this.employee.id);
               this.saveKnowledgesAndSkills(employeeId);
               this.saveSons(employeeId);
               this.openSection('general');
@@ -947,20 +968,13 @@ addParamsforSex(data: any[]) {
 
   sonUpdate(index?: number){
     //this.sonForm.setValue({sonName: 'xxxx',id: 33,sonBornDate:'24/11/2022'});
-    console.log(this.sonForm.get('sonName')?.value);
-    console.log(this.sonForm.get('sonBornDate')?.value);
-    console.log(this.sonForm.value);
     //=this.sonForm
     let sonData: EmployeeSonsDTO=this.sonForm.value;
-    console.log('########');
-    console.log(this.sonForm.value);
     if(this.employeeId != null){
     this.employeeService.updateSonDataEndPoint(sonData).subscribe(
       (responseSonsAge: any)=>{
         /* this.employeeSonsAge=responseSonsAge; */
-        console.log('resp:'+responseSonsAge);
         if(responseSonsAge>0){
-          console.log('ssssss');
           document.getElementById('sonsEmployee');
           this.employeeService.sonsEndpoint(this.employeeId).subscribe(
             (response: EmployeeSonsDTO[])=>{
@@ -1014,9 +1028,6 @@ addParamsforSex(data: any[]) {
           if(index != iToDelete) newArray.push(element);
       });
       this.employeeSonsAge=newArray;
-      console.log(newArray);
-
-
     }
 
   }

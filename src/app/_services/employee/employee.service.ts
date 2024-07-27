@@ -113,7 +113,7 @@ export class EmployeeService {
   }
 
   private getGenericFormDataCriteria(employeeCriteria: EmployeeCriteriaDTO): FormData {
-    
+
 
     var formData = new FormData();
     formData.append("departmentId", this.stringValue(employeeCriteria.departmentId));
@@ -228,8 +228,6 @@ export class EmployeeService {
     formData.append("sonName",sonData.sonName!.toString());
     formData.append("sonBornDate",sonData.sonBornDate!.toString());
     formData.append("EmployeeGeneralId",sonData.employeeGeneralId!.toString());
-    console.log("************");
-    console.log(formData);
     return this.http.post(this.baseUrl + 'Add/EmpSon', formData);
   }
 

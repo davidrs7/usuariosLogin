@@ -88,8 +88,6 @@ export class EmployeesEditComponent implements OnInit {
           suscribeLoad=true;
           this.employeeService.sonsEndpoint(this.employeeId).subscribe(
             (responseSonsAge: EmployeeSonsDTO[])=>{
-              //console.log('---read responseSonsAge----');
-              //console.log(responseSonsAge);
               this.employeeSonsAge=responseSonsAge;
               this.canva=false;
             }

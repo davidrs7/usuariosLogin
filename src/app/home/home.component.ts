@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit {
             this.loginValid = true;
             this.userService.createSessionEndpoint(this.user).subscribe(
               (session: SessionDTO) => {
-                //console.log(session);
                 if (session != null && session.token != '') {
                   localStorage.setItem('SESSL', '1');
                   localStorage.setItem('SESST', session.token);
@@ -102,10 +101,10 @@ export class HomeComponent implements OnInit {
 
   // Login CRUD
   validarLogin(sesion: any) {
-    if (sesion != null) { 
+    if (sesion != null) {
       localStorage.setItem('SESSL', '1');
       localStorage.setItem('SEUID', this.sesion.usuarioId);
-      localStorage.setItem('SESST', this.sesion.token); 
+      localStorage.setItem('SESST', this.sesion.token);
       this.router.navigateByUrl('modules');
     } else {
       this.loginValid = false;
@@ -122,7 +121,6 @@ export class HomeComponent implements OnInit {
         var userId = localStorage.getItem('SEUID');
         this.loginServices.eliminarDato('Sesion', Number(userId)).subscribe(
           (respuesta: ApiResponse<any>) => {
-            //console.log(respuesta.data)
             this.destroySession();
           }
         );
@@ -138,6 +136,6 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('SESSL', '0');
     this.router.navigateByUrl('');
   }
- 
 
-} 
+
+}

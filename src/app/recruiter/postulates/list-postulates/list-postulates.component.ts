@@ -9,7 +9,7 @@ import { VacantDTO } from 'src/app/dto/recruiter/vacant.dto';
 @Component({
   selector: 'app-list-postulates',
   templateUrl: './list-postulates.component.html',
-  styleUrls: ['./list-postulates.component.scss'],  
+  styleUrls: ['./list-postulates.component.scss'],
 })
 
 export class ListPostulatesComponent implements OnInit {
@@ -22,7 +22,7 @@ export class ListPostulatesComponent implements OnInit {
 
   postulateDoc: string = "";
   postulateSelect: string = "cedula";
-  
+
   postulatesList: PostulateBasicDTO[] = [];
   postulateCriteria: PostulateCriteriaDTO = { vacantId: 0, page: 1, activePaginator: true };
   vacants: VacantDTO[] = [];
@@ -116,7 +116,6 @@ export class ListPostulatesComponent implements OnInit {
     if((this.postulateCriteria.page + 2) <= this.lastPage) {
       this.pagesArray.push(this.postulateCriteria.page + 2);
     }
-    console.log(this.pagesArray);
   }
 
   openModal(content:any) {

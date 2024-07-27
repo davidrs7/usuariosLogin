@@ -42,13 +42,10 @@ export class DepartmentsComponent implements OnInit {
 
   cargaRoles(){
     this.loginService.GetAllData('Roles').subscribe((respuesta: ApiResponse<any>) => {
-      console.log(respuesta.data);
     });
     this.loginService.GetAllData('Colores').subscribe((respuesta: ApiResponse<any>) => {
-      console.log(respuesta.data);
     });
     this.loginService.GetAllData('User').subscribe((respuesta: ApiResponse<any>) => {
-      console.log(respuesta.data);
     });
   }
 

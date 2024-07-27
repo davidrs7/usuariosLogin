@@ -17,7 +17,7 @@ export class AdminPreguntasComponent implements OnInit {
 
   preguntas: any[] = [];
   competencias: any[] = [];
-  rutaApi: string = 'Preguntas' 
+  rutaApi: string = 'Preguntas'
   @ViewChild('competenciaSelect') competenciaSelect!: ElementRef;
 
 
@@ -27,10 +27,10 @@ export class AdminPreguntasComponent implements OnInit {
   ngOnInit(): void {
     this.cargalistas();
   }
- 
- 
 
-  consultacompetencia(id: number){ 
+
+
+  consultacompetencia(id: number){
     const competencia = this.competencias.filter(x => x.id == id)[0].competencia
     return competencia;
 
@@ -38,24 +38,24 @@ export class AdminPreguntasComponent implements OnInit {
 
   cargalistas(){
     this.loginServices.GetAllData<any>('Preguntas').subscribe((respuesta: ApiResponse<any>) => {
-      this.preguntas = respuesta.data.sort((a,b) => a.idcompetencia - b.idcompetencia);  
+      this.preguntas = respuesta.data.sort((a,b) => a.idcompetencia - b.idcompetencia);
     });
 
     this.loginServices.GetAllData<any>('Competencias').subscribe((respuesta: ApiResponse<any>) => {
-      this.competencias = respuesta.data; 
+      this.competencias = respuesta.data;
     })
 
   }
 
   LimpiarFormulario(){
-    this.cargalistas(); 
-  } 
+    this.cargalistas();
+  }
 
   async agregarPregunta(){
     const fecha = this.obtenerFechaActual();
     const textareaElement = document.getElementById("pregunta") as HTMLTextAreaElement;
     const competencia = this.competenciaSelect.nativeElement.value;
-    //console.log(competencia);
+
     if (Number(competencia) == 0) {
       Swal.fire({
         icon: 'info',
@@ -69,7 +69,7 @@ export class AdminPreguntasComponent implements OnInit {
         pregunta : textareaElement.value,
         estado: true
       };
-  
+
       this.loginServices.createData('Preguntas', body)
       .subscribe(
         (respuesta: ApiResponse<any>) => {
@@ -92,7 +92,7 @@ export class AdminPreguntasComponent implements OnInit {
       );
     }
 
- 
+
 
 
   }
@@ -123,7 +123,7 @@ export class AdminPreguntasComponent implements OnInit {
 
   editarpregunta(id: number,idcomp: number){
     const textareaElement = document.getElementById(id.toString()) as HTMLTextAreaElement;
-    //console.log(textareaElement.value)
+
     const body: reqPreguntas = {
       id: id,
       idcompetencia: idcomp,
