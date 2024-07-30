@@ -252,11 +252,59 @@ export class UsuariosComponent implements OnInit {
     return true;
   }
 
+  actualizarEmployee(body: any){
+    const bodyEmployee: any = {
+      id: body.usuarioIdOpcional,
+      department: "",
+      jobId: body.cargoId,
+      jobName: "",
+      jobProfile: "",
+      statusId: 1,
+      statusName: "",
+      maritalStatusName: "",
+      docTypeId: body.tipoDocumento,
+      docTypeName: "",
+      docIssueCityName: "",
+      contractTypeId: "",
+      contractTypeName: "",
+      jobCityName: "",
+      bankingEntityName: "",
+      doc: body.numDocumento,
+      docIssueDate: body.fechaNacimiento,
+      name: body.nombre,
+      sex: this.Sexo.filter(x => x.sexoId == body.sexoId)[0].descripcion,
+      birthDate: body.fechaNacimiento,
+      rh: "",
+      corpCellPhone: "",
+      cellPhone: body.telefono,
+      phone: body.telefono,
+      email: body.correoElectronico,
+      employmentDate: body.fechaCreacion,
+      bankAccount: "",
+      bankAccountType: "",
+      hasVaccine: false,
+      vaccineMaker: "",
+      vaccineDose: "",
+      hasVaccineBooster: false,
+      photoUrl: "",
+      colorHex: "",
+      photo: undefined
+    };
+
+    this.employeeService.editEndpoint(bodyEmployee).subscribe(
+      (rsp: any) => {
+        console.log('Employee actualizado....');
+      });
+  }
+
 
   ActualizarUsuarios(body: ReqUsuarios) {
+
+    this.actualizarEmployee(body);
     this.loginServices.UpdateData(this.rutaApi, this.usuario[0].usuarioId, body)
       .subscribe(
         (respuesta: ApiResponse<any>) => {
+
           Swal.fire({
             icon: 'success',
             title: 'Mensaje: ' + respuesta.estado.descripcion,

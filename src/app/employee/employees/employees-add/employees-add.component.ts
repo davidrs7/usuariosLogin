@@ -58,6 +58,7 @@ export class EmployeesAddComponent implements OnInit {
   filesRel: FileRel[] = [];
   employeeSonsAge: EmployeeSonsDTO[]=[];
   employeeSonData: EmployeeSonsDTO[]=[];
+  usuarios: any[] = [];
 
   errors: AdminMsgErrors = new AdminMsgErrors();
   formBasic!: FormGroup;
@@ -76,6 +77,7 @@ export class EmployeesAddComponent implements OnInit {
     this.initFormAcademic();
     this.initFormDocument();
     this.initSonForm(this.fb);
+
 
     this.employeeId = this.route.snapshot.paramMap.get("id");
     this.section = this.route.snapshot.paramMap.get("section");
@@ -493,6 +495,14 @@ addParamsforSex(data: any[]) {
       this.canva = false;
     });
 
+    this.usuariosService.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
+      this.usuarios = respuesta.data;
+      console.log(this.usuarios);
+      this.canva = false;
+    });
+
+
+
 
     this.paramsService.maritalStatusEndpoint().subscribe(
       (paramResponse: ParamsDTO[]) => {
@@ -780,8 +790,11 @@ addParamsforSex(data: any[]) {
 
   saveUser(usuario:any, idEmployee: number){
     //david
+    let idusuario = 0;
+    idusuario = this.usuarios.filter( x => x.usuarioIdOpcional == idEmployee)[0].usuarioId
+
     const body: ReqUsuarios = {
-      usuarioId: 0,
+      usuarioId: idusuario,
       nombre: usuario.name.toString(),
       tipoDocumento: Number(usuario.docTypeId),
       numDocumento: usuario.doc.toString(),
@@ -800,9 +813,22 @@ addParamsforSex(data: any[]) {
       estado: true,
     };
 
-    this.usuariosService.createData('User',body).subscribe((respuesta: ApiResponse<any>) => {
-      console.log(respuesta);
-    });
+    console.log('----- saveuser ----');
+    console.log(idusuario);
+
+    if (idusuario  == 0) {
+      this.usuariosService.createData('User',body).subscribe((respuesta: ApiResponse<any>) => {
+        console.log(respuesta);
+      });
+    } else
+    {
+      this.usuariosService.UpdateData('User',idusuario,body).subscribe((respuesta: ApiResponse<any>) => {
+        console.log(respuesta);
+      });
+    }
+
+
+
 
   }
 
@@ -851,6 +877,7 @@ addParamsforSex(data: any[]) {
         case 'basica':
           this.employeeService.editEndpoint(this.employee).subscribe(
             (rsp: any) => {
+              this.saveUser(this.employee,this.employee.id);
               this.saveKnowledgesAndSkills(this.employee.id);
               this.router.navigateByUrl('employees/employee/view/' + this.employeeId);
             }

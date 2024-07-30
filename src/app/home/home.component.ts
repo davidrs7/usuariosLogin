@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
         this.sessionValid = false;
         localStorage.removeItem('SESSL');
         localStorage.removeItem('SESST');
+        localStorage.removeItem('SEUID');
         break;
       case '1':
         this.router.navigateByUrl('modules');
