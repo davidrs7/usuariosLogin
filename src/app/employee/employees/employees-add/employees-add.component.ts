@@ -790,8 +790,8 @@ addParamsforSex(data: any[]) {
 
   saveUser(usuario:any, idEmployee: number){
     //david
-    let idusuario = 0;
-    idusuario = this.usuarios.filter( x => x.usuarioIdOpcional == idEmployee)[0].usuarioId
+    let idusuario = this.usuarios.filter( x => x.usuarioIdOpcional == idEmployee)[0];
+    idusuario = idusuario == undefined ? 0 : this.usuarios.filter( x => x.usuarioIdOpcional == idEmployee)[0].usuarioId;
 
     const body: ReqUsuarios = {
       usuarioId: idusuario,
