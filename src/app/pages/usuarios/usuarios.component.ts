@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { EmployeeService } from 'src/app/_services/employee/employee.service';
-import { EmployeeDTO } from 'src/app/dto/employee/employee.dto';
+import { EmployeeBasicDTO, EmployeeCriteriaDTO, EmployeeDTO } from 'src/app/dto/employee/employee.dto';
 
 @Component({
   selector: 'app-usuarios',
@@ -37,6 +37,7 @@ export class UsuariosComponent implements OnInit {
   rutaApi = 'User';
   usuarioSeleccionado: any;
   archivoUsers: File | null = null ;
+  employeeCriteria: EmployeeCriteriaDTO = { departmentId: 0, page: 1, activePaginator: true };
 
   miControl = new FormControl();
   opciones: string[] = ['Opción 1', 'Opción 2', 'Opción 3'];
@@ -61,9 +62,10 @@ export class UsuariosComponent implements OnInit {
     rolid: [0, Validators.required],
     cargoid: [0, Validators.required],
     empresaid: [0],
-    ususarioopcionalId: [1,[]],
+    ususarioopcionalId: [0,[]],
     estado: [true, Validators.required],
     buscarDoc: ['', []],
+    crearemployee: [false]
   });
 
   constructor(private fb: FormBuilder, private employeeService: EmployeeService,private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService)
@@ -207,6 +209,8 @@ export class UsuariosComponent implements OnInit {
   }
 
   guardaUsuarios() {
+
+
     const body: ReqUsuarios = {
       usuarioId: this.usuariosForm.get('usuarioId')?.value||0,
       nombre: this.usuariosForm.get('nombre')?.value,
@@ -253,6 +257,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   actualizarEmployee(body: any){
+    console.log (body.usuarioIdOpcional);
     const bodyEmployee: any = {
       id: body.usuarioIdOpcional,
       department: "",
@@ -300,7 +305,9 @@ export class UsuariosComponent implements OnInit {
 
   ActualizarUsuarios(body: ReqUsuarios) {
 
-    this.actualizarEmployee(body);
+
+    if (body.usuarioIdOpcional > 0 ){this.actualizarEmployee(body);}
+
     this.loginServices.UpdateData(this.rutaApi, this.usuario[0].usuarioId, body)
       .subscribe(
         (respuesta: ApiResponse<any>) => {
@@ -325,7 +332,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   crearDataEmployee(body: any): Promise<number> {
-
     return new Promise<number>((resolve, reject) => {
       const bodyEmployee: any = {
         id: body.usuarioId,
@@ -379,9 +385,11 @@ export class UsuariosComponent implements OnInit {
 
   async CrearUsuarios(body: ReqUsuarios) {
     //this.canva = true
+    if (this.usuariosForm.get('crearemployee').value){
     let idEmployee= await  this.crearDataEmployee(body);
     console.log(idEmployee);
     body.usuarioIdOpcional  = idEmployee;
+  }
     this.loginServices.createData(this.rutaApi, body)
       .subscribe(
         (respuesta: ApiResponse<any>) => {
@@ -405,6 +413,46 @@ export class UsuariosComponent implements OnInit {
       );
 
   }
+
+  async sincronizaUsusarios(){
+    let usuariosxcrear: any[] = [];
+    let contadorMsj:number = 0;
+    console.log('--- sincronizar ---');
+    console.log(this.usuarios);
+
+     this.employeeService.employeesAllEndpoint(this.employeeCriteria).subscribe(
+      async (employeesResponse: EmployeeBasicDTO[]) => {
+        console.log(employeesResponse);
+
+        usuariosxcrear = this.usuarios.filter(usuario =>
+          !employeesResponse.some(employee => employee.id === usuario.usuarioIdOpcional)
+        );
+
+        console.log(usuariosxcrear);
+        for (let i=0; i < usuariosxcrear.length ; i++){
+         let idEmployee= await  this.crearDataEmployee(usuariosxcrear[i]);
+         usuariosxcrear[i].usuarioIdOpcional = idEmployee;
+         this.loginServices.UpdateData(this.rutaApi, usuariosxcrear[i].usuarioId, usuariosxcrear[i]).subscribe(
+          (respuesta: ApiResponse<any>) => {
+            console.log(respuesta.estado);
+            if (respuesta.estado.codigo == "200"){
+            contadorMsj = contadorMsj + 1;
+            }
+          } );
+        }
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Se sincronizaron: ' + usuariosxcrear.length + ' registros ',
+          text: usuariosxcrear.length > 0 ? '' : 'Todos los usuarios están sincronizados'
+        }).then((res:any) => {
+
+        });
+
+
+      });
+  }
+
 
 
 

@@ -61,6 +61,7 @@
                     <option value="true">Activo</option>
                     <option value="false">Inactivo</option>
                 </select><br><br>
+
             </div>
 
             <div class="col-6">
@@ -109,28 +110,36 @@
                     <option *ngFor="let item of Empresa" value="{{item.empresaId}}">{{item.nombre}}</option>
                 </select><br><br>
 
-
+                <label for="crearemployee">¿Crear como empleado?</label>
+                <input type = "checkbox" formControlName = "crearemployee"  >
 
             </div>
         </div>
         <div class="row">
             <div class="col-6">
                 <button type="button" class="btn-users" (click)="guardaUsuarios()">{{ usuarioToEdit ? 'Editar Usuario' : 'Crear
-                    Usuario'}}</button> 
+                    Usuario'}}</button>
             </div>
             <div class="col-6">
                 <button type="button" class="btn-users" *ngIf="usuarioToEdit"
                 (click)="eliminarUsuarios(this.usuario[0].usuarioId)">Eliminar</button>
             </div>
         </div>
-      
-  
+
+
 
     </form>
     <div *ngIf="cargueArchivo">
         <label> Selecciona el archivo .csv </label> <br><br><br>
         <input type="file" id="archivoUser"> <br><br><br><br>
-        <button class="btn-users" (click)="cargaUsers()">Cargar</button>
+        <div class="row">
+          <div class="col-6">
+            <button class="btn-users" (click)="cargaUsers()">Cargar</button><br><br>
+          </div>
+          <div class="col-6">
+           <button class="btn-sync" (click)="sincronizaUsusarios()">Sincronizar usuarios - empleados</button><br><br>
+          </div>
+        </div>
     </div>
 
     <div class="canva" *ngIf="canva"><img src="../../../assets/load.gif" alt="Cargando" /></div>

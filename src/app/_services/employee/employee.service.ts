@@ -129,6 +129,11 @@ export class EmployeeService {
     return this.http.post<EmployeeBasicDTO[]>(this.baseUrl + 'Employees/Criteria', formData);
   }
 
+  employeesAllEndpoint(employeeCriteria: EmployeeCriteriaDTO) {
+    var formData = this.getGenericFormDataCriteria(employeeCriteria);
+    return this.http.post<EmployeeBasicDTO[]>(this.baseUrl + 'Employees/All', formData);
+  }
+
   employeesDownloadEndpoint(employeeCriteria: EmployeeCriteriaDTO) {
     var formData = this.getGenericFormDataCriteria(employeeCriteria);
     return this.http.post<EmployeeDownloadDTO[]>(this.baseUrl + 'Employees/Download', formData);
