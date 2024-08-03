@@ -1,0 +1,197 @@
+@import './../../../variables.scss';
+@import './../../../mixins.scss';
+
+.absence {
+    padding: 4rem 2rem;
+    &-msg {
+        margin: 4rem;
+        padding: 3.5rem 1.5rem;
+        background-color: $shadow;
+        text-align: center;
+        font-size: 2.5rem;
+        border-radius: 20px;
+    }
+    &-tabs {
+        &-empty {
+            display: none;
+        }
+        &-table {
+            &-desc {
+                max-width: 30rem;
+                font-size: 1.7rem;
+            }
+            &-type {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                & > div:last-child {
+                    padding-top: .5rem;
+                    font-size: 1.5rem;
+                }
+            }
+            &-status {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                &-inactive {
+                    color: $darkgray;
+                    padding-right: .5rem;
+                }
+                &-approved {
+                    color: $success;
+                    padding-right: .5rem;
+                }
+                &-pending {
+                    color: $warning;
+                    padding-right: .5rem;
+                }
+                &-failed {
+                    color: $error;
+                    padding-right: .5rem;
+                }
+                & div:last-child {
+                    font-size: 1.5rem;
+                    font-style: italic;
+                    color: $main;
+                }
+            }
+            &-user {
+                &-item {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    & > div {
+                        & div:nth-child(2) {
+                            font-size: 1.5rem;
+                        }
+                        & div:last-child {
+                            font-size: 1.5rem;
+                            font-style: italic;
+                        }
+                    }
+                    & img {
+                        margin-right: .5rem;
+                    }
+                }
+            }
+        }
+        &-btn {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.modal-form {
+    &-absence {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 1rem;
+        font-size: 1.8rem;
+        padding: 0 3rem;
+        &-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 5px;
+            padding: 1rem;
+            &-user {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                & > div {
+                    & div:nth-child(2) {
+                        font-size: 1.5rem;
+                    }
+                    & div:last-child {
+                        font-size: 1.5rem;
+                        font-style: italic;
+                    }
+                }
+                & img {
+                    margin-right: .5rem;
+                }
+            }
+            &-days {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                & > div:last-child {
+                    padding-left: 1rem;
+                    font-size: 2rem;
+                }
+            }
+            &-desc {
+                margin-top: .3rem;
+                &-item {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    margin-top: .3rem;
+                    border-radius: 5px;
+                    font-size: 1.5rem;
+                    padding: .5rem 1rem;
+                    &-status {
+                        font-weight: bold;
+                        font-size: 1.3rem;
+                    }
+                }
+                &-0 {
+                    background-color: $errorback;
+                    color: $error;
+                    & img {
+                        margin-right: .5rem;
+                        border: 3px solid $error;
+                    }
+                }
+                &-1 {
+                    background-color: $successback;
+                    color: $success;
+                    & img {
+                        margin-right: .5rem;
+                        border: 3px solid $success;
+                    }
+                }
+            }
+            &-file {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 1rem;
+                padding: .4rem 2rem;
+                background-color: $selectedShadow;
+                color: $white;
+                font-size: 1.8rem;
+                border-radius: 1.8rem;
+                cursor: pointer;
+                white-space: nowrap;
+                &:hover {
+                    background-color: $selected;
+                    text-decoration: none;
+                }
+            }
+            & label {
+                color: $gray;
+                font-weight: bold;
+                font-size: 2rem;
+                padding-right: .8rem;
+                margin-bottom: 0;
+            }
+            &:hover {
+                background-color: $color3;
+            }
+        }
+    }
+    &-approval {
+        background-color: $color3;
+        border-radius: 15px;
+        padding: 2.5rem 2rem 1rem 2rem;
+        margin: 0 3rem;
+    }
+}

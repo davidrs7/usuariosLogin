@@ -1,0 +1,71 @@
+@import './../../../variables.scss';
+@import './../../../mixins.scss';
+
+.config {
+    padding: 2rem 4rem;
+    &-tabs {
+        &-block {
+            padding: 1rem 0;
+            &-list {
+                &-check {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    & .information__item--checkbox {
+                        padding-bottom: .7rem;
+                    }
+                }
+            }
+        }
+        &-files {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 2rem;
+            &-loc {
+                padding: 1rem 2rem;
+                background-color: $shadow;
+                border-radius: 15px;
+            }
+            &-0 {
+                padding: 0;
+                background-color: transparent;
+                grid-column: 1 / 3;
+            }
+        }
+        &-table {
+            &-user {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                & > div:last-child {
+                    padding-left: 1rem;
+                    & div:last-child {
+                        font-style: italic;
+                        font-size: 1.6rem;
+                    }
+                    & div:first-child {
+                        font-weight: bold;
+                        font-size: 2rem;
+                    }
+                }
+            }
+            &-dept {
+                & div:last-child {
+                    font-style: italic;
+                    font-size: 1.6rem;
+                }
+                & div:first-child {
+                    font-weight: bold;
+                    font-size: 2rem;
+                }
+            }
+            &-admin {
+                font-style: italic;
+            }
+        }
+    }
+    & label {
+        font-size: 2rem;
+        font-weight: 500;
+    }
+}

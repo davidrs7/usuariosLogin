@@ -1,0 +1,36 @@
+@import './../../../../variables.scss';
+@import './../../../../mixins.scss';
+
+.config-hd {
+    padding: 2rem 4rem;
+    &-tabs {
+        &-form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            &-field {
+                padding-bottom: 0;
+            }
+            &-btn {
+                max-width: 35rem;
+            }
+        }
+        &-table {
+            & thead {
+                & tr {
+                    & th {
+                        & span {
+                            white-space: nowrap;
+                        }
+                        & .information__item {
+                            padding-left: 0;
+                            padding-right: 0;
+                            padding-bottom: 0;
+                            max-width: 20rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

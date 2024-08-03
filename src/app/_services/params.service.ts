@@ -67,6 +67,10 @@ export class ParamsService {
     return this.http.get<ParamsDTO[]>(this.baseUrl + 'Job');
   }
 
+  absenceTypeEndpoint() {
+    return this.http.get<ParamsDTO[]>(this.baseUrl + 'AbsenceType');
+  }
+
   paramsDefaultEndpoint(endpoint: string) {
     switch(endpoint) {
       case 'docType': return this.docTypeEndpoint();
@@ -82,6 +86,7 @@ export class ParamsService {
       case 'jobSkills': return this.jobSkillsEndpoint();
       case 'department': return this.departmentEndpoint();
       case 'job': return this.jobEndpoint();
+      case 'absenceType': return this.absenceTypeEndpoint();
       default: return this.employeeStatusEndpoint();
     }
   }
@@ -101,7 +106,8 @@ export class ParamsService {
       { value: 'postulateFindOut', available: true,  title: 'Encontrado a través de...' },
       { value: 'jobSkills', available: true,  title: 'Habilidades' },
       { value: 'department', available: true,  title: 'Departamentos' },
-      { value: 'job', available: true,  title: 'Cargos' }
+      { value: 'job', available: true,  title: 'Cargos' },
+      { value: 'absenceType', available: false,  title: 'Tipos de registro de ausencia' }
     ];
 
     if(sortByTitle)

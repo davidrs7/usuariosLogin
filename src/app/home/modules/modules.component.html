@@ -6,12 +6,12 @@
             <p><img src="../../assets/avatar.png"  class="modules__user--profile"></p>
             <p>{{ userName }}</p>
             <p (click)="nuevoLogout()" style="cursor: pointer;"><b> Salir </b> <span class="fas fa-right-from-bracket fa-lg"></span></p>
-      
+
         </span>
         <img src="../../assets/tiindux_logo.png" alt="Tiindux Logo" class="modules__user--tiindux">
     </div>
     <div class="modules__card">
-       
+
         <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)" (mouseenter)="cambiarImagen($event,'rrhh')" (mouseleave)="restaurarImagen($event,'rrhh')"> <img src="{{rutaImagen('rrhh')}}" class="img-seleccion">    RRHH (Recursos Humanos) </div><br>
         <div class="modules__card--bienestar" (mouseenter)="cambiarImagen($event,'BIENESTAR')" (mouseleave)="restaurarImagen($event,'BIENESTAR')"> <img src="{{rutaImagen('BIENESTAR')}}"  class="img-seleccion"> Bienestar</div><br>
         <div class="modules__card--sst" (mouseenter)="cambiarImagen($event,'SST')" (mouseleave)="restaurarImagen($event,'SST')"><img src="{{rutaImagen('SST')}}"  class="img-seleccion">SST (Seguridad y Saludo en el Trabajo)</div><br>
@@ -19,7 +19,7 @@
         <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)" (mouseenter)="cambiarImagen($event,'ADMON')" (mouseleave)="restaurarImagen($event,'ADMON')"><img src="{{rutaImagen('ADMON')}}"  class="img-seleccion">Administración</div><br>
     </div>
 </div>
-          
+
 
 <ng-template #modalFuncionarios let-modal>
     <div class="modal-body">
@@ -33,10 +33,10 @@
         </div>
         <div class="modal-form">
             <div class="modules__card">
-                <div class="modules__card--estorg" (click)="openModule('employees/employee/list')">Estructura Organizacional</div> 
+                <div class="modules__card--estorg" (click)="openModule('employees/employee/list')">Estructura Organizacional</div>
                 <div class="modules__card--personal" (click)="openModule('recruiter/vacancy/list')">Selección de personal</div>
                 <div class="modules__card--desempeno" (click)="openModule('pages/performance/objetiveUser')" >Desempeño</div>
-                <div class="modules__card--adminpersonal">Administración de personal</div>
+                <div class="modules__card--adminpersonal" (click)="openModule('absence/request/list')">Administración de personal</div>
                 <div class="modules__card--encuestas" (click)="openModule('survey/pending/list')">Encuestas</div>
                 <div class="modules__card--reportes" (click)="openModule('pages/reportes-usuarios')">Reportes desempeño</div>
             </div>
@@ -54,22 +54,22 @@
             <p class="titulo__modal"><b>ADMINISTRACIÓN</b></p>
             <p>Selecciona una categoria para ingresar</p>
         </div>
-        <div class="modal-form"> 
-            <div class="modules__card"> 
-                <div class="modules__card--rol" (click)="openModule('pages/roles')" >Roles</div> 
+        <div class="modal-form">
+            <div class="modules__card">
+                <div class="modules__card--rol" (click)="openModule('pages/roles')" >Roles</div>
                 <div class="modules__card--rol" (click)="openModule('pages/cargos')">Cargos</div>
                 <div class="modules__card--rol" (click)="openModule('pages/permisos')">Permisos</div>
                 <div class="modules__card--rol" (click)="openModule('pages/rutaspermisos')">Accesos</div>
                 <div class="modules__card--rol" (click)="openModule('pages/usuarios')" >Usuarios</div>
                 <div class="modules__card--rol" (click)="openModule('pages/empresas')">Empresas</div>
-                <div class="modules__card--rol" (click)="openModule('pages/adminobjetivos')">Objetivos</div> 
+                <div class="modules__card--rol" (click)="openModule('pages/adminobjetivos')">Objetivos</div>
                 <div class="modules__card--rol" (click)="openModule('pages/adminPreguntas')">Preguntas</div>
                 <div class="modules__card--rol" (click)="openModule('pages/adminRespuestas')" >Respuestas</div>
                 <div class="modules__card--rol" (click)="openModule('pages/adminCompetencias')" >Competencias</div>
-            </div>                 
+            </div>
         </div>
-    </div> 
+    </div>
 </ng-template>
 
 
-<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div> 
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

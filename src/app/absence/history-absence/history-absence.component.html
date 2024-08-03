@@ -1,0 +1,144 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="history background-right">
+    <div class="history-calendar calendar">
+        <div class="calendar-header">
+            <div class="calendar-header-mode">
+                <span ngbTooltip="Todo el año" (click)="calendar.setYearMode()" class="calendar-header-mode-year calendar-header-mode-{{ calendar.isYearMode() ? 'active' : 'inactive' }} fa-solid fa-calendar-days"></span>
+                <span ngbTooltip="Todo el mes" (click)="calendar.setMonthMode()" class="calendar-header-mode-month calendar-header-mode-{{ calendar.isMonthMode() ? 'active' : 'inactive' }} fa-solid fa-calendar"></span>
+            </div>
+
+            <div class="calendar-header-select">
+                <div class="calendar-header-select-bw">
+                    <span (click)="holidaysPerYear(calendar.setSelectedYearBack())" class="fa-solid fa-angles-left"></span>
+                </div>
+                <div class="calendar-header-select-value">
+                    <div class="information__item">
+                        <div>
+                            <select (change)="holidaysPerYear(calendar.setSelectedYearFromSelectEvent($event))" name="year" id="calendarYear">
+                                <option *ngFor="let year of calendar.getYears()" value="{{ year }}" [selected]="year == calendar.getSelectedYear()">{{ year }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="calendar-header-select-fw">
+                    <span (click)="holidaysPerYear(calendar.setSelectedYearNext())" class="fa-solid fa-angles-right"></span>
+                </div>
+            </div>
+
+            <div *ngIf="calendar.isMonthMode()" class="calendar-header-select">
+                <div class="calendar-header-select-bw">
+                    <span (click)="calendar.setSelectedMonthBack()" class="fa-solid fa-angle-left"></span>
+                </div>
+                <div class="calendar-header-select-value">
+                    <div class="information__item">
+                        <div>
+                            <select (change)="calendar.setSelectedMonthFromSelectEvent($event)" name="month" id="calendarMonth">
+                                <option *ngFor="let month of calendar.getMonths(); let i = index" value="{{ i }}" [selected]="i == calendar.getSelectedMonth()">{{ month }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="calendar-header-select-fw">
+                    <span (click)="calendar.setSelectedMonthNext()" class="fa-solid fa-angle-right"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-body calendar-body-{{ calendar.isYearMode() ? 'year' : 'noyear' }}">
+            <div *ngFor="let month of calendar.getCalendarMonths()" class="calendar-body-month calendar-body-month-{{ month }}">
+                <div *ngIf="calendar.isYearMode()" class="calendar-body-month-name">{{ calendar.getMonths()[month] }}</div>
+
+                <div class="calendar-body-month-title">
+                    <div *ngFor="let weekday of calendar.getWeekdays(); let i = index" class="calendar-body-month-title-day calendar-body-month-title-day-{{ calendar.getWorkdayIndex(i) }}">{{ weekday }}</div>
+                </div>
+
+                <div class="calendar-body-month-block">
+                    <div *ngFor="let week of calendar.getCalendarWeeks(month)" class="calendar-body-month-block-week calendar-body-month-block-week-{{ week.week }}">
+                        <div *ngFor="let day of week.days" (click)="openDetail(modalSelDay, calendar.selectedEvent(month, day.week, day.day))" class="calendar-body-month-block-week-day calendar-body-month-block-week-day-{{ calendar.getWorkdayIndex(day.dayOfWeek, day.dateIndex) }} calendar-body-month-block-week-day-{{ day.day }} {{ day.selected ? 'calendar-body-month-block-week-day-sel' : '' }} {{ day.isToday ? 'calendar-body-month-block-week-day-today' : '' }}">
+                            <div *ngIf="day.day > 0" class="calendar-body-month-block-week-day-title">{{ day.day }}</div>
+                            <div *ngIf="day.day > 0" class="calendar-body-month-block-week-day-content">
+                                <div *ngFor="let obj of day.content" ngbTooltip="[{{ obj.absenceTypeName }}] {{ obj.employeeName }}" class="calendar-body-month-block-week-day-content-item history-calendar-item history-calendar-item-{{ obj.absenceTypeId }} history-calendar-item-{{ calendar.isYearMode() ? 'year' : 'month' }}">
+                                    {{ obj.id }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-footer">
+            <div class="calendar-footer-line">
+                <div class="calendar-footer-line-item">
+                    <div class="calendar-footer-line-item-guide calendar-body-month-block-week-day-today"></div>
+                    <div class="calendar-footer-line-item-desc">Hoy</div>
+                </div>
+                <div class="calendar-footer-line-item">
+                    <div class="calendar-footer-line-item-guide calendar-body-month-block-week-day--1"></div>
+                    <div class="calendar-footer-line-item-desc">Día no laboral</div>
+                </div>
+                <div *ngFor="let param of absenceTypes" class="calendar-footer-line-item">
+                    <div class="calendar-footer-line-item-guide history-calendar-item history-calendar-item-{{ param.id }}"></div>
+                    <div class="calendar-footer-line-item-desc">{{ param.name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalSelDay let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form history-modal">
+            <div class="history-modal-title">
+                <span class="history-modal-title-date">{{ calendar.getWeekdaysFull()[selectedDay.dayOfWeek] }}, {{ calendar.getMonths()[selectedDay.month] }} {{ selectedDay.day }} de {{ selectedDay.year }}</span>
+                <span *ngIf="selectedDay.isToday" class="history-modal-title-today">HOY</span>
+                <span class="history-modal-title-{{ calendar.getWorkdayIndex(selectedDay.dayOfWeek, selectedDay.dateIndex) }}">NO LABORAL</span>
+            </div>
+
+            <div class="history-modal-content history-modal-{{ selectedDay.content.length > 1 ? 'grid' : 'card' }}">
+                <div *ngFor="let content of selectedDay.content" class="history-modal-content-item">
+                    <div class="history-modal-content-item-header">
+                        <div class="history-modal-content-item-header-status">
+                            <div class="history-modal-content-item-header-status-item history-modal-content-item-header-status-{{ content.statusClass }}"></div>
+                            <div>{{ content.statusName }}</div>
+                        </div>
+                        <div class="history-modal-content-item-header-type">
+                            <div>{{ content.absenceTypeName }}</div>
+                            <div class="history-modal-content-item-header-type-item history-calendar-item history-calendar-item-{{ content.absenceTypeId }}"></div>
+                        </div>
+                    </div>
+
+                    <div class="history-modal-content-item-user">
+                        <div>
+                            <img src="{{ (content.employeePhotoUrl != null && content.employeePhotoUrl != '') ? content.employeePhotoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="45" alt="{{ content.employeeName }}" loading="lazy" />
+                        </div>
+                        <div class="history-modal-content-item-user-info">
+                            <div>{{ content.employeeName }}</div>
+                            <div>{{ content.jobName }}</div>
+                            <div>{{ content.departmentName }}</div>
+                        </div>
+                    </div>
+
+                    <div class="history-modal-content-item-dates">
+                        <span>Solicita <strong>{{ content.businessDays }}</strong></span>
+                        <span *ngIf="content.businessDays > 1"><strong> días hábiles </strong></span>
+                        <span *ngIf="content.businessDays == 1"><strong> día hábil </strong></span>
+                        <span> desde el <strong>{{ content.started|date: "dd/MM/yyyy" }}</strong></span>
+                        <span *ngIf="content.started?.toDateString() != content.finished?.toDateString()"> hasta el <strong>{{ content.finished|date: "dd/MM/yyyy" }}</strong></span>
+                        <span> por <strong>{{ content.absenceTypeName }}</strong>:</span>
+                    </div>
+
+                    <div class="history-modal-content-item-desc">{{ content.description }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

@@ -53,7 +53,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PermisosComponent } from './pages/permisos/permisos.component';
 import { EditarPermisosComponent } from './pages/editar-permisos/editar-permisos.component';
 import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.component';
-import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component'; 
+import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component';
 import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario/obejtivos-usuario.component';
 import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
 import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas.component';
@@ -62,13 +62,18 @@ import { ReportesComponent } from './pages/performance/reportes/reportes.compone
 import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-competencias.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ReportesUsuariosComponent } from './pages/reportes-usuarios/reportes-usuarios.component';
- 
+import { ListAbsenceComponent } from './absence/list-absence/list-absence.component';
+import { HistoryAbsenceComponent } from './absence/history-absence/history-absence.component';
+import { ConfigAbsenceComponent } from './absence/config-absence/config-absence.component';
+import { AddAbsenceComponent } from './absence/list-absence/add-absence/add-absence.component';
+import { ConfigAbsenceWdComponent } from './absence/config-absence/config-absence-wd/config-absence-wd.component';
+import { ConfigAbsenceHdComponent } from './absence/config-absence/config-absence-hd/config-absence-hd.component';
 
 
- 
+
 @NgModule({
   declarations: [
-    AppComponent,  
+    AppComponent,
     HomeComponent,
     ModulesComponent,
     EmployeesComponent,
@@ -109,9 +114,20 @@ import { ReportesUsuariosComponent } from './pages/reportes-usuarios/reportes-us
     PermisosComponent,
     EditarPermisosComponent,
     RutasPermisosComponent,
-    AdminObjetivosComponent, 
-    ObejtivosUsuarioComponent, 
-    CompetenciasUsuarioComponent, AdminPreguntasComponent, AdminRepuestasComponent, ReportesComponent, AdminCompetenciasComponent, ReportesUsuariosComponent  
+    AdminObjetivosComponent,
+    ObejtivosUsuarioComponent,
+    CompetenciasUsuarioComponent,
+    AdminPreguntasComponent,
+    AdminRepuestasComponent,
+    ReportesComponent,
+    AdminCompetenciasComponent,
+    ReportesUsuariosComponent ,
+    ListAbsenceComponent,
+    HistoryAbsenceComponent,
+    ConfigAbsenceComponent,
+    AddAbsenceComponent,
+    ConfigAbsenceWdComponent,
+    ConfigAbsenceHdComponent,
   ],
   imports: [
     BrowserModule,
@@ -120,7 +136,7 @@ import { ReportesUsuariosComponent } from './pages/reportes-usuarios/reportes-us
     HttpClientModule,
     FormsModule,
     MatPaginatorModule,
-    MatSelectModule, 
+    MatSelectModule,
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,

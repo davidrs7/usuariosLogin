@@ -1,0 +1,80 @@
+@import './../../../../variables.scss';
+@import './../../../../mixins.scss';
+
+.add-absence {
+    margin-top: 1%;
+    &-header {
+        margin: 2% 7%;
+        padding: 1rem 3.5rem;
+        border-radius: 10px;
+        background-color: $warningback;
+        color: $warning;
+        font-size: 2rem;
+        text-align: center;
+    }
+    &-form {
+        &-x2 {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            align-items: center;
+            justify-items: center;
+        }
+        &-desc {
+            padding-left: 8.5rem;
+            font-style: italic;
+            font-size: 1.4rem;
+            color: $color3;
+        }
+        &-doc {
+            padding-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            background-color: $shadow;
+            &-prev {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 1rem;
+                padding: .4rem 2rem;
+                background-color: $selectedShadow;
+                color: $white;
+                font-size: 1.8rem;
+                border-radius: 1.8rem;
+                cursor: pointer;
+                white-space: nowrap;
+                &:hover {
+                    background-color: $selected;
+                    color: $success;
+                    text-decoration: none;
+                }
+            }
+            &-files {
+                display: grid;
+                grid-template-columns: 85% 15%;
+                align-items: center;
+                justify-items: center;
+                &-document {
+                    &-item {
+                        align-items: center;
+                        justify-items: center;
+                        padding-bottom: 1.5rem;
+                    }
+                }
+                &-action {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    & button {
+                        @include btn-gray;
+                        font-size: 4.5rem;
+                        font-weight: bold;
+                        width: 6rem;
+                        margin-bottom: 1.5rem;
+                    }
+                }
+            }
+            & .information__item div {
+                padding-left: 0;
+            }
+        }
+    }
+}

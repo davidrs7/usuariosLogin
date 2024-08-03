@@ -15,7 +15,7 @@ export class NavigationComponent implements OnInit {
   component: string = '';
   selected: string = '';
   secSelected: string = '';
-  session: any[] = []; 
+  session: any[] = [];
 
   user: UserDTO = { id: 0, userName: '', password: '' };
   userName: string = '';
@@ -23,6 +23,8 @@ export class NavigationComponent implements OnInit {
   secNavigate: NavigateIndexKey[] = [];
 
   @Output() getUser = new EventEmitter<UserDTO>();
+  @Output() getUrlSegments = new EventEmitter<string[]>();
+
 
   constructor(private router: Router, private userService: UserService, private loginTiindux: loginTiinduxService) { }
 
@@ -105,9 +107,20 @@ export class NavigationComponent implements OnInit {
     this.navigate['performance'].push({ name: 'compUser', title: 'Competencias', faClass: 'fas fa-check-double', routing: 'pages/performance/compUser' });
     this.navigate['performance'].push({ name: 'compUser', title: 'Resumen', faClass: 'fa-solid fa-square-poll-vertical', routing: 'pages/performance/reportes' });
 
+
+    this.navigate['absence'] = [];
+    this.navigate['absence'].push({ name: 'request', title: 'Ausencias y vacaciones', faClass: 'fa-plane-departure', routing: 'absence/request/list' });
+    this.navigate['absence'].push({ name: 'history', title: 'Calendario', faClass: 'fa-calendar-check', routing: 'absence/history/calendar' });
+    this.navigate['absence'].push({ name: 'config', title: 'Ajustes', faClass: 'fa-gear', routing: 'absence/config/approval', children: [
+      { name: 'approval', title: 'Aprobaciones de RR.HH.', faClass: 'fa-person-circle-check', routing: 'absence/config/approval' },
+      { name: 'workdays', title: 'Días hábiles', faClass: 'fa-calendar-week', routing: 'absence/config/workdays' },
+      { name: 'holidays', title: 'Días festivos', faClass: 'fa-calendar-day', routing: 'absence/config/holidays' }
+    ]});
+
   }
 
   sessionValidate() {
+    debugger
     if (localStorage.getItem('SESSL') != '1') {
       this.router.navigateByUrl('');
     } else {
@@ -119,7 +132,7 @@ export class NavigationComponent implements OnInit {
               this.user = userResponse;
               this.userName = (this.user.name != null && this.user.name != '') ? this.user.name.trim().substring(0, this.user.name.indexOf(' ')) : this.user.userName;
               this.getUser.emit(this.user);
-              //console.log(this.user); //PENDIENTE
+              console.log(this.user); //PENDIENTE
             } else {
               this.destroySession();
             }
@@ -129,6 +142,13 @@ export class NavigationComponent implements OnInit {
         this.destroySession();
       }
     }
+  }
+
+  getUrlSegmentsEmit(segments: UrlSegment[]) {
+    var segmentsStr: string [] = [];
+    for(let segment of segments)
+      segmentsStr.push(segment.path);
+    this.getUrlSegments.emit(segmentsStr);
   }
 
   open(module?: string) {
@@ -160,7 +180,7 @@ export class NavigationComponent implements OnInit {
       if (token != null && token != '') {
         var userId = localStorage.getItem('SEUID');
         this.loginTiindux.eliminarDato('Sesion', Number(userId)).subscribe(
-          (respuesta: ApiResponse<any>) => { 
+          (respuesta: ApiResponse<any>) => {
             this.destroySession();
           }
         );
@@ -178,12 +198,16 @@ export class NavigationComponent implements OnInit {
       var token = localStorage.getItem('SESST');
       if (token != null && token != '') {
         this.loginTiindux.tokenSesion('Sesion/token', token).subscribe(
-          (respuesta: ApiResponse<any>) => { 
-            if (respuesta.data == null) { 
+          (respuesta: ApiResponse<any>) => {
+            if (respuesta.data == null) {
+              console.log('sesion activa');
               this.nuevoLogout();
               this.destroySession();
-            } else {               
-              this.asignaToken(respuesta.data)               
+            } else {
+              console.log('sesion activa')
+              console.log(respuesta.data)
+              this.asignaEmiteUsusarios(respuesta.data);
+              this.asignaToken(respuesta.data)
             }
           }
         );
@@ -193,12 +217,19 @@ export class NavigationComponent implements OnInit {
 
   }
 
+  asignaEmiteUsusarios(usuarioToken: any){
+    console.log(usuarioToken.usuarioId);
+    // Aqui hacer el llamado al controlador de User por Id
+    // Al recibir el usuarioIdOpcional, buscar el empleado por este Id
+    // asignar la respuesta de este empleado a userDto y emitir User
+  }
+
   asignaToken(session:any){
     localStorage.setItem('SESSL', '1');
     localStorage.setItem('SEUID', session.usuarioId);
-    localStorage.setItem('SESST', session.token); 
+    localStorage.setItem('SESST', session.token);
   }
-  
+
   destroySession() {
     localStorage.setItem('SESSL', '0');
     this.router.navigateByUrl('');

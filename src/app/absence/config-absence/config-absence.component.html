@@ -1,0 +1,155 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="config background-right">
+    <div class="config-tabs tabs">
+        <div #tabsGroup class="tabs-group">
+            <div class="tabs-group-tab active" (click)="tabSelect(tabsGroup.children, 0); tabSelect(tabsContent.children, 0);">
+                <span class="fa-solid fa-list-check"></span>
+                Tipos de registro que requieren aprobación de RR.HH.
+            </div>
+            <div class="tabs-group-tab" (click)="tabSelect(tabsGroup.children, 1); tabSelect(tabsContent.children, 1);">
+                <span class="fa-solid fa-file-waveform"></span>
+                Ubicación de archivos para el registro
+            </div>
+            <div *ngIf="paramAbsenceActive" class="tabs-group-tab" (click)="tabSelect(tabsGroup.children, 2); tabSelect(tabsContent.children, 2);">
+                <span class="fa-solid fa-check-double"></span>
+                Usuarios autorizados para aprobar
+            </div>
+        </div>
+
+        <div #tabsContent class="tabs-content">
+            <div class="tabs-content-tab active">
+                <div class="config-tabs-block">
+                    <label>Tipos de registro que requieren aprobación</label>
+                    <div class="information__item config-tabs-block-list">
+                        <div class="config-tabs-block-list-check">
+                            <div *ngFor="let param of paramAbsenceStatus" class="information__item--checkbox">
+                                <input (change)="changeSelectedAbsence(param.id)" type="checkbox" name="param{{ param.id }}" value="{{ param.id }}" [checked]="param.available">
+                                <span>{{ param.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-tabs-block">
+                    <label>Departamentos de usuarios que pueden aprobar</label>
+                    <div class="information__item config-tabs-block-list">
+                        <div class="config-tabs-block-list-check">
+                            <div *ngFor="let param of paramDepartment" class="information__item--checkbox">
+                                <input (change)="changeSelectedDepartment(param.id)" type="checkbox" name="param{{ param.id }}" value="{{ param.id }}" [checked]="param.available">
+                                <span>{{ param.name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="paramDepartmentError" class="information__item">
+                        <div>
+                            <ul>
+                                <li>
+                                    Debe seleccionar al menos una opción de <em>Departamentos de usuarios que pueden aprobar</em>
+                                    mientras existan <em>Tipos de registro que requieren aprobación</em> seleccionados.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-tabs-btn information__btn">
+                    <button (click)="saveAbsenceType()" type="button">Guardar configuración</button>
+                </div>
+            </div>
+
+            <div class="tabs-content-tab">
+                <div class="config-tabs-files">
+                    <div *ngFor="let id of fileConfigItems" class="config-tabs-files-loc config-tabs-files-{{ id }}">
+                        <div class="config-tabs-files-loc-title">
+                            <div class="information__item">
+                                <label *ngIf="id == 0" for="fileLevelActive">Ubicación de archivos <em>Por defecto</em></label>
+                                <div *ngIf="id > 0">
+                                    <div class="information__item--checkbox">
+                                        <input type="checkbox" name="active" value="true" [checked]="fileConfig[id].active" id="fileLevelActive" (change)="setActiveLevel(id)">
+                                        <span>Ubicación de archivos específica para <em>{{ fileConfig[id].name }}</em>.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="fileConfig[id].active" class="config-tabs-files-loc-items">
+                            <div class="information__item">
+                                <label for="fileLevel1">Carpeta</label>
+                                <div>
+                                    <select (change)="setParamLevel1($event, id)" name="level1" id="fileLevel1">
+                                        <option value="">-- Raíz --</option>
+                                        <option *ngFor="let param of fileConfig[id].paramFileTypesLevel1" [value]="param.id" [selected]="param.id == fileConfig[id].selectedLevel1">{{ param.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="information__item">
+                                <label for="fileLevel2">Subcarpeta</label>
+                                <div>
+                                    <select (change)="setParamLevel2($event, id)" name="level2" id="fileLevel2">
+                                        <option value="">-- Raíz --</option>
+                                        <option *ngFor="let param of fileConfig[id].paramFileTypesLevel2" [value]="param.id" [selected]="param.id == fileConfig[id].selectedLevel2">{{ param.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="information__item">
+                                <label for="fileLevel3">Sección</label>
+                                <div>
+                                    <select (change)="setParamLevel3($event, id)" name="level3" id="fileLevel3">
+                                        <option value="">-- Raíz --</option>
+                                        <option *ngFor="let param of fileConfig[id].paramFileTypesLevel3" [value]="param.id" [selected]="param.id == fileConfig[id].selectedLevel3">{{ param.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-tabs-btn information__btn">
+                    <button (click)="saveAbsenceLevel()" type="button">Guardar configuración</button>
+                </div>
+            </div>
+
+            <div *ngIf="paramAbsenceActive" class="tabs-content-tab">
+                <table class="config-tabs-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Departamento / Cargo</th>
+                            <th>Selección</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users">
+                            <td class="config-tabs-table-user">
+                                <div>
+                                    <img src="{{ (user.photoUrl != null && user.photoUrl != '') ? user.photoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="45" alt="{{ user.userName }}" loading="lazy" />
+                                </div>
+                                <div *ngIf="user.name == ''">{{ user.userName }}</div>
+                                <div *ngIf="user.name != ''">
+                                    <div>{{ user.name }}</div>
+                                    <div>{{ user.userName }}</div>
+                                </div>
+                            </td>
+                            <td [class]="user.jobName != '' ? 'config-tabs-table-dept' : 'config-tabs-table-admin'">
+                                <div *ngIf="user.jobName != ''">{{ user.jobName }}</div>
+                                <div *ngIf="user.jobName != ''">{{ user.departmentName }}</div>
+                                <div *ngIf="user.jobName == ''">Usuario administrador</div>
+                            </td>
+                            <td class="config-tabs-table-select">
+                                <input (click)="toggleUser(user.id)" type="checkbox" id="inlineCheckbox{{ user.id }}" value="{{ user.id }}" [checked]="user.isSelected == 1" />
+                            </td>
+                        </tr>
+                        <tr *ngIf="users.length == 0">
+                            <td colspan="3">No hay usuarios para mostrar actualmente.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="config-tabs-btn information__btn">
+                    <button (click)="saveUsers()" type="button">Guardar selección</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

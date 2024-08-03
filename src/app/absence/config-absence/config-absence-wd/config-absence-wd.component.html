@@ -1,0 +1,36 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="config-wd background-right">
+    <div class="config-wd-title">
+        <div>Seleccione los días hábiles de la compañía.</div>
+        <div>Esta selección es necesaria para el cálculo de días de ausencia y/o vacaciones, certificaciones y otras funcionalidades del sistema.</div>
+    </div>
+
+    <div class="config-wd-type">
+        <div class="information__item">
+            <label for="configType">Configuración</label>
+            <div>
+                <select (change)="changePreconfig($event)" name="configType" id="configType" [value]="weekdaysPreconfig">
+                    <option value="">Personalizada</option>
+                    <option value="0-4">Lunes a Viernes</option>
+                    <option value="0-5">Lunes a Sábado</option>
+                    <option value="0-6">Domingo a Domingo</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="config-wd-select">
+        <div *ngFor="let weekday of weekdays; let i = index" class="config-wd-select-day config-wd-select-day-{{ i }}">
+            <input (click)="changeDaySelected(i)" class="config-wd-select-day-item config-wd-select-day-{{ i }}-item" type="checkbox" value="" [checked]="weekdaysSelected[i] >= 0" [value]="i" [disabled]="weekdaysPreconfig !== ''" />
+            <span class="config-wd-select-day-value config-wd-select-day-{{ i }}-value">{{ weekday }}</span>
+        </div>
+    </div>
+
+    <div class="config-wd-btn information__btn">
+        <button type="button" (click)="saveConfiguration()">Guardar configuración</button>
+    </div>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

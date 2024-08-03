@@ -6,6 +6,8 @@ export interface UserDTO {
     password: string;
     employeeId?: number;
     name?: string;
+    jobId?: number;
+
     jobName?: string;
     departmentName?: string;
     photoUrl?: string;

@@ -1,0 +1,117 @@
+<app-navigation (getUrlSegments)="getUrlSegments($event)" (getUser)="getUser($event)"></app-navigation>
+
+<div class="add-absence background-right">
+    <form [formGroup]="formAbsence" (ngSubmit)="validateFormAbsence()">
+        <div *ngIf="absenceUser.employeeId != user?.employeeId" class="add-absence-header">
+            Esta solicitud se realizará a nombre del usuario <em><strong>{{ absenceUser.name }}</strong></em> que desempeña en cargo de <em>{{ absenceUser.jobName }}</em> en su equipo de trabajo.
+        </div>
+
+        <div class="add-absence-form">
+            <div class="add-absence-form-x2">
+                <div class="information__item">
+                    <label for="absenceAbsenceTypeId">Tipo de registro</label>
+                    <div>
+                        <select formControlName="absenceTypeId" name="absenceTypeId" id="absenceAbsenceTypeId">
+                            <option value=""></option>
+                            <option *ngFor="let param of paramAbsenceStatus" [value]="param.id">{{ param.name }}</option>
+                        </select>
+                        <ul *ngIf="errors.validate(absenceTypeId)">
+                            <li *ngFor="let message of errors.getErrors(absenceTypeId)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="absenceStarted">Fecha de inicio</label>
+                    <div>
+                        <input (change)="changeStarted()" type="date" formControlName="started" name="started" id="absenceStarted">
+                        <ul *ngIf="errors.validate(started)">
+                            <li *ngFor="let message of errors.getErrors(started)">{{ message }}</li>
+                        </ul>
+                        <ul *ngIf="warnStartedValid" class="warning">
+                            <li>La <em>Fecha de inicio</em> se ajustó al día hábil anterior más cercano.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="absenceBusinessDays">Días hábiles</label>
+                    <div>
+                        <input (change)="changeBusinessDays()" type="number" formControlName="businessDays" name="businessDays" id="absenceBusinessDays">
+                        <ul *ngIf="errors.validate(businessDays)">
+                            <li *ngFor="let message of errors.getErrors(businessDays)">{{ message }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="information__item">
+                    <label for="absenceFinished">Fecha de finalización</label>
+                    <div>
+                        <input (change)="changeFinished()" type="date" formControlName="finished" name="finished" id="absenceFinished" [disabled]="true">
+                        <ul *ngIf="errors.validate(finished) || errorFinishedValid">
+                            <li *ngFor="let message of errors.getErrors(finished)">{{ message }}</li>
+                            <li *ngIf="errorFinishedValid">La fecha debe ser mayor o igual a la <em>Fecha de inicio</em></li>
+                        </ul>
+                        <ul *ngIf="warnFinishedValid" class="warning">
+                            <li>La <em>Fecha de finalización</em> se ajustó al día hábil anterior más cercano.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="information__item">
+                <label for="absenceDescription">Descripción</label>
+                <div>
+                    <textarea id="absenceDescription" name="description" rows="3" formControlName="description"></textarea>
+                    <ul *ngIf="errors.validate(description)">
+                        <li *ngFor="let message of errors.getErrors(description)">{{ message }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="add-absence-form-doc">
+                <div class="information__item">
+                    <label>Documentos asociados</label>
+                </div>
+
+                <div *ngIf="files.length > 0" class="information__item">
+                    <a *ngFor="let file of files" [href]="file.url + file.fileName" target="_blank" class="add-absence-form-doc-prev">
+                        <img src="../../../../assets/file.png" width="20" />
+                        <span>{{ file.fileName }}</span>
+                    </a>
+                </div>
+
+                <div class="information__item">
+                    <div class="add-absence-form-doc-files">
+                        <div class="add-absence-form-doc-files-document">
+                            <div class="add-absence-form-doc-files-document-item" *ngFor="let fileRel of filesRel; let i = index">
+                                <input type="file" [name]="'document' + i" [id]="'documentSel' + i" (change)="addFile($event, i)">
+                            </div>
+                        </div>
+                        <div class="add-absence-form-doc-files-action">
+                            <button type="button" (click)="addFileField()">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="information__item">
+                <div>
+                    <div class="information__item--checkbox">
+                        <input type="checkbox" formControlName="active" name="active" id="absenceActive">
+                        <span>Este registro entrerá en el flujo de validación correspondiente.</span>
+                    </div>
+                    <span *ngIf="active?.value != 1" class="add-absence-form-desc">En caso de guardar este registro sin este campo activado, el flujo de validación no se activará y las personas implicadas en esta validación no verán el registro.</span>
+                </div>
+            </div>
+
+            <div class="add-absence-btn information__btn">
+                <button type="button" (click)="cancel()">Cancelar</button>
+                <button type="submit">Guardar registro</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

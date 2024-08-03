@@ -1,0 +1,151 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div class="config-hd background-right">
+    <div class="config-hd-tabs tabs">
+        <div #tabsGroup class="tabs-group">
+            <div class="tabs-group-tab active" (click)="tabSelect(tabsGroup.children, 0); tabSelect(tabsContent.children, 0);">
+                <span class="fa-solid fa-rectangle-list"></span>
+                Registrar uno a uno
+            </div>
+            <div class="tabs-group-tab" (click)="tabSelect(tabsGroup.children, 1); tabSelect(tabsContent.children, 1);">
+                <span class="fa-solid fa-calendar-day"></span>
+                Seleccionar desde calendario
+            </div>
+        </div>
+        <div #tabsContent class="tabs-content">
+            <div class="tabs-content-tab active">
+                <div class="config-hd-tabs-form">
+                    <div class="config-hd-tabs-form-field information__item">
+                        <label for="holiday">Fecha</label>
+                        <div>
+                            <input type="date" (change)="setSelectedDate($event)" name="holiday" id="holiday">
+                            <ul *ngIf="errorDateNull || errorDateExist">
+                                <li *ngIf="errorDateNull">La fecha es obligatoria.</li>
+                                <li *ngIf="errorDateExist">La fecha ya está registrada.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="config-hd-tabs-form-btn information__btn">
+                        <button type="button" (click)="saveSelectedDate()">Agregar festivo</button>
+                    </div>
+                </div>
+
+                <table class="config-hd-tabs-table">
+                    <thead>
+                        <tr>
+                            <th colspan="3">
+                                <span>Días festivos seleccionados para</span>
+                                <div class="information__item">
+                                    <div>
+                                        <select (change)="setSelectedYearInternal($event)" name="listYear" id="calendarListYear">
+                                            <option *ngFor="let year of calendar.getYears()" value="{{ year }}" [selected]="year == selectedYear">{{ year }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let day of datesTable.reverse()">
+                            <td *ngIf="datesTableFirst[day.month] == day.day" [attr.rowspan]="datesTableRowspan[day.month]" class="bgclaro">{{ day.date != undefined ? calendar.getMonths()[day.date.getMonth()] : '' }}</td>
+                            <td>{{ errors.formatDate(day.date) }} ({{ calendar.getWeekdays()[day.dayOfWeek] }})</td>
+                            <td class="action">
+                                <span ngbTooltip="Eliminar" class="fa-solid fa-trash-can action-button" (click)="deleteSelectedDate(day)"></span>
+                            </td>
+                        </tr>
+                        <tr *ngIf="datesTable.length == 0">
+                            <td colspan="3">No hay fechas seleccionadas para {{ selectedYear }}.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tabs-content-tab">
+                <div class="config-hd-tabs-calendar calendar">
+                    <div class="calendar-header">
+                        <div class="calendar-header-mode">
+                            <span ngbTooltip="Todo el año" (click)="calendar.setYearMode()" class="calendar-header-mode-year calendar-header-mode-{{ calendar.isYearMode() ? 'active' : 'inactive' }} fa-solid fa-calendar-days"></span>
+                            <span ngbTooltip="Todo el mes" (click)="calendar.setMonthMode()" class="calendar-header-mode-month calendar-header-mode-{{ calendar.isMonthMode() ? 'active' : 'inactive' }} fa-solid fa-calendar"></span>
+                        </div>
+
+                        <div class="calendar-header-select">
+                            <div class="calendar-header-select-bw">
+                                <span (click)="calendar.setSelectedYearBack(); getHolidays(calendar.getSelectedYear());" class="fa-solid fa-angles-left"></span>
+                            </div>
+                            <div class="calendar-header-select-value">
+                                <div class="information__item">
+                                    <div>
+                                        <select (change)="calendar.setSelectedYearFromSelectEvent($event); getHolidays(calendar.getSelectedYear());" name="year" id="calendarYear">
+                                            <option *ngFor="let year of calendar.getYears()" value="{{ year }}" [selected]="year == calendar.getSelectedYear()">{{ year }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-header-select-fw">
+                                <span (click)="calendar.setSelectedYearNext(); getHolidays(calendar.getSelectedYear());" class="fa-solid fa-angles-right"></span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="calendar.isMonthMode()" class="calendar-header-select">
+                            <div class="calendar-header-select-bw">
+                                <span (click)="calendar.setSelectedMonthBack()" class="fa-solid fa-angle-left"></span>
+                            </div>
+                            <div class="calendar-header-select-value">
+                                <div class="information__item">
+                                    <div>
+                                        <select (change)="calendar.setSelectedMonthFromSelectEvent($event)" name="month" id="calendarMonth">
+                                            <option *ngFor="let month of calendar.getMonths(); let i = index" value="{{ i }}" [selected]="i == calendar.getSelectedMonth()">{{ month }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="calendar-header-select-fw">
+                                <span (click)="calendar.setSelectedMonthNext()" class="fa-solid fa-angle-right"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-body calendar-body-{{ calendar.isYearMode() ? 'year' : 'noyear' }}">
+                        <div *ngFor="let month of calendar.getCalendarMonths()" class="calendar-body-month calendar-body-month-{{ month }}">
+                            <div *ngIf="calendar.isYearMode()" class="calendar-body-month-name">{{ calendar.getMonths()[month] }}</div>
+
+                            <div class="calendar-body-month-title">
+                                <div *ngFor="let weekday of calendar.getWeekdays(); let i = index" class="calendar-body-month-title-day calendar-body-month-title-day-{{ calendar.getWorkdayIndex(i) }}">{{ weekday }}</div>
+                            </div>
+
+                            <div class="calendar-body-month-block">
+                                <div *ngFor="let week of calendar.getCalendarWeeks(month)" class="calendar-body-month-block-week calendar-body-month-block-week-{{ week.week }}">
+                                    <div *ngFor="let day of week.days" (click)="selectedFromCalendar(calendar.selectedEvent(month, day.week, day.day));" class="calendar-body-month-block-week-day calendar-body-month-block-week-day-{{ calendar.getWorkdayIndex(day.dayOfWeek) }} calendar-body-month-block-week-day-{{ day.day }} {{ day.selected ? 'calendar-body-month-block-week-day-sel' : '' }} {{ day.isToday ? 'calendar-body-month-block-week-day-today' : '' }}">
+                                        <div *ngIf="day.day > 0" class="calendar-body-month-block-week-day-title">{{ day.day }}</div>
+                                        <div *ngIf="day.day > 0" class="calendar-body-month-block-week-day-content"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-footer">
+                        <div class="calendar-footer-line">
+                            <div class="calendar-footer-line-item">
+                                <div class="calendar-footer-line-item-guide calendar-body-month-block-week-day-today"></div>
+                                <div class="calendar-footer-line-item-desc">Hoy</div>
+                            </div>
+                            <div class="calendar-footer-line-item">
+                                <div class="calendar-footer-line-item-guide calendar-body-month-block-week-day-sel"></div>
+                                <div class="calendar-footer-line-item-desc">Día seleccionado</div>
+                            </div>
+                            <div class="calendar-footer-line-item">
+                                <div class="calendar-footer-line-item-guide calendar-body-month-block-week-day--1"></div>
+                                <div class="calendar-footer-line-item-desc">Día no laboral</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>

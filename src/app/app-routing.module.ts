@@ -39,14 +39,19 @@ import { PermisosComponent } from './pages/permisos/permisos.component';
 import { EditarPermisosComponent } from './pages/editar-permisos/editar-permisos.component';
 import { RutasPermisosComponent } from './pages/rutas-permisos/rutas-permisos.component';
 import { AdminObjetivosComponent } from './pages/admin-objetivos/admin-objetivos.component';
-import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario/obejtivos-usuario.component'; 
+import { ObejtivosUsuarioComponent } from './pages/performance/obejtivos-usuario/obejtivos-usuario.component';
 import { CompetenciasUsuarioComponent } from './pages/performance/competencias-usuario/competencias-usuario.component';
 import { AdminPreguntasComponent } from './pages/admin-preguntas/admin-preguntas.component';
 import { AdminRepuestasComponent } from './pages/admin-repuestas/admin-repuestas.component';
 import { ReportesComponent } from './pages/performance/reportes/reportes.component';
 import { AdminCompetenciasComponent } from './pages/admin-competencias/admin-competencias.component';
 import { ReportesUsuariosComponent } from './pages/reportes-usuarios/reportes-usuarios.component';
-
+import { ListAbsenceComponent } from './absence/list-absence/list-absence.component';
+import { HistoryAbsenceComponent } from './absence/history-absence/history-absence.component';
+import { ConfigAbsenceComponent } from './absence/config-absence/config-absence.component';
+import { AddAbsenceComponent } from './absence/list-absence/add-absence/add-absence.component';
+import { ConfigAbsenceWdComponent } from './absence/config-absence/config-absence-wd/config-absence-wd.component';
+import { ConfigAbsenceHdComponent } from './absence/config-absence/config-absence-hd/config-absence-hd.component';
 
 const routes: Routes =
 [
@@ -80,7 +85,7 @@ const routes: Routes =
   { path: 'recruiter/postulate/edit/:id', component: AddPstComponent },
   { path: 'recruiter/historical/list-vacancy', component: HistoricalVacanciesComponent },
   { path: 'recruiter/historical/list-postulate', component: HistoricalPostulatesComponent },
-  
+
   { path: 'survey/pending/list', component: MySurveyComponent },
   { path: 'survey/pending/response/:id', component: MySurveyResponseComponent },
   { path: 'survey/survey/list', component: ListSurveyComponent },
@@ -102,13 +107,22 @@ const routes: Routes =
   { path: 'pages/editarpermisos', component: EditarPermisosComponent},
   { path: 'pages/rutaspermisos', component: RutasPermisosComponent},
   { path: 'pages/adminobjetivos', component: AdminObjetivosComponent},
-  { path: 'pages/performance/objetiveUser', component: ObejtivosUsuarioComponent}, 
-  { path: 'pages/performance/compUser', component: CompetenciasUsuarioComponent}, 
-  { path: 'pages/adminPreguntas', component: AdminPreguntasComponent}, 
-  { path: 'pages/adminRespuestas', component: AdminRepuestasComponent}, 
-  { path: 'pages/performance/reportes', component: ReportesComponent}, 
-  { path: 'pages/adminCompetencias', component: AdminCompetenciasComponent}, 
-  { path: 'pages/reportes-usuarios', component: ReportesUsuariosComponent}, 
+  { path: 'pages/performance/objetiveUser', component: ObejtivosUsuarioComponent},
+  { path: 'pages/performance/compUser', component: CompetenciasUsuarioComponent},
+  { path: 'pages/adminPreguntas', component: AdminPreguntasComponent},
+  { path: 'pages/adminRespuestas', component: AdminRepuestasComponent},
+  { path: 'pages/performance/reportes', component: ReportesComponent},
+  { path: 'pages/adminCompetencias', component: AdminCompetenciasComponent},
+  { path: 'pages/reportes-usuarios', component: ReportesUsuariosComponent},
+
+  { path: 'absence/request/list', component: ListAbsenceComponent },
+  { path: 'absence/request/add', component: AddAbsenceComponent },
+  { path: 'absence/request/add/:id', component: AddAbsenceComponent },
+  { path: 'absence/request/edit/:id', component: AddAbsenceComponent },
+  { path: 'absence/history/calendar', component: HistoryAbsenceComponent },
+  { path: 'absence/config/approval', component: ConfigAbsenceComponent },
+  { path: 'absence/config/workdays', component: ConfigAbsenceWdComponent },
+  { path: 'absence/config/holidays', component: ConfigAbsenceHdComponent },
 ];
 
 @NgModule({

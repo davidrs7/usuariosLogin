@@ -1,0 +1,395 @@
+<app-navigation (getUser)="getUser($event)"></app-navigation>
+
+<div *ngIf="absenceUserMe == null && absenceUsers.length == 0 && absencesHR.length == 0" class="absence background-right">
+    <div class="absence-msg">
+        No hay actividades que pueda desarrollar en esta pantalla por el momento.
+    </div>
+</div>
+
+<div *ngIf="absenceUserMe != null || absenceUsers.length > 0 || absencesHR.length > 0" class="absence background-right">
+    <div class="information__item">
+        <label for="year">Visualizar...</label>
+        <div>
+            <select (change)="setSelectedYear($event)" name="year" id="year">
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="absence-tabs">
+        <div class="tabs">
+            <div #tabsGroup class="tabs-group">
+                <div class="tabs-group-tab{{ (absenceUserMe != null) ? ' active' : ' absence-tabs-empty' }}" (click)="tabSelect(tabsGroup.children, 0); tabSelect(tabsContent.children, 0);">
+                    <span class="fa-solid fa-user-plus"></span>
+                    Mis solicitudes
+                </div>
+                <div class="tabs-group-tab{{ (absenceUsers.length > 0) ? '' : ' absence-tabs-empty' }}" (click)="tabSelect(tabsGroup.children, 1); tabSelect(tabsContent.children, 1);">
+                    <span class="fa-solid fa-user-group"></span>
+                    Solicitudes de mi equipo
+                </div>
+                <div class="tabs-group-tab{{ (absencesHR.length > 0) ? ((absenceUserMe != null) ? '' : ' active') : ' absence-tabs-empty' }}" (click)="tabSelect(tabsGroup.children, 2); tabSelect(tabsContent.children, 2);">
+                    <span class="fa-solid fa-person-circle-check"></span>
+                    RR.HH.
+                </div>
+            </div>
+            <div #tabsContent class="tabs-content">
+                <div class="tabs-content-tab{{ (absenceUserMe != null) ? ' active' : ' absence-tabs-empty' }}">
+                    <div *ngIf="absenceUserMe.employeeId != undefined && absenceUserMe.employeeId != null && absenceUserMe.employeeId > 0" class="information__btn absence-tabs-btn">
+                        <button (click)="newAbsence(false)">Nueva solicitud</button>
+                    </div>
+                    <table class="absence-tabs-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo de solicitud</th>
+                                <th>Estado</th>
+                                <th>Descripción</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let absence of absencesMe">
+                                <td>
+                                    <div class="absence-tabs-table-type">
+                                        <div>{{ absence.absenceTypeName }}</div>
+                                        <div>
+                                            <div>
+                                                <span class="fa-solid fa-greater-than-equal"></span>
+                                                {{ absence.started|date: "dd/MM/yyyy" }}
+                                            </div>
+                                            <div *ngIf="absence.started?.toDateString() != absence.finished?.toDateString()">
+                                                <span class="fa-solid fa-less-than-equal"></span>
+                                                {{ absence.finished|date: "dd/MM/yyyy" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="absence-tabs-table-status">
+                                        <div>
+                                            <span class="fa-solid fa-circle absence-tabs-table-status-{{ absence.statusClass }}"></span>
+                                            <span>{{ absence.statusName }}</span>
+                                        </div>
+                                        <div>{{ absence.approvalQuantity }} de {{ getTotalApprovalByAbsence(absence.absenceTypeId) }} revisiones</div>
+                                    </div>
+                                </td>
+                                <td class="absence-tabs-table-desc">{{ absence.description }}</td>
+                                <td class="action">
+                                    <span ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="openEdit(absence.id)"></span>
+                                    <span ngbTooltip="Ver detalle" class="fa-solid fa-eye action-button" data-bs-toggle="modal" data-bs-target="#modalSelAbsence" (click)="openAbsenceModal(modalSelAbsence, absence)"></span>
+                                </td>
+                            </tr>
+                            <tr *ngIf="absencesMe.length == 0">
+                                <td colspan="4">No hay datos para mostrar actualmente.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tabs-content-tab{{ (absenceUsers.length > 0) ? '' : ' absence-tabs-empty' }}">
+                    <div class="information__btn absence-tabs-btn">
+                        <button data-bs-toggle="modal" data-bs-target="#modalSelUser" (click)="openModal(modalSelUser)">Nueva solicitud al equipo</button>
+                    </div>
+                    <table class="absence-tabs-table">
+                        <thead>
+                            <tr>
+                                <th>Solicitado por</th>
+                                <th>Tipo de solicitud</th>
+                                <th>Estado</th>
+                                <th>Descripción</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let absence of absencesOthers">
+                                <td class="absence-tabs-table-user">
+                                    <div class="absence-tabs-table-user-item">
+                                        <div>
+                                            <img src="{{ (absence.employeePhotoUrl != null && absence.employeePhotoUrl != '') ? absence.employeePhotoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="40" alt="{{ absence.employeeName }}" loading="lazy" />
+                                        </div>
+                                        <div>
+                                            <div>{{ absence.employeeName }}</div>
+                                            <div>{{ absence.jobName }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="absence-tabs-table-type">
+                                        <div>{{ absence.absenceTypeName }}</div>
+                                        <div>
+                                            <div>
+                                                <span class="fa-solid fa-greater-than-equal"></span>
+                                                {{ absence.started|date: "dd/MM/yyyy" }}
+                                            </div>
+                                            <div *ngIf="absence.started?.toDateString() != absence.finished?.toDateString()">
+                                                <span class="fa-solid fa-less-than-equal"></span>
+                                                {{ absence.finished|date: "dd/MM/yyyy" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="absence-tabs-table-status">
+                                        <div>
+                                            <span class="fa-solid fa-circle absence-tabs-table-status-{{ absence.statusClass }}"></span>
+                                            <span>{{ absence.statusName }}</span>
+                                        </div>
+                                        <div>{{ absence.approvalQuantity }} de {{ getTotalApprovalByAbsence(absence.absenceTypeId) }} revisiones</div>
+                                    </div>
+                                </td>
+                                <td class="absence-tabs-table-desc">{{ absence.description }}</td>
+                                <td class="action">
+                                    <span *ngIf="absence.approvalQuantity == 0" ngbTooltip="Editar" class="fa-solid fa-pen action-button" (click)="openEdit(absence.id)"></span>
+                                    <span ngbTooltip="Ver detalle" class="fa-solid fa-eye action-button" data-bs-toggle="modal" data-bs-target="#modalSelAbsence" (click)="openAbsenceModal(modalSelAbsence, absence)"></span>
+                                </td>
+                            </tr>
+                            <tr *ngIf="absencesOthers.length == 0">
+                                <td colspan="5">No hay datos para mostrar actualmente.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tabs-content-tab{{ (absencesHR.length > 0) ? ((absenceUserMe != null) ? '' : ' active') : ' absence-tabs-empty' }}">
+                    <table class="absence-tabs-table">
+                        <thead>
+                            <tr>
+                                <th>Solicitado por</th>
+                                <th>Tipo de solicitud</th>
+                                <th>Estado</th>
+                                <th>Descripción</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let absence of absencesHR">
+                                <td class="absence-tabs-table-user">
+                                    <div class="absence-tabs-table-user-item">
+                                        <div>
+                                            <img src="{{ (absence.employeePhotoUrl != null && absence.employeePhotoUrl != '') ? absence.employeePhotoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="40" alt="{{ absence.employeeName }}" loading="lazy" />
+                                        </div>
+                                        <div>
+                                            <div>{{ absence.employeeName }}</div>
+                                            <div>{{ absence.jobName }}</div>
+                                            <div>{{ absence.departmentName }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="absence-tabs-table-type">
+                                        <div>{{ absence.absenceTypeName }}</div>
+                                        <div>
+                                            <div>
+                                                <span class="fa-solid fa-greater-than-equal"></span>
+                                                {{ absence.started|date: "dd/MM/yyyy" }}
+                                            </div>
+                                            <div *ngIf="absence.started?.toDateString() != absence.finished?.toDateString()">
+                                                <span class="fa-solid fa-less-than-equal"></span>
+                                                {{ absence.finished|date: "dd/MM/yyyy" }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="absence-tabs-table-status">
+                                        <div>
+                                            <span class="fa-solid fa-circle absence-tabs-table-status-{{ absence.statusClass }}"></span>
+                                            <span>{{ absence.statusName }}</span>
+                                        </div>
+                                        <div>{{ absence.approvalQuantity }} de {{ getTotalApprovalByAbsence(absence.absenceTypeId) }} revisiones</div>
+                                    </div>
+                                </td>
+                                <td class="absence-tabs-table-desc">{{ absence.description }}</td>
+                                <td class="action">
+                                    <span ngbTooltip="Ver detalle" class="fa-solid fa-eye action-button" data-bs-toggle="modal" data-bs-target="#modalSelAbsence" (click)="openAbsenceModal(modalSelAbsence, absence)"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalSelAbsence let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <div class="modal-form-absence">
+                <div class="modal-form-absence-item">
+                    <label>Tipo de solicitud:</label>
+                    <div>{{ absenceSelected.absenceTypeName }}</div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Estado:</label>
+                    <div>
+                        <span class="fa-solid fa-circle absence-tabs-table-status-{{ absenceSelected.statusClass }}"></span>
+                        <span>{{ absenceSelected.statusName }}</span>
+                    </div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Fecha de creación:</label>
+                    <div>{{ absenceSelected.created|date: "dd/MM/yyyy hh:mm:ss" }}</div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Última actualización:</label>
+                    <div>{{ absenceSelected.updated|date: "dd/MM/yyyy hh:mm:ss" }}</div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Creado por:</label>
+                    <div class="modal-form-absence-item-user">
+                        <div>
+                            <img src="{{ (absenceSelected.userPhotoUrl != null && absenceSelected.userPhotoUrl != '') ? absenceSelected.userPhotoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="40" alt="{{ absenceSelected.userEmployeeName }}" loading="lazy" />
+                        </div>
+                        <div>
+                            <div>{{ absenceSelected.userEmployeeName }}</div>
+                            <div>{{ absenceSelected.userName }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Solicitado por:</label>
+                    <div class="modal-form-absence-item-user">
+                        <div>
+                            <img src="{{ (absenceSelected.employeePhotoUrl != null && absenceSelected.employeePhotoUrl != '') ? absenceSelected.employeePhotoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="40" alt="{{ absenceSelected.employeeName }}" loading="lazy" />
+                        </div>
+                        <div>
+                            <div>{{ absenceSelected.employeeName }}</div>
+                            <div>{{ absenceSelected.jobName }}</div>
+                            <div>{{ absenceSelected.departmentName }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Días solicitados:</label>
+                    <div class="modal-form-absence-item-days">
+                        <div *ngIf="absenceSelected.started.toDateString() == absenceSelected.finished.toDateString()">{{ absenceSelected.started|date: "dd/MM/yyyy" }}</div>
+                        <div *ngIf="absenceSelected.started.toDateString() != absenceSelected.finished.toDateString()">
+                            <div>Desde {{ absenceSelected.started|date: "dd/MM/yyyy" }}</div>
+                            <div>Hasta {{ absenceSelected.finished|date: "dd/MM/yyyy" }}</div>
+                        </div>
+                        <div>({{ absenceSelected.businessDays }} día<span *ngIf="absenceSelected.businessDays != 1">s</span>)</div>
+                    </div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Descripción:</label>
+                    <div>{{ absenceSelected.description }}</div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Revisiones:</label>
+                    <div>
+                        <div>{{ absenceSelected.approvalQuantity }} de {{ getTotalApprovalByAbsence(absenceSelected.absenceTypeId) }} revisiones</div>
+                        <div class="modal-form-absence-item-desc">
+                            <div *ngFor="let approval of approvalsByAbsenceSelected" class="modal-form-absence-item-desc-item modal-form-absence-item-desc-{{ approval.approval }}">
+                                <div>
+                                    <img src="{{ (approval.userPhotoUrl != null && approval.userPhotoUrl != '') ? approval.userPhotoUrl : '../../assets/avatar.png' }}" class="rounded-circle" height="35" ngbTooltip="{{ approval.userEmployeeName }} ({{ approval.userName }})" alt="{{ approval.userName }}" loading="lazy" />
+                                </div>
+                                <div>
+                                    <div ngbTooltip="{{ approval.description }}">
+                                        {{ approval.description|slice:0:45 }}<span *ngIf="approval.description != null && approval.description.length > 45">...</span>
+                                    </div>
+                                    <div *ngIf="approval.approval == 1" class="modal-form-absence-item-desc-item-status">Aprobado</div>
+                                    <div *ngIf="approval.approval == 0" class="modal-form-absence-item-desc-item-status">Rechazado</div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-form-absence-item">
+                    <label>Adjuntos:</label>
+                    <div>
+                        <div>
+                            <span>{{ filesByAbsenceSelected.length }}</span>
+                            <span *ngIf="filesByAbsenceSelected.length != 1"> archivos</span>
+                            <span *ngIf="filesByAbsenceSelected.length == 1"> archivo</span>
+                        </div>
+                        <div *ngIf="filesByAbsenceSelected.length > 0">
+                            <a *ngFor="let file of filesByAbsenceSelected" [href]="file.url + file.fileName" target="_blank" class="modal-form-absence-item-file">{{ file.fileName }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="information__btn">
+                <button *ngIf="absenceSelected.approvalQuantity == 0 && (absenceSelected.userId == user.id || absenceSelected.employeeId == user.employeeId)" type="button" (click)="openEdit(absenceSelected.id)">Editar</button>
+                <button *ngIf="absenceSelected.employeeId != user.employeeId" type="button" (click)="toggleApprovalForm()">
+                    <span *ngIf="!approveFormActive">Aprobar / Rechazar</span>
+                    <span *ngIf="approveFormActive">Cerrar Aprobar / Rechazar</span>
+                </button>
+            </div>
+
+            <div *ngIf="approveFormActive" class="modal-form-approval">
+                <form [formGroup]="formApproval" (ngSubmit)="validateFormApproval()">
+                    <div class="information__item">
+                        <label for="absenceApproval">Estado de la revisión</label>
+                        <div>
+                            <select formControlName="approval" name="approval" id="absenceApproval">
+                                <option value="1">Aprobado</option>
+                                <option value="0">Rechazado</option>
+                            </select>
+                            <ul *ngIf="errors.validate(formApproval.get('approval'))">
+                                <li *ngFor="let message of errors.getErrors(formApproval.get('approval'))">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="information__item">
+                        <label for="absenceDescription">Descripción</label>
+                        <div>
+                            <textarea id="absenceDescription" name="description" rows="3" formControlName="description"></textarea>
+                            <ul *ngIf="errors.validate(formApproval.get('description'))">
+                                <li *ngFor="let message of errors.getErrors(formApproval.get('description'))">{{ message }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="information__btn">
+                        <button type="submit">Guardar revisión</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #modalSelUser let-modal>
+    <div class="modal-body">
+        <div class="modal-close" (click)="closeModal()">
+            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+        </div>
+        <div class="modal-form">
+            <div class="information__item">
+                <label for="otherUser">Seleccione un usuario</label>
+                <div>
+                    <select (change)="setSelectedOtherUser($event)" name="otherUser" id="otherUser">
+                        <option value=""></option>
+                        <option *ngFor="let user of absenceUsers" [value]="user.employeeId">{{ user.name }} ({{ user.jobName }})</option>
+                    </select>
+                    <ul *ngIf="errorOtherUser">
+                        <li>Debe seleccionar un miembro de su equipo para crear una solicitud.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="information__btn">
+                <button type="button" (click)="validateOtherUser()">Aceptar</button>
+                <button type="button" (click)="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="canva" *ngIf="canva"><img src="../../assets/load.gif" alt="Cargando" /></div>
