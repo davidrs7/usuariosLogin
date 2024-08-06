@@ -26,6 +26,10 @@ export class UserService {
     return this.http.get<UserDTO>(this.baseUrl + 'User/' + token);
   }
 
+  userByIdopcional(usuarioIdOpcional: number) {
+    return this.http.get<UserDTO>(this.baseUrl + 'UserEmployee/' + usuarioIdOpcional);
+  }
+
   userListEndpoint() {
     return this.http.get<UserDTO[]>(this.baseUrl + 'Users');
   }

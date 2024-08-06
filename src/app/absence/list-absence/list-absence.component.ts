@@ -50,7 +50,6 @@ export class ListAbsenceComponent implements OnInit {
 
 
   getUser(user: UserDTO) {
-    debugger;
     this.user = user;
     this.absenceUsers = [];
     this.absenceService.userListEndpoint(user.id).subscribe(

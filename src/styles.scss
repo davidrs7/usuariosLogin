@@ -257,6 +257,12 @@ table {
             padding-left: 6px;
             padding-bottom: 3px;
         }
+        &.warning {
+            background-color: $warningback;
+            & li {
+                color: $warning;
+            }
+        }
     }
 }
 
@@ -282,6 +288,213 @@ table {
     background-position: bottom left;
     background-attachment: fixed;
     background-size: cover;
+}
+
+.calendar {
+    border: 1px solid $color4;
+    border-radius: 10px;
+    &-header {
+        padding: 1rem;
+        &-mode {
+            text-align: right;
+            & span {
+                font-size: 2.5rem;
+                color: $color4;
+                padding: .2rem .6rem;
+                cursor: pointer;
+                &:hover {
+                    color: $color3;
+                    border-bottom: 1px solid $color3;
+                }
+            }
+            &-active {
+                border-bottom: 2px solid $color4;
+                &:hover {
+                    border-bottom: 2px solid $color3 !important;
+                }
+            }
+        }
+        &-select {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            &-bw {
+                color: $color4;
+                padding-right: 1.5rem;
+                min-width: 4rem;
+                font-size: 2rem;
+                & span {
+                    cursor: pointer;
+                }
+            }
+            &-value {
+                padding: .5rem 0;
+                min-width: 25rem;
+            }
+            &-fw {
+                color: $color4;
+                padding-left: 1.5rem;
+                min-width: 4rem;
+                font-size: 2rem;
+                & span {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    &-body {
+        &-month {
+            padding: 1rem;
+            &-name {
+                text-align: center;
+                font-size: 2.3rem;
+                font-weight: bold;
+                color: $color4;
+            }
+            &-title {
+                display: flex;
+                flex-direction: row;
+                &-day {
+                    width: 100%;
+                    border: 1px solid $color4;
+                    color: $white;
+                    background-color: $color4;
+                    font-size: 1.8rem;
+                    font-weight: bold;
+                    text-align: center;
+                    &--1 {
+                        background-color: $darkgray;
+                        border: 1px solid $darkgray;
+                    }
+                    &:first-child {
+                        border-top-left-radius: 10px;
+                    }
+                    &:last-child {
+                        border-top-right-radius: 10px;
+                    }
+                }
+            }
+            &-block {
+                display: flex;
+                flex-direction: column;
+                &-week {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    &-day {
+                        width: 100%;
+                        border-bottom: 1px solid $color4;
+                        border-left: 1px solid $color4;
+                        min-height: 5rem;
+                        background-color: $whiteShadow;
+                        cursor: pointer;
+                        &-title {
+                            color: $color4;
+                            text-align: right;
+                            font-size: 1.2rem;
+                            font-weight: bold;
+                            padding: .3rem;
+                        }
+                        &-content {
+                            font-size: 1.2rem;
+                            padding: .3rem;
+                            text-align: left;
+                        }
+                        &:last-child {
+                            border-right: 1px solid $color4;
+                        }
+                        &:hover {
+                            background-color: $shadow;
+                        }
+                        &-today {
+                            background-color: $mainShadow;
+                        }
+                        &-sel {
+                            background-color: $selected;
+                            &:hover {
+                                background-color: $selectedShadow;
+                            }
+                        }
+                        &--1 {
+                            background-color: #d2d2d2d0;
+                            cursor: not-allowed;
+                            &:hover {
+                                background-color: #d2d2d2;
+                            }
+                        }
+                        &-0 {
+                            background-color: $color4;
+                            cursor: not-allowed;
+                            &:hover {
+                                background-color: $color4;
+                            }
+                        }
+                    }
+                    &:last-child {
+                        & > div {
+                            &:first-child {
+                                border-bottom-left-radius: 10px;
+                            }
+                            &:last-child {
+                                border-bottom-right-radius: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &-year {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem .5rem;
+            & .calendar-body-month-block-week-day {
+                min-height: 3rem;
+            }
+        }
+    }
+    &-footer {
+        background-color: $mainShadow;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        &-line {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            &-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 0 2rem;
+                &-guide {
+                    border: 1px solid $main;
+                    height: 2.2rem;
+                    width: 4rem;
+                    cursor: none;
+                }
+                &-desc {
+                    color: $color4;
+                    font-size: 1.6rem;
+                    padding-left: 1rem;
+                }
+            }
+        }
+    }
+    & .information__item {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        & div {
+            padding-left: 0;
+            & select {
+                text-align: center;
+            }
+        }
+    }
 }
 
 .modal-content {

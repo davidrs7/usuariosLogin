@@ -5,7 +5,6 @@ import { UserService } from '../../_services/user.service';
 import { UserDTO } from '../../dto/user.dto';
 import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
 import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
-
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -132,7 +131,6 @@ export class NavigationComponent implements OnInit {
               this.user = userResponse;
               this.userName = (this.user.name != null && this.user.name != '') ? this.user.name.trim().substring(0, this.user.name.indexOf(' ')) : this.user.userName;
               this.getUser.emit(this.user);
-              console.log(this.user); //PENDIENTE
             } else {
               this.destroySession();
             }
@@ -200,12 +198,9 @@ export class NavigationComponent implements OnInit {
         this.loginTiindux.tokenSesion('Sesion/token', token).subscribe(
           (respuesta: ApiResponse<any>) => {
             if (respuesta.data == null) {
-              console.log('sesion activa');
               this.nuevoLogout();
               this.destroySession();
             } else {
-              console.log('sesion activa')
-              console.log(respuesta.data)
               this.asignaEmiteUsusarios(respuesta.data);
               this.asignaToken(respuesta.data)
             }
@@ -218,10 +213,19 @@ export class NavigationComponent implements OnInit {
   }
 
   asignaEmiteUsusarios(usuarioToken: any){
-    console.log(usuarioToken.usuarioId);
-    // Aqui hacer el llamado al controlador de User por Id
-    // Al recibir el usuarioIdOpcional, buscar el empleado por este Id
-    // asignar la respuesta de este empleado a userDto y emitir User
+    this.loginTiindux.getDatabyId('User',usuarioToken.usuarioId).subscribe(
+      (respuesta: ApiResponse<any>) => {
+        this.emitirUser(respuesta.data);
+      });
+  }
+
+  emitirUser(usuario: any){
+    this.userService.userByIdopcional(usuario.usuarioIdOpcional).subscribe(
+      (respuesta: UserDTO) => {
+        this.user = respuesta;
+        this.userName = (this.user.name != null && this.user.name != '') ? this.user.name.trim().substring(0, this.user.name.indexOf(' ')) : this.user.userName;
+        this.getUser.emit(this.user);
+      });
   }
 
   asignaToken(session:any){
