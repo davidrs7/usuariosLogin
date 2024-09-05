@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "E:/david/Freelance/Tindux/Transmilenio/usuarios_api/usuarios/usuarios.api/wwwroot", 
+    "outDir": "E:/david/Freelance/Tindux/Transmilenio/usuarios_api/usuarios/usuarios.api/wwwroot",
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "noImplicitReturns": true,
@@ -24,6 +24,7 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "enableIvy": false
   }
 }

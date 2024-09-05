@@ -52,6 +52,7 @@ import { ConfigAbsenceComponent } from './absence/config-absence/config-absence.
 import { AddAbsenceComponent } from './absence/list-absence/add-absence/add-absence.component';
 import { ConfigAbsenceWdComponent } from './absence/config-absence/config-absence-wd/config-absence-wd.component';
 import { ConfigAbsenceHdComponent } from './absence/config-absence/config-absence-hd/config-absence-hd.component';
+import { PublicPostulateComponent } from './pages/public-postulate/public-postulate.component';
 
 const routes: Routes =
 [
@@ -114,6 +115,8 @@ const routes: Routes =
   { path: 'pages/performance/reportes', component: ReportesComponent},
   { path: 'pages/adminCompetencias', component: AdminCompetenciasComponent},
   { path: 'pages/reportes-usuarios', component: ReportesUsuariosComponent},
+  { path: 'public/postulate', component: PublicPostulateComponent},
+
 
   { path: 'absence/request/list', component: ListAbsenceComponent },
   { path: 'absence/request/add', component: AddAbsenceComponent },

@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
@@ -68,6 +69,9 @@ import { ConfigAbsenceComponent } from './absence/config-absence/config-absence.
 import { AddAbsenceComponent } from './absence/list-absence/add-absence/add-absence.component';
 import { ConfigAbsenceWdComponent } from './absence/config-absence/config-absence-wd/config-absence-wd.component';
 import { ConfigAbsenceHdComponent } from './absence/config-absence/config-absence-hd/config-absence-hd.component';
+import { PublicPostulateComponent } from './pages/public-postulate/public-postulate.component';
+import { RecaptchaModule } from 'ng-recaptcha';
+
 
 
 
@@ -128,6 +132,7 @@ import { ConfigAbsenceHdComponent } from './absence/config-absence/config-absenc
     AddAbsenceComponent,
     ConfigAbsenceWdComponent,
     ConfigAbsenceHdComponent,
+    PublicPostulateComponent
   ],
   imports: [
     BrowserModule,
@@ -143,10 +148,12 @@ import { ConfigAbsenceHdComponent } from './absence/config-absence/config-absenc
     NoopAnimationsModule,
     NgbModule,
     TreeModule,
-    NgxChartsModule
+    NgxChartsModule,
+    RecaptchaModule
   ],
   providers: [
     DatePipe,
+
   ],
   bootstrap: [AppComponent]
 })

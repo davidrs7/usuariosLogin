@@ -1,0 +1,48 @@
+.gradient-nav {
+  background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradiente de color */
+  padding: 15px;
+}
+
+.gradient-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.gradient-nav ul li {
+  display: inline;
+}
+
+.gradient-nav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.gradient-nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */
+  border-radius: 5px;
+}
+
+
+label{
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.btn-users{
+  width: 100%;
+}
+
+.btn-sync{
+background-color: green;
+width: 100%;
+
+}
+
+

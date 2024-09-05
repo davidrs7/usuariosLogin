@@ -1,0 +1,65 @@
+<nav class="gradient-nav">
+  <ul>
+    <li><a></a></li>
+  </ul>
+</nav> <br>
+
+<div class="container">
+  <form [formGroup]="usuariosForm" autocomplete="off" class="container">
+
+<h2>Información del postulante</h2><hr><br><br>
+
+    <div class="row">
+        <div class="col-6">
+
+            <label for="correoelectronico">Nombres del postulante: * </label>
+            <input type="text" formControlName="nombrePostulante" required><br><br>
+
+            <label for="nombre">Apellidos del postulante: * </label>
+            <input type="text" formControlName="apellidosPostulante" required> <br><br>
+
+            <label for="tipodocumento">Correo: * </label>
+            <input type="text" formControlName="correoPostulante" required> <br><br>
+
+            <label for="sexoid">Tipo documento: * </label>
+            <select id="sexoid" formControlName="tipoDocumentoPostulante">
+                <option value="0">--Seleccione una opcion--</option>
+            </select><br><br>
+
+            <label for="numdocumento">Numero Documento: * </label>
+            <input type="text" formControlName="numdocumento" required><br><br>
+
+            <label for="telefono">Telefono: * </label>
+            <input type="text" formControlName="telefono" required><br><br>
+
+            <label for="direccion">Direccion: * </label>
+            <input type="text" formControlName="direccion" required><br><br>
+
+            <label for="fechanacimiento">Fecha Nacimiento: * </label>
+            <input type="date" formControlName="fechanacimiento" required><br><br>
+
+            <label for="estado">Estado:</label>
+            <select formControlName="estado" required>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select><br><br>
+
+        </div>
+
+        <div class="col-6">
+            <label for="contraseña">Adjuntar HV: * </label>
+            <input type="file" formControlName="hvPostulante" required><br><br>
+
+            <label for="sexoid">Vacantes disponibles: * </label>
+            <select id="sexoid" formControlName="vacantesDisponibles">
+                <option value="0">--Seleccione una opcion--</option>
+            </select><br><br>
+            <button class="btn-users" (click) = "enviarFormulario()"> Enviar información</button> <br> <br>
+            <re-captcha [siteKey]="siteKey" (resolved)="onCaptchaResolved($event)">  </re-captcha> <br>
+
+        </div>
+    </div>
+
+
+</form>
+</div>
