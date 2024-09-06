@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { VacantService } from 'src/app/_services/recruiter/vacant.service';
+import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
+import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
+import { VacantDTO } from 'src/app/dto/recruiter/vacant.dto';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -9,7 +13,10 @@ import Swal from 'sweetalert2';
 })
 export class PublicPostulateComponent implements OnInit {
 
+  fileName: string | null = null;
   captchaResponse: string | null = null;
+  TipDocs: any[] = [];
+  vacantList: VacantDTO[] = [];
   siteKey = '6LdszjcqAAAAADpUhY-JGzyTcEZjK89BpCOhTA2R';
   enviaInfo:string  = "";
   usuariosForm: FormGroup = this.fb.group({
@@ -29,9 +36,33 @@ export class PublicPostulateComponent implements OnInit {
     vacantesDisponibles: [0, []],
 
   });
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private loginServices: loginTiinduxService,private vacantService: VacantService) { }
 
   ngOnInit(): void {
+    this.cargarListas();
+  }
+
+  cargarListas(){
+    this.loginServices.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
+      this.TipDocs = respuesta.data;
+    });
+
+    this.vacantService.vacantListEndpoint().subscribe(
+      (vacantListResult: VacantDTO[]) => {
+        console.log(vacantListResult)
+        this.vacantList = vacantListResult;
+      }
+    );
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      this.fileName = input.files[0].name;
+    } else {
+      this.fileName = 'Ningún archivo seleccionado';
+    }
   }
 
   enviarFormulario(){

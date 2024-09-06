@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 
   export class loginTiinduxService {
-    private baseApiUrl = environment.apiUrl + 'api';
+    private baseApiUrl = environment.apiUrlTiidux + 'api';
     constructor(private http: HttpClient) { }
 
 
