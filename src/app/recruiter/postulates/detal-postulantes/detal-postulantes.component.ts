@@ -56,10 +56,11 @@ export class DetalPostulantesComponent implements OnInit {
   initVacantlist() {
     this.vacantService.vacantsByPostulateIdEndpoint(this.postulateId).subscribe(
       (vacantsPostulateResult: VacantDTO[]) => {
+        console.log(vacantsPostulateResult);
         this.vacantSelectedList = vacantsPostulateResult;
         if(this.vacantSelectedList.length == 1)
           this.selectVacantProcess(this.vacantSelectedList[0]);
-        
+
         this.vacantService.vacantListEndpoint().subscribe(
           (vacantListResult: VacantDTO[]) => {
             if(this.vacantSelectedList.length > 0) {
@@ -129,7 +130,7 @@ export class DetalPostulantesComponent implements OnInit {
           i = j;
           break;
         }
-      
+
       for(let stepResult of stepsResult)
         if(stepResult.id == stepId) {
           var approvedValue = (stepResult.approved == 0 && (stepResult.reason == null || stepResult.reason == '')) ? '' : stepResult.approved;
@@ -292,7 +293,7 @@ export class DetalPostulantesComponent implements OnInit {
 
       var newEmployee: EmployeeDTO = {
         id: 0, department: '', jobId: this.vacantSelected.jobId, statusId: 1, docTypeId: this.postulate.docTypeId,
-        contractTypeId: this.vacantSelected.contractTypeId, doc: this.postulate.doc, 
+        contractTypeId: this.vacantSelected.contractTypeId, doc: this.postulate.doc,
         name: this.postulate.firstName + ' ' + this.postulate.lastName, sex: this.postulate.sex ?? '', rh: this.postulate.rh ?? '',
         corpCellPhone: '', cellPhone: this.postulate.cellPhone ?? '', phone: this.postulate.phone ?? '', email: this.postulate.email ?? '',
         bankAccount: '', bankAccountType: '', hasVaccine: false, vaccineMaker: '', vaccineDose: 0, hasVaccineBooster: false, colorHex: ''
@@ -303,7 +304,7 @@ export class DetalPostulantesComponent implements OnInit {
         if(birthDate.getFullYear() > 1800)
           newEmployee.birthDate = birthDate;
       }
-      
+
       this.employeeService.addEndpoint(newEmployee).subscribe(
         (employeeId: any) => {
           var newEmployeeGeneral: EmployeeGeneralDTO = {

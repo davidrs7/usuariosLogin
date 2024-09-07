@@ -23,16 +23,16 @@ export interface PostulateCriteriaDTO {
 };
 
 export interface PostulateDTO {
-    id: number;
-    recruiterUserId: number;
-    findOutId: number;
+    id?: number;
+    recruiterUserId?: number;
+    findOutId?: number;
     findOutName?: string;
     docTypeId: number;
     docTypeName?: string;
-	educationalLevelId: number;
+	educationalLevelId?: number;
 	educationalLevelName?: string;
     offeredSalary?: number;
-    expectedSalary: number;
+    expectedSalary?: number;
     doc: string;
     firstName: string;
     lastName: string;
