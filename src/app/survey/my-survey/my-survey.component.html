@@ -2,18 +2,32 @@
 
 <div class="survey background-right">
     <div>
+        <h1 class="tr-survey"> Encuestas asignadas </h1><br><br><br>
+
         <table *ngIf="surveyList.length > 0" class="survey-table">
-            <thead>
-                <tr>
-                    <th colspan="2">Encuestas pendientes</th>
-                </tr>
-            </thead>
+
             <tbody>
+                <tr >
+                  <td class="tr-survey"><b>Nombre encuesta</b></td>
+                  <td class="tr-survey"><b>Fecha de inicio</b></td>
+                  <td class="tr-survey"><b>Fecha Limite</b></td>
+                  <td class="tr-survey"><b>Estado</b></td>
+                </tr>
                 <tr *ngFor="let survey of surveyList">
                     <td class="survey-table-info">
                         <div class="survey-table-info-title">{{ survey.name }}</div>
                         <div class="survey-table-info-desc">{{ survey.description }}</div>
-                        <div class="survey-table-info-date">Disponible hasta {{ survey.finished | date:"dd/MM/yyyy" }}</div>
+                    </td>
+                    <td>
+                      <div class="survey-table-info-date">Disponible Desde {{ survey.started | date:"dd/MM/yyyy" }}</div>
+                    </td>
+                    <td>
+                      <div class="survey-table-info-date">Disponible hasta {{ survey.finished | date:"dd/MM/yyyy" }}</div>
+                    </td>
+                    <td>
+                      <span *ngIf="survey.isAnswered == 0" class="fa-solid fa-circle text-danger"></span>
+                      <span *ngIf="survey.isAnswered == 1" class="fa-solid fa-circle text-success"></span>
+                      {{ survey.isAnswered  ? "Realizada" : "Pendiente" }}
                     </td>
                     <td class="action">
                         <button *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)" (click)="openEdit(survey.surveyId)">Responder</button>
