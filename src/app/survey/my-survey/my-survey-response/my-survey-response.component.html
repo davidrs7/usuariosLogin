@@ -17,7 +17,7 @@
                         <input type="checkbox" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}">
                         <span>{{ field.name }}</span>
                     </div>
-                    <select *ngIf="field.fieldType == 'list'" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}">
+                    <select *ngIf="field.fieldType == 'list' || field.fieldType == 'internal'" [formControlName]="field.fieldName" [name]="field.fieldName" [disabled]="survey.isAnswered == 1 && survey.draft == 0" id="fr_{{ field.fieldName }}">
                         <option value=""></option>
                         <option *ngFor="let param of getOptionList(field.config)" [value]="param">{{ param }}</option>
                     </select>

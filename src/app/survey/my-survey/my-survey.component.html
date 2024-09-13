@@ -16,8 +16,8 @@
                         <div class="survey-table-info-date">Disponible hasta {{ survey.finished | date:"dd/MM/yyyy" }}</div>
                     </td>
                     <td class="action">
-                        <button *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)" (click)="openEdit(survey.id)">Responder</button>
-                        <button *ngIf="survey.isAnswered == 1 && survey.draft == 0" class="action-white" (click)="openEdit(survey.id)">Ver</button>
+                        <button *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)" (click)="openEdit(survey.surveyId)">Responder</button>
+                        <button *ngIf="survey.isAnswered == 1 && survey.draft == 0" class="action-white" (click)="openEdit(survey.surveyId)">Ver</button>
                     </td>
                 </tr>
             </tbody>
@@ -30,7 +30,7 @@
             <tbody>
                 <tr>
                     <td class="survey-table-error">
-                        -- No hay encuentas pendientes para el usuario <strong>{{ user.name }}</strong> --
+                       <strong>-- No tienes encuentas pendientes -- </strong>
                     </td>
                 </tr>
             </tbody>

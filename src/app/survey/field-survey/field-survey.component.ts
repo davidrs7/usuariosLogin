@@ -20,6 +20,7 @@ export class FieldSurveyComponent implements OnInit {
   ngOnInit(): void {
     this.surveyService.surveyFieldsEndpoint().subscribe(
       (fieldsResponse: SurveyFieldDTO[]) => {
+        console.log(fieldsResponse);
         this.surveyFields = fieldsResponse;
         this.canva = false;
       }

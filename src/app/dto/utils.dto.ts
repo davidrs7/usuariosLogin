@@ -194,7 +194,6 @@ export class AdminExtraForms {
           listName = obj.value;
         if(obj.name == 'content')
           isAll = (obj.value == 'all');
-
         configIndex.push(obj);
       }
 

@@ -13,20 +13,23 @@ export class MySurveyComponent implements OnInit {
   canva: boolean = true;
   surveyList: SurveyHeaderDTO[] = [];
   user!: UserDTO;
-  
+
   constructor(private surveyService: SurveyService, private router: Router) { }
 
   ngOnInit(): void {}
 
   getUser(user: UserDTO) {
     this.user = user;
+    console.log(this.user.name);
     this.initListsurvey();
   }
 
   initListsurvey() {
     this.surveyService.surveyListByUserEndpoint(this.user.id).subscribe(
       (surveyListResult: SurveyHeaderDTO[]) => {
-        this.surveyList = surveyListResult; 
+        console.log(surveyListResult);
+        this.surveyList = surveyListResult;
+        console.log(this.surveyList );
         this.canva = false;
       }
     );

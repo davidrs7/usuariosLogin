@@ -179,9 +179,9 @@ export class FieldSurveyAddComponent implements OnInit {
         break;
       case 'internal':
         config += 'score:' + this.score?.value + '|list:' + this.systemList?.value;
-        if(this.paramsAll) {
-          config += '|content:all';
-        } else {
+       // if(this.paramsAll) {
+        //  config += '|content:all';
+        //} else {
           config += '|options:';
           var first: boolean = true;
           for(let param of this.params)
@@ -191,7 +191,7 @@ export class FieldSurveyAddComponent implements OnInit {
               config += param.name;
               first = false;
             }
-        }
+        //}
         break;
     }
     this.field.config = config;

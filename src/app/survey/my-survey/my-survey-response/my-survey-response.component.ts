@@ -14,7 +14,7 @@ import { AdminExtraForms, AdminMsgErrors, FormFieldConfigIndex, FormFieldIndex }
 export class MySurveyResponseComponent implements OnInit {
   canva: boolean = true;
   surveyId: any;
-  
+
   user!: UserDTO;
   fields: SurveyFieldDTO[] = [];
   survey!: SurveyHeaderDTO ;
@@ -50,8 +50,11 @@ export class MySurveyResponseComponent implements OnInit {
     this.surveyService.surveyFieldBySurveyEndpoint(this.surveyId).subscribe(
       (fieldsBysurveyResponse: SurveyFieldDTO[]) => {
         this.fields = fieldsBysurveyResponse;
+        console.log(this.fields);
         var fieldsByForm: FormFieldIndex[] = this.forms.createSurveyFormConfigBase(this.fields);
+        console.log(fieldsByForm)
         this.formSurvey = this.forms.createFormGroupByFields(fieldsByForm);
+        console.log(this.formSurvey)
         this.fieldsForm = fieldsByForm;
         this.canva = false;
       }
@@ -59,6 +62,7 @@ export class MySurveyResponseComponent implements OnInit {
   }
 
   getOptionList(config: FormFieldConfigIndex[] | undefined) {
+    console.log(config);
     if(config != null && config.length > 0)
       for(let configField of config)
         if(configField.name == 'options') {
