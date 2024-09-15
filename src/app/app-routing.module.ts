@@ -88,7 +88,7 @@ const routes: Routes =
   { path: 'recruiter/historical/list-postulate', component: HistoricalPostulatesComponent },
 
   { path: 'survey/pending/list', component: MySurveyComponent },
-  { path: 'survey/pending/response/:id', component: MySurveyResponseComponent },
+  { path: 'survey/pending/response/:id/:idHeader', component: MySurveyResponseComponent },
   { path: 'survey/survey/list', component: ListSurveyComponent },
   { path: 'survey/survey/add', component: CreateSurveyComponent},
   { path: 'survey/survey/edit/:id', component: CreateSurveyComponent},

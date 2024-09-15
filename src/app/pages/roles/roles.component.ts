@@ -78,7 +78,6 @@ export class RolesComponent implements OnInit {
 
   async guardaRoles() {
     let idColor = await this.obtenerIdColor(this.roleForm.get('color')?.value);
-    console.log(idColor);
 
     const body: ReqRoles = {
         rolId: this.roleForm.get('rolId')?.value,
@@ -97,7 +96,6 @@ export class RolesComponent implements OnInit {
   async obtenerIdColor(colorHex: string): Promise<number> {
     let idColor: number;
     this.colorResp = [];
-    console.log('color defecto --' + colorHex);
 
     return new Promise<number>((resolve, reject) => {
         this.loginServices.getColorId<any>('Colores/colorHex', colorHex).subscribe(
@@ -127,7 +125,6 @@ crearColor(): Promise<number> {
 
       this.loginServices.createData<any>('Colores', bodyColor).subscribe(
           async (respuesta: ApiResponse<any>) => {
-              console.log('color creado');
               const newIdColor = await this.obtenerIdColor(bodyColor.Hex);
               resolve(newIdColor);
           },

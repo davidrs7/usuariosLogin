@@ -9,6 +9,7 @@
             <tbody>
                 <tr >
                   <td class="tr-survey"><b>Nombre encuesta</b></td>
+                  <td class="tr-survey"><b>Cabecera</b></td>
                   <td class="tr-survey"><b>Fecha de inicio</b></td>
                   <td class="tr-survey"><b>Fecha Limite</b></td>
                   <td class="tr-survey"><b>Estado</b></td>
@@ -17,6 +18,9 @@
                     <td class="survey-table-info">
                         <div class="survey-table-info-title">{{ survey.name }}</div>
                         <div class="survey-table-info-desc">{{ survey.description }}</div>
+                    </td>
+                    <td>
+                      <div class="survey-table-info-desc">{{ survey.title }}</div>
                     </td>
                     <td>
                       <div class="survey-table-info-date">Disponible Desde {{ survey.started | date:"dd/MM/yyyy" }}</div>
@@ -30,8 +34,8 @@
                       {{ survey.isAnswered  ? "Realizada" : "Pendiente" }}
                     </td>
                     <td class="action">
-                        <button *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)" (click)="openEdit(survey.surveyId)">Responder</button>
-                        <button *ngIf="survey.isAnswered == 1 && survey.draft == 0" class="action-white" (click)="openEdit(survey.surveyId)">Ver</button>
+                        <button *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)"  class="action-blue"  (click)="openEdit(survey.surveyId,survey.id)"><i class="fa-solid fa-pencil"></i> Responder</button>
+                        <button *ngIf="survey.isAnswered == 1 && survey.draft == 0" class="action-green" (click)="openEdit(survey.surveyId,survey.id)"><i class="fa-solid fa-eye"></i> Ver</button>
                     </td>
                 </tr>
             </tbody>

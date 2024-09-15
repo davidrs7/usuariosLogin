@@ -29,9 +29,9 @@
         </div>
 
         <div class="survey-btn information__btn">
-            <button type="button" class="survey-btn-action" (click)="goBack()">Cancelar</button>
-            <button type="submit" class="survey-btn-action" *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)">Guardar como borrador</button>
-            <button type="submit" class="survey-btn-action" *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)">Responder</button>
+            <button type="button" class="survey-btn-action" (click)="goBack()"> {{ isAnswered ? "Cancelar" : "Regresar" }} </button>
+           <!-- <button type="submit" class="survey-btn-action" (click)="saveForm()" *ngIf="survey.isAnswered == 0 || (survey.isAnswered == 1 && survey.draft == 1)">Guardar como borrador</button>-->
+            <button type="submit" class="survey-btn-action" (click)="saveForm()" *ngIf="isAnswered">Responder</button>
         </div>
     </form>
 </div>

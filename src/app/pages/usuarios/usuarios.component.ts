@@ -257,7 +257,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   actualizarEmployee(body: any){
-    console.log (body.usuarioIdOpcional);
     const bodyEmployee: any = {
       id: body.usuarioIdOpcional,
       department: "",
@@ -298,7 +297,6 @@ export class UsuariosComponent implements OnInit {
 
     this.employeeService.editEndpoint(bodyEmployee).subscribe(
       (rsp: any) => {
-        console.log('Employee actualizado....');
       });
   }
 
@@ -373,7 +371,6 @@ export class UsuariosComponent implements OnInit {
 
       this.employeeService.addEndpoint(bodyEmployee).subscribe(
         (employeeId: number ) => {
-          console.log(employeeId);
           resolve(employeeId);
         },
         (error: any) => {
@@ -387,7 +384,6 @@ export class UsuariosComponent implements OnInit {
     //this.canva = true
     if (this.usuariosForm.get('crearemployee').value){
     let idEmployee= await  this.crearDataEmployee(body);
-    console.log(idEmployee);
     body.usuarioIdOpcional  = idEmployee;
   }
     this.loginServices.createData(this.rutaApi, body)
@@ -417,24 +413,18 @@ export class UsuariosComponent implements OnInit {
   async sincronizaUsusarios(){
     let usuariosxcrear: any[] = [];
     let contadorMsj:number = 0;
-    console.log('--- sincronizar ---');
-    console.log(this.usuarios);
 
      this.employeeService.employeesAllEndpoint(this.employeeCriteria).subscribe(
       async (employeesResponse: EmployeeBasicDTO[]) => {
-        console.log(employeesResponse);
 
         usuariosxcrear = this.usuarios.filter(usuario =>
           !employeesResponse.some(employee => employee.id === usuario.usuarioIdOpcional)
         );
-
-        console.log(usuariosxcrear);
         for (let i=0; i < usuariosxcrear.length ; i++){
          let idEmployee= await  this.crearDataEmployee(usuariosxcrear[i]);
          usuariosxcrear[i].usuarioIdOpcional = idEmployee;
          this.loginServices.UpdateData(this.rutaApi, usuariosxcrear[i].usuarioId, usuariosxcrear[i]).subscribe(
           (respuesta: ApiResponse<any>) => {
-            console.log(respuesta.estado);
             if (respuesta.estado.codigo == "200"){
             contadorMsj = contadorMsj + 1;
             }

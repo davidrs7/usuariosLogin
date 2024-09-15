@@ -56,7 +56,6 @@ export class DetalPostulantesComponent implements OnInit {
   initVacantlist() {
     this.vacantService.vacantsByPostulateIdEndpoint(this.postulateId).subscribe(
       (vacantsPostulateResult: VacantDTO[]) => {
-        console.log(vacantsPostulateResult);
         this.vacantSelectedList = vacantsPostulateResult;
         if(this.vacantSelectedList.length == 1)
           this.selectVacantProcess(this.vacantSelectedList[0]);

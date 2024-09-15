@@ -47,7 +47,6 @@ export class EmployeesEditComponent implements OnInit {
   employeeMethod() {
     this.employeeService.employeeEndpoint(this.employeeId).subscribe(
       (employeeResponse: EmployeeDTO) => {
-        console.log(employeeResponse);
         this.employee = employeeResponse;
         if(this.section == null)
           this.openSection('basica');

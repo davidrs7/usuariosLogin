@@ -20,23 +20,20 @@ export class MySurveyComponent implements OnInit {
 
   getUser(user: UserDTO) {
     this.user = user;
-    console.log(this.user.name);
     this.initListsurvey();
   }
 
   initListsurvey() {
     this.surveyService.surveyListByUserEndpoint(this.user.id).subscribe(
       (surveyListResult: SurveyHeaderDTO[]) => {
-        console.log(surveyListResult);
         this.surveyList = surveyListResult;
-        console.log(this.surveyList );
         this.canva = false;
       }
     );
   }
 
-  openEdit(surveyId: number) {
-    this.router.navigateByUrl('survey/pending/response/' + surveyId.toString());
+  openEdit(surveyId: number,headerId: number) {
+    this.router.navigateByUrl('survey/pending/response/' + surveyId.toString() + '/'+headerId.toString());
   }
 
 }

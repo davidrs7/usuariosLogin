@@ -497,7 +497,6 @@ addParamsforSex(data: any[]) {
 
     this.usuariosService.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
       this.usuarios = respuesta.data;
-      console.log(this.usuarios);
       this.canva = false;
     });
 
@@ -813,17 +812,12 @@ addParamsforSex(data: any[]) {
       estado: true,
     };
 
-    console.log('----- saveuser ----');
-    console.log(idusuario);
-
     if (idusuario  == 0) {
       this.usuariosService.createData('User',body).subscribe((respuesta: ApiResponse<any>) => {
-        console.log(respuesta);
       });
     } else
     {
       this.usuariosService.UpdateData('User',idusuario,body).subscribe((respuesta: ApiResponse<any>) => {
-        console.log(respuesta);
       });
     }
 
@@ -1030,11 +1024,9 @@ addParamsforSex(data: any[]) {
     this.sonsFormDel=!this.sonsFormDel;
   }
   delSon(){
-    console.log('sonId:'+this.employeeSonData[0].sonName);
     if(this.employeeSonData[0].id){
     this.employeeService.deleteSonEndPoint(this.employeeSonData[0].id).subscribe(
       (response: any)=>{
-        console.log(response);
         if(response>0)
         {
           this.employeeService.sonsEndpoint(this.employeeId).subscribe(

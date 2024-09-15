@@ -2,35 +2,47 @@
 @import '../../../mixins.scss';
 
 .survey {
-    padding: 2rem 7rem;
-    &-table {
-        &-info {
-            &-title {
-                font-size: 1.9rem;
-                font-weight: bold;
-            }
-            &-desc {
-                font-size: 1.6rem;
-            }
-            &-date {
-                font-size: 1.5rem;
-                font-style: italic;
-            }
-        }
-        &-error {
-            font-size: 1.6rem;
-            font-style: italic;
-            padding: 4rem 0;
-            text-align: center;
-            color: $darkgray;
-        }
-        & .action-white {
-            @include btn-white;
-        }
+  padding: 2rem 7rem;
+
+  &-table {
+    &-info {
+      &-title {
+        font-size: 1.9rem;
+        font-weight: bold;
+      }
+
+      &-desc {
+        font-size: 1.6rem;
+      }
+
+      &-date {
+        font-size: 1.5rem;
+        font-style: italic;
+      }
     }
+
+    &-error {
+      font-size: 1.6rem;
+      font-style: italic;
+      padding: 4rem 0;
+      text-align: center;
+      color: $darkgray;
+    }
+
+    & .action-green {
+      background-color: #71b971;
+      color: white;
+    }
+
+    & .action-blue {
+
+      background-color: #1A80E5;
+      color: white;
+    }
+  }
 }
 
-.tr-survey{
+.tr-survey {
   color: #1A80E5;
   font-family: "Poppins";
   text-align: center !important;

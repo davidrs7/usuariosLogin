@@ -57,7 +57,7 @@ export class PublicPostulateComponent implements OnInit {
   cargarListas() {
 
     this.loginServices.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
-      console.log(respuesta.data);
+
       this.TipDocs = respuesta.data;
     });
 
@@ -110,7 +110,6 @@ export class PublicPostulateComponent implements OnInit {
         this.postulate.educationalLevelId = Number(this.usuariosForm.get('educationalLevelId')?.value) || 0;
         this.postulate.recruiterUserId = Number(1); //setear usuario admin (usualmente es el 1)
         this.postulate.findOutId = 2; //páginas ofertas laborales
-       console.log(this.postulate);
       this.postulateService.addPostulateEndpoint(this.postulate).subscribe(
         (postulateId: any) => {
           this.crearVacanteRelacion(postulateId);

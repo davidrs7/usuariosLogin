@@ -34,7 +34,6 @@ export class AdminMsgErrors {
               break;
             default:
               errors.push('Error inesperado.');
-              console.log(index);
           }
     return errors;
   }

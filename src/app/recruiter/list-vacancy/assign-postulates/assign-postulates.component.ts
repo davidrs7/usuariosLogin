@@ -31,7 +31,6 @@ export class AssignPostulatesComponent implements OnInit {
       (vacantResult: VacantDTO) => {
         if(vacantResult != null) {
           this.vacant = vacantResult;
-          console.log(this.vacant);
           if(this.vacant.employeesCount ?? 0 >= this.vacant.vacantNum)
             this.cancel();
           else

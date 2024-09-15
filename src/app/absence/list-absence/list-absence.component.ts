@@ -62,7 +62,6 @@ export class ListAbsenceComponent implements OnInit {
             this.absenceUsers.push(userAbs);
           }
 
-        console.log(this.absenceUserMe);
         this.configurationService.getAbsenceTypeEndpoint().subscribe(
           (items: ConfigurationItemDTO[]) => {
             if(items.length == 1) {
