@@ -137,7 +137,7 @@
             <h2 >{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
             <form [formGroup]="AccionesObjForm" autocomplete="off">
 
-                <div >
+                <div style="display:none;">
                     <label for="descripcion">Resultado esperado: *</label>
                     <textarea formControlName="descripcion" name="descripcion" required></textarea>
                 </div><br>
@@ -159,8 +159,8 @@
                 </div>
 
 
-                <label for="evidencia" >Resultado esperado: * </label>
-                <input type="text"  formControlName="evidencia"><br><br>
+                <label for="evidencia" style="display:none;" >Resultado esperado: * </label>
+                <input type="text" style="display:none;" formControlName="evidencia"><br><br>
 
                 <label for="fechaaccion" >Fecha Accion: * </label>
                 <input type="date"  formControlName="fechaaccion" [attr.disabled]="true"><br><br>
