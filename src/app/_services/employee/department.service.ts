@@ -12,6 +12,7 @@ export class DepartmentService {
   constructor(private http: HttpClient) { }
 
   departmentsEndpoint() {
+    console.log(this.baseUrl + 'Departments');
     return this.http.get<DepartmentDTO[]>(this.baseUrl + 'Departments');
   }
 

@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "C:\\Freelance\\Tindux\\rrhh\\loginUsuarios\\usuarios\\usuarios.api\\wwwroot",
+            "outputPath": "C:\\Users\\david\\OneDrive\\Documentos\\David\\Freelance\\Tiindux\\rrhh\\apiEmployees\\wwwroot",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
