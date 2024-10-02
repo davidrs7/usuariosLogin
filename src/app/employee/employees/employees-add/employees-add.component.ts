@@ -878,6 +878,7 @@ addParamsforSex(data: any[]) {
           );
           break;
         case 'general':
+          this.employeeGeneral.employeeId = this.employeeId
           this.employeeService.editGeneralEndpoint(this.employeeGeneral).subscribe(
             (rsp: any) => {
               this.cancel();

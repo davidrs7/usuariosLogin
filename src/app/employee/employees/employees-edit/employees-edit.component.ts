@@ -58,7 +58,6 @@ export class EmployeesEditComponent implements OnInit {
 
   openSection(section: String) {
     var suscribeLoad = false;
-    this.canva = true;
     this.section = section;
     this.treeLoad = false;
 
