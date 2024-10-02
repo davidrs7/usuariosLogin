@@ -131,24 +131,38 @@ export class ModulesComponent implements OnInit {
   }
 
   cargalistas() {
+
+    //servicio comodin para posibles perdidas de conexión inicial en linux;
+    this.loginServices.getDatabyId<any>('Empresas', 1).subscribe((respuesta: ApiResponse<any>) => {
+      this.usario = respuesta.data
+    });
+
     this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
       this.rolesPermisos = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('Permisos').subscribe((respuesta: ApiResponse<any>) => {
       this.Permisos = respuesta.data;
-
     });
 
     var iduser = localStorage.getItem('SEUID');
 
     this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data
+      this.usario = respuesta.data;
+      if (respuesta.estado.codigo = "200"){
+        this.abreConexionApiEmployees();
+      }
 
-    })
+    });
+  }
 
 
+  abreConexionApiEmployees(){
+        //servicio comodin para posibles perdidas de conexión inicial en linux;
+        this.userService.userByIdopcional(this.usario).subscribe(
+          (respuesta: UserDTO) => {
 
+          });
   }
 
   nuevoLogout() {
