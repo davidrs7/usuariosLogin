@@ -230,6 +230,7 @@ crearColor(): Promise<number> {
   async editarRoles(rolesId: number) {
     this.roleToEdit = true;
     this.rol = this.roles.filter(x => x.rolId == rolesId);
+    console.log(this.rol);
     let colorHex = await this.obtenerHexColor(this.rol[0].colorId);
     this.roleForm.get('rolId')?.setValue(this.rol[0].rolId);
     this.roleForm.get('empresaId')?.setValue(this.rol[0].empresaId);

@@ -158,8 +158,7 @@ export class ModulesComponent implements OnInit {
 
 
   abreConexionApiEmployees(){
-        //servicio comodin para posibles perdidas de conexión inicial en linux;
-        this.userService.userByIdopcional(this.usario).subscribe(
+        this.userService.userByIdopcional(this.usario.usuarioIdOpcional).subscribe(
           (respuesta: UserDTO) => {
 
           });

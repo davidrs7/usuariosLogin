@@ -22,7 +22,7 @@
         </tbody>
       </table>
       <div class="departments__content__add" *ngIf="!saveDepartments">
-        <button data-bs-toggle="modal" style="display: none;" data-bs-target="#modalAddDepartment" (click)="adminRoles()">Administrar departamentos</button>
+        <button  (click)="adminRoles()">Administrar departamentos</button>
       </div>
       <div class="departments__content__add" *ngIf="saveDepartments">
         <button (click)="saveMethod()">Agregar</button>
