@@ -22,6 +22,7 @@ export class ModulesComponent implements OnInit {
   rolesPermisos: any[] = [];
   rolPermiso: any;
   usario: any;
+  empresa:any;
   Acceso: boolean = false;
   rutaFoto: string = ''
 
@@ -72,7 +73,9 @@ export class ModulesComponent implements OnInit {
     let idRol = this.usario.rolId || 0;
     let idpermiso = permiso.length > 0 ? permiso[0].permisoId : 0;
     let existepermiso = this.rolesPermisos.filter(x => x.permisoID == idpermiso && x.rolID == idRol);
-
+    console.log(this.rolesPermisos);
+    console.log(this.Permisos);
+    console.log(this.usario)
     if (existepermiso.length > 0) {
       this.Acceso = false
       this.router.navigateByUrl(module);
@@ -131,10 +134,20 @@ export class ModulesComponent implements OnInit {
   }
 
   cargalistas() {
-
+    this.canva = true;
     //servicio comodin para posibles perdidas de conexión inicial en linux;
     this.loginServices.getDatabyId<any>('Empresas', 1).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data
+      this.empresa = respuesta.data
+      this.abreConexionApiUsuarios();
+    });
+  }
+
+  abreConexionApiUsuarios(){
+    var iduser = localStorage.getItem('SEUID');
+
+    this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
+      this.usario = respuesta.data;
+      this.abreConexionApiEmployees();
     });
 
     this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
@@ -145,23 +158,12 @@ export class ModulesComponent implements OnInit {
       this.Permisos = respuesta.data;
     });
 
-    var iduser = localStorage.getItem('SEUID');
-
-    this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data;
-      if (respuesta.estado.codigo = "200"){
-        this.abreConexionApiEmployees();
-      }
-
-    });
+    this.canva = false;
   }
-
 
   abreConexionApiEmployees(){
         this.userService.userByIdopcional(this.usario.usuarioIdOpcional).subscribe(
-          (respuesta: UserDTO) => {
-
-          });
+          (respuesta: UserDTO) => {});
   }
 
   nuevoLogout() {

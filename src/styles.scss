@@ -502,7 +502,7 @@ table {
     border: none;
 
     & .modal-body {
-        background-color: white;
+        background-color: $main;
         border-radius: 20px;
 
         & .modal-close {
@@ -514,7 +514,7 @@ table {
 
             & i {
                 font-size: 3rem;
-                color: #00648e;
+                color: $white;
                 cursor: pointer;
             }
         }
@@ -553,7 +553,7 @@ table {
             & thead {
                 & tr {
                     & td {
-                      //  color: $white;
+                        color: $white;
                     }
                 }
             }
@@ -561,14 +561,14 @@ table {
             & tbody {
                 & tr {
                     & td {
-                      //  color: $gray;
+                        color: $gray;
                     }
                 }
             }
 
             & tr {
                 & td {
-                   // border-bottom-color: $gray;
+                    border-bottom-color: $gray;
 
                     & .action-button {
                         color: $white;
