@@ -138,17 +138,13 @@ export class ModulesComponent implements OnInit {
     //servicio comodin para posibles perdidas de conexión inicial en linux;
     this.loginServices.getDatabyId<any>('Empresas', 1).subscribe((respuesta: ApiResponse<any>) => {
       this.empresa = respuesta.data
-      this.abreConexionApiUsuarios();
     });
+    this.abreConexionApiUsuarios();
+
   }
 
   abreConexionApiUsuarios(){
     var iduser = localStorage.getItem('SEUID');
-
-    this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data;
-      this.abreConexionApiEmployees();
-    });
 
     this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
       this.rolesPermisos = respuesta.data;
@@ -158,11 +154,17 @@ export class ModulesComponent implements OnInit {
       this.Permisos = respuesta.data;
     });
 
+    this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
+      this.usario = respuesta.data;
+      this.abreConexionApiEmployees(this.usario.usuarioIdOpcional);
+
+    });
+
     this.canva = false;
   }
 
-  abreConexionApiEmployees(){
-        this.userService.userByIdopcional(this.usario.usuarioIdOpcional).subscribe(
+  abreConexionApiEmployees(idUserOpcional:number){
+        this.userService.userByIdopcional(idUserOpcional).subscribe(
           (respuesta: UserDTO) => {});
   }
 
