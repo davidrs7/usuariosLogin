@@ -12,16 +12,16 @@
     </div>
     <div class="modules__card">
 
-        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalFuncionarios)" (mouseenter)="cambiarImagen($event,'rrhh')" (mouseleave)="restaurarImagen($event,'rrhh')"> <img src="{{rutaImagen('rrhh')}}" class="img-seleccion">    RRHH (Recursos Humanos) </div><br>
+        <div data-bs-toggle="modalFuncionarios" data-bs-target="#modalFuncionarios"  class="modules__card--rrhh" (click)="openModal(modalFuncionarios)" (mouseenter)="cambiarImagen($event,'rrhh')" (mouseleave)="restaurarImagen($event,'rrhh')"> <img src="{{rutaImagen('rrhh')}}" class="img-seleccion">    RRHH (Recursos Humanos) </div><br>
         <div class="modules__card--bienestar" (mouseenter)="cambiarImagen($event,'BIENESTAR')" (mouseleave)="restaurarImagen($event,'BIENESTAR')"> <img src="{{rutaImagen('BIENESTAR')}}"  class="img-seleccion"> Bienestar</div><br>
         <div class="modules__card--sst" (mouseenter)="cambiarImagen($event,'SST')" (mouseleave)="restaurarImagen($event,'SST')"><img src="{{rutaImagen('SST')}}"  class="img-seleccion">SST (Seguridad y Saludo en el Trabajo)</div><br>
         <div class="modules__card--conocimiento" (mouseenter)="cambiarImagen($event,'GESCON')" (mouseleave)="restaurarImagen($event,'GESCON')"><img src="{{rutaImagen('GESCON')}}" class="img-seleccion"> Gestion del conocimiento</div><br>
-        <div data-bs-toggle="modal" data-bs-target="#modalFuncionarios" class="modules__card--rrhh" (click)="openModal(modalConfig)" (mouseenter)="cambiarImagen($event,'ADMON')" (mouseleave)="restaurarImagen($event,'ADMON')"><img src="{{rutaImagen('ADMON')}}"  class="img-seleccion">Administración</div><br>
+        <div data-bs-toggle="modalConfig" data-bs-target="#modalConfig" class="modules__card--rrhh" (click)="openModal(modalConfig)" (mouseenter)="cambiarImagen($event,'ADMON')" (mouseleave)="restaurarImagen($event,'ADMON')"><img src="{{rutaImagen('ADMON')}}"  class="img-seleccion">Administración</div><br>
     </div>
 </div>
 
 
-<ng-template #modalFuncionarios let-modal>
+<ng-template #modalFuncionarios let-modal id="modalFuncionarios">
     <div class="modal-body-modules">
         <div class="modal-close-modules" (click)="closeModal()">
            Cerrar Ventana <i class="fa-regular fa-circle-xmark"></i>
@@ -44,7 +44,7 @@
     </div>
 </ng-template>
 
-<ng-template #modalConfig let-modal>
+<ng-template #modalConfig let-modal id="modalConfig">
     <div class="modal-body-modules">
         <div class="modal-close-modules" (click)="closeModal()">
            Cerrar Ventana <i class="fa-regular fa-circle-xmark"></i>

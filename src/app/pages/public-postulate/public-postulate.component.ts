@@ -99,7 +99,8 @@ export class PublicPostulateComponent implements OnInit {
   }
 
   enviarFormulario() {
-    if (this.enviaInfo.length > 0 && this.fileName != null) {
+    // if (this.enviaInfo.length > 0 && this.fileName != null) { // con captcha
+    if (this.fileName != null) {
         this.postulate.firstName = this.usuariosForm.get('nombrePostulante')?.value;
         this.postulate.lastName  = this.usuariosForm.get('apellidosPostulante')?.value;
         this.postulate.email     = this.usuariosForm.get('correoPostulante')?.value;
