@@ -29,8 +29,8 @@ export class ModulesComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private router: Router, private userService: UserService, private loginServices: loginTiinduxService) { }
 
-  ngOnInit(): void {
-    this.cargalistas();
+  async ngOnInit() {
+    await this.cargalistas();
     if (localStorage.getItem('SESSL') != '1') {
       this.router.navigateByUrl('');
     } else {
@@ -73,9 +73,6 @@ export class ModulesComponent implements OnInit {
     let idRol = this.usario.rolId || 0;
     let idpermiso = permiso.length > 0 ? permiso[0].permisoId : 0;
     let existepermiso = this.rolesPermisos.filter(x => x.permisoID == idpermiso && x.rolID == idRol);
-    console.log(this.rolesPermisos);
-    console.log(this.Permisos);
-    console.log(this.usario)
     if (existepermiso.length > 0) {
       this.Acceso = false
       this.router.navigateByUrl(module);
@@ -133,38 +130,34 @@ export class ModulesComponent implements OnInit {
     if (ruta == 'ADMON'     ) { imgElement.src = '../../assets/Icono_Administracion.png' }
   }
 
-  cargalistas() {
+  async cargalistas() {
     this.canva = true;
     //servicio comodin para posibles perdidas de conexión inicial en linux;
-    this.loginServices.getDatabyId<any>('Empresas', 1).subscribe((respuesta: ApiResponse<any>) => {
+   await this.loginServices.getDatabyId<any>('Empresas', 1).subscribe((respuesta: ApiResponse<any>) => {
       this.empresa = respuesta.data
     });
-    this.abreConexionApiUsuarios();
+    await this.abreConexionApiUsuarios();
 
   }
 
-  abreConexionApiUsuarios(){
+   async abreConexionApiUsuarios(){
     var iduser = localStorage.getItem('SEUID');
 
-    this.loginServices.GetAllData<any>('rolesPermisos').subscribe((respuesta: ApiResponse<any>) => {
-      this.rolesPermisos = respuesta.data;
-    });
+    this.rolesPermisos = (await this.loginServices.GetAllData<any>('rolesPermisos').toPromise()).data;
 
-    this.loginServices.GetAllData<any>('Permisos').subscribe((respuesta: ApiResponse<any>) => {
-      this.Permisos = respuesta.data;
-    });
+    this.Permisos = (await this.loginServices.GetAllData<any>('Permisos').toPromise()).data;
 
-    this.loginServices.getDatabyId<any>('User', Number(iduser)).subscribe((respuesta: ApiResponse<any>) => {
-      this.usario = respuesta.data;
-      this.abreConexionApiEmployees(this.usario.usuarioIdOpcional);
+    const usuarioResponse = await this.loginServices.getDatabyId<any>('User', Number(iduser)).toPromise();
+    this.usario = usuarioResponse.data;
 
-    });
+    // Llamamos a la siguiente función después de obtener los datos
+    this.abreConexionApiEmployees(this.usario.usuarioIdOpcional);
 
     this.canva = false;
   }
 
-  abreConexionApiEmployees(idUserOpcional:number){
-        this.userService.userByIdopcional(idUserOpcional).subscribe(
+  async abreConexionApiEmployees(idUserOpcional:number){
+        await this.userService.userByIdopcional(idUserOpcional).subscribe(
           (respuesta: UserDTO) => {});
   }
 

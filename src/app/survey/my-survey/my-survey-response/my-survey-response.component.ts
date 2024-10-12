@@ -125,10 +125,7 @@ export class MySurveyResponseComponent implements OnInit {
       const respuesta = await this.loginTiinduxService.createData(this.urlSurveyResponses, body[i]).toPromise();
       estado = respuesta.estado.codigo.toString();
     }
-
-
     this.canva = false;
-    console.log(estado);
     if (estado == "200") {
       Swal.fire({
         icon: 'success',

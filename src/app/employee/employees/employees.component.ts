@@ -51,10 +51,7 @@ export class EmployeesComponent implements OnInit {
     this.employeeService.employeesEndpoint(this.employeeCriteria).subscribe(
       (employeesResponse: EmployeeBasicDTO[]) => {
         this.employees = employeesResponse;
-        console.log(this.employees);
-
         var loadDepartments:boolean = true;
-
         if(this.employees != null && this.employees.length > 0) {
           this.lastPage = this.employees[0].pages;
           if(this.employees.length == 1 && this.employeeCriteria.doc != null && this.employeeCriteria.doc != '') {
