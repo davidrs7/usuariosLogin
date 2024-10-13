@@ -17,6 +17,8 @@ interface ReporteObjetivos {
   rol: string;
   nombre_lider: string;
   objetivo: string;
+  fechaInicio: string;
+  fechaFin : string;
   descripcion: string;
   peso: number;
   accion: string;
@@ -44,7 +46,7 @@ export class ReportesUsuariosComponent implements OnInit {
   objetivos: any[] = [];
   accionesObjetivos: any[] = [];
   estadoAcciones: any[] = [];
-  archivoObjetivos: File | null = null ;
+  archivoObjetivos: File | null = null;
   canva: boolean = false;
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private router: Router, private loginServices: loginTiinduxService) { }
@@ -53,38 +55,37 @@ export class ReportesUsuariosComponent implements OnInit {
     this.cargarlista();
   }
 
-  cargarlista(){
-      //usuarios
-      this.loginServices.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
-        this.usuarios = respuesta.data;  
+  cargarlista() {
+    //usuarios
+    this.loginServices.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
+      this.usuarios = respuesta.data;
+    });
 
-      });
+    this.loginServices.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
+      this.tipoDocumentos = respuesta.data;
+    });
 
-      this.loginServices.GetAllData<any>('TipoDocumento').subscribe((respuesta: ApiResponse<any>) => {
-        this.tipoDocumentos = respuesta.data; 
-      });
+    this.loginServices.GetAllData<any>('Cargos').subscribe((respuesta: ApiResponse<any>) => {
+      this.cargos = respuesta.data;
+    });
 
-      this.loginServices.GetAllData<any>('Cargos').subscribe((respuesta: ApiResponse<any>) => {
-        this.cargos = respuesta.data; 
-      });
-
-      this.loginServices.GetAllData<any>('Roles').subscribe((respuesta: ApiResponse<any>) => {
-        this.roles = respuesta.data; 
-      });      
+    this.loginServices.GetAllData<any>('Roles').subscribe((respuesta: ApiResponse<any>) => {
+      this.roles = respuesta.data;
+    });
   }
 
-  cargarlistasObjetivos(){
+  cargarlistasObjetivos() {
     this.loginServices.GetAllData<any>('Objetivos').subscribe((respuesta: ApiResponse<any>) => {
-      this.objetivos = respuesta.data; 
+      this.objetivos = respuesta.data;
     });
 
     this.loginServices.GetAllData<any>('AccionesObjetivos').subscribe((respuesta: ApiResponse<any>) => {
-      this.accionesObjetivos = respuesta.data;  
+      this.accionesObjetivos = respuesta.data;
 
     });
 
     this.loginServices.GetAllData<any>('EstadoAcciones').subscribe((respuesta: ApiResponse<any>) => {
-      this.estadoAcciones = respuesta.data;  
+      this.estadoAcciones = respuesta.data;
 
     });
   }
@@ -92,7 +93,7 @@ export class ReportesUsuariosComponent implements OnInit {
   activaReport(accion: number) {
     this.accion = accion;
 
-    if (accion == 1) { this.cargarlistasObjetivos();}
+    if (accion == 1) { this.cargarlistasObjetivos(); }
   }
 
   generarReporte() {
@@ -100,14 +101,14 @@ export class ReportesUsuariosComponent implements OnInit {
     if (this.accion == 1) { this.generarReporteObjetivos(); }
     if (this.accion == 2) { this.cargueObjetivos('Objetivos/cargar-objetivos'); }
     // competencias
-    if (this.accion == 3 || this.accion == 4 ) { this.cargueObjetivos('AccionesObjetivos/cargar-acciones'); }
- 
+    if (this.accion == 3 || this.accion == 4) { this.cargueObjetivos('AccionesObjetivos/cargar-acciones'); }
+
   }
 
 
   generarReporteObjetivos() {
     const filtroSelect = document.getElementById('filtro') as HTMLSelectElement;
-    const optionSeleccionadoId = filtroSelect.value; 
+    const optionSeleccionadoId = filtroSelect.value;
     const reporteObjetivos: ReporteObjetivos[] = [];
 
     // Iterar sobre cada usuario y poblar la información en reporteObjetivos
@@ -116,11 +117,31 @@ export class ReportesUsuariosComponent implements OnInit {
       const cargo = this.encontrarCargoPorId(usuario.cargoId);
       const rol = this.encontrarRolPorId(usuario.rolId);
       const lider = this.encontrarUsuarioPorId(usuario.jefeId);
-      const objetivo = this.encontrarObjetivoPorId(usuario.usuarioId);
-      const acciones = this.encontrarAccionesObjetivoPorId(usuario.usuarioId);
+      const objetivo = this.encontrarObjetivoPorIdUser(usuario.usuarioId);
+      if (objetivo.length > 0) {
+        objetivo.forEach(objetivos => {
+          const accionesxObjetivo = this.encontrarAccionesObjetivoPorId(objetivos.id);
+          const estadoAccionesObjetivo = accionesxObjetivo ? this.encontrarEstadoAccionPorId(accionesxObjetivo.idEstado).estado : 'N/A'
 
-      acciones.forEach(accion => {
-        const estadoAccion = this.encontrarEstadoAccionPorId(accion.idEstado);
+          reporteObjetivos.push({
+            usuario: usuario.nombre,
+            tipo_documento: tipoDocumento ? tipoDocumento.descripcion : '',
+            documento: usuario.numDocumento,
+            correo: usuario.correoElectronico,
+            cargo: cargo ? cargo.nombre : '',
+            rol: rol ? rol.nombre : '',
+            nombre_lider: lider ? lider.nombre : '',
+            objetivo: objetivos ? objetivos.titulo : '',
+            fechaInicio : objetivos ? objetivos.fechaInicio : '',
+            fechaFin : objetivos ? objetivos.fechaFin : '',
+            descripcion: objetivos ? objetivos.descripcion : '',
+            peso: objetivos ? objetivos.peso : 0,
+            accion: accionesxObjetivo ? accionesxObjetivo.descripcion : '',
+            estado: estadoAccionesObjetivo,
+            calificacion: accionesxObjetivo ? accionesxObjetivo.calificacion : '',
+          });
+        })
+      } else {
         reporteObjetivos.push({
           usuario: usuario.nombre,
           tipo_documento: tipoDocumento ? tipoDocumento.descripcion : '',
@@ -129,67 +150,45 @@ export class ReportesUsuariosComponent implements OnInit {
           cargo: cargo ? cargo.nombre : '',
           rol: rol ? rol.nombre : '',
           nombre_lider: lider ? lider.nombre : '',
-          objetivo:  this.encontrarObjetivoPorId(accion.idObjetivo).titulo || '',
-          descripcion: objetivo ? objetivo.descripcion : '',
-          peso: objetivo ? objetivo.peso : 0,
-          accion: accion.descripcion,
-          estado: estadoAccion ? estadoAccion.estado : '',
-          calificacion: accion.calificacion || 0
+          objetivo: '',
+          fechaInicio : '',
+          fechaFin :  '',
+          descripcion: '',
+          peso: 0,
+          accion: '',
+          estado: '',
+          calificacion: 0
         });
-      });
-
-      
-        // Si el usuario no tiene acciones, agregar una entrada en el reporte
-        if (acciones.length === 0) {
-          reporteObjetivos.push({
-              usuario: usuario.nombre,
-              tipo_documento: tipoDocumento ? tipoDocumento.descripcion : '',
-              documento: usuario.numDocumento,
-              correo: usuario.correoElectronico,
-              cargo: cargo ? cargo.nombre : '',
-              rol: rol ? rol.nombre : '',
-              nombre_lider: lider ? lider.nombre : '',
-              objetivo: objetivo ? objetivo.titulo : '',
-              descripcion: objetivo ? objetivo.descripcion : '',
-              peso: objetivo ? objetivo.peso : 0,
-              accion: '',
-              estado: '',
-              calificacion: 0
-          });
       }
+
     });
-
- 
-
-    const reporteFiltrado = this.aplicarfiltro(Number(optionSeleccionadoId),reporteObjetivos);
-    
-   
+    const reporteFiltrado = this.aplicarfiltro(Number(optionSeleccionadoId), reporteObjetivos);
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(reporteFiltrado);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'objetivos');
-    XLSX.writeFile(wb, 'objetivos.xlsx'); 
+    XLSX.writeFile(wb, 'objetivos.xlsx');
   }
 
-  aplicarfiltro(filtro: number,reporte: any){
+  aplicarfiltro(filtro: number, reporte: any) {
     var reporteFiltrado: any[] = [];
 
-    switch (filtro) { 
+    switch (filtro) {
       case 2: // Sin objetivos
-          reporteFiltrado = reporte.filter((item:any) => item.objetivo === '');
-          break;
+        reporteFiltrado = reporte.filter((item: any) => item.objetivo === '');
+        break;
       case 3: // Sin acciones
-          reporteFiltrado = reporte.filter((item:any) => item.accion === '');
-          break;
+        reporteFiltrado = reporte.filter((item: any) => item.accion === '');
+        break;
       case 4: // Sin calificación
-          reporteFiltrado = reporte.filter((item:any) => item.calificacion === 0);
-          break;
+        reporteFiltrado = reporte.filter((item: any) => item.calificacion === 0);
+        break;
       case 5: // Calificados
-          reporteFiltrado = reporte.filter((item:any) => item.calificacion > 0);
-          break;
+        reporteFiltrado = reporte.filter((item: any) => item.calificacion > 0);
+        break;
       default:
-          reporteFiltrado = [...reporte];
-          break;
-  }
+        reporteFiltrado = [...reporte];
+        break;
+    }
 
 
 
@@ -205,17 +204,17 @@ export class ReportesUsuariosComponent implements OnInit {
     if (inputElement.files && inputElement.files.length > 0) {
       this.archivoObjetivos = inputElement.files[0];
     }
-    if (this.archivoObjetivos !== null && this.validarArchivo(this.archivoObjetivos)) { 
+    if (this.archivoObjetivos !== null && this.validarArchivo(this.archivoObjetivos)) {
       const fd = new FormData();
-      fd.append('file', this.archivoObjetivos, this.archivoObjetivos.name); 
+      fd.append('file', this.archivoObjetivos, this.archivoObjetivos.name);
       this.canva = true;
-      this.loginServices.cargaMasivaUsers(rutaApi,fd).subscribe(
+      this.loginServices.cargaMasivaUsers(rutaApi, fd).subscribe(
         (respuesta: ApiResponse<any>) => {
           Swal.fire({
             icon: 'success',
-            title:  respuesta.estado.descripcion,
+            title: respuesta.estado.descripcion,
             text: 'Codigo: ' + respuesta.estado.codigo
-          }).then((res:any) => {
+          }).then((res: any) => {
             //this.LimpiarFormulario();
           });
         },
@@ -231,9 +230,9 @@ export class ReportesUsuariosComponent implements OnInit {
     } else {
       Swal.fire({
         icon: 'error',
-        title: 'error: ' ,
-        text: 'Por favor selecciona un archivo valido (.csv) '  
-      }).then((res:any) => {
+        title: 'error: ',
+        text: 'Por favor selecciona un archivo valido (.csv) '
+      }).then((res: any) => {
         return;
       });
     }
@@ -242,11 +241,11 @@ export class ReportesUsuariosComponent implements OnInit {
 
   }
 
-  validarArchivo(archivo: File): boolean{
-    let archivoValido = true; 
+  validarArchivo(archivo: File): boolean {
+    let archivoValido = true;
 
-    if (archivo.type != "text/csv"){
-        archivoValido = false 
+    if (archivo.type != "text/csv") {
+      archivoValido = false
     }
 
     return archivoValido;
@@ -254,7 +253,7 @@ export class ReportesUsuariosComponent implements OnInit {
 
   }
 
-  
+
 
   // inicia funciones reporte objetivos
   encontrarUsuarioPorId(id: number) {
@@ -277,8 +276,12 @@ export class ReportesUsuariosComponent implements OnInit {
     return this.objetivos.find(objetivo => objetivo.id === id);
   }
 
+  encontrarObjetivoPorIdUser(idUsuario: number) {
+    return this.objetivos.filter(objetivo => objetivo.idUsuario == idUsuario);
+  }
+
   encontrarAccionesObjetivoPorId(id: number) {
-    return this.accionesObjetivos.filter(accion => accion.idUsuario === id);
+    return this.accionesObjetivos.find(accion => accion.idObjetivo === id);
   }
 
   encontrarEstadoAccionPorId(id: number) {
