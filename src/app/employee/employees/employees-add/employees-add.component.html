@@ -686,8 +686,8 @@
         </form>
 
         <!--Academic-->
-        <form [formGroup]="formAcademic" (ngSubmit)="validateFormAcademic()">
-            <div class="employees-edit__information--academic" *ngIf="section === 'academica'">
+        <form [formGroup]="formAcademic">
+     <!--       <div class="employees-edit__information--academic" *ngIf="section === 'academica'">
                 <div class="employees-edit__information--general--items">
                     <div class="information__item">
                         <label for="academicEmployeeEducationalLevelId">Nivel de Estudios</label>
@@ -702,7 +702,7 @@
                         </div>
                     </div>
                     <div class="information__item">
-                        <label for="academicEmployeeCareer">Profesión</label>
+                        <label for="academicEmployeeCareer">Titulo</label>
                         <div>
                             <input type="text" formControlName="career" name="career" id="academicEmployeeCareer">
                             <ul *ngIf="errors.validate(career)">
@@ -710,12 +710,92 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="information__item">
+                      <label for="academicEndDate">Fecha Finalización</label>
+                      <input type="date" formControlName = "academicEndDate" name = "academicEndDate" id = "academicEndDate" />
+                    </div>
                 </div>
                 <div class="employees-edit__information--academic--btn information__btn">
                     <button type="submit">Guardar</button>
                     <button type="button" (click)="cancel()">Cancelar</button>
                 </div>
             </div>
+
+      <br><hr>  -->
+
+      <div class="container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nivel estudios</th>
+              <th>Título</th>
+              <th>Fecha finalización</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  *ngFor="let registro of employeeAcademics">
+              <td>
+                <div>
+                  <select formControlName="educationalLevelId" id="academicEmployeeEducationalLevelId-{{registro.id}}">
+                    <option [value]="registro.educationalLevelId" disabled [selected]="registro.educationalLevelId">{{ registro.educationalLevelName }}</option>
+
+                    <option *ngFor="let param of paramEducationalLevel" [value]="param.id">
+                      {{ param.name }}
+                    </option>
+
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input type="text" formControlName="career" name="career" id="academicEmployeeCareer-{{registro.id}}">
+
+                </div>
+              </td>
+              <td>
+                <input type="date" formControlName="EndDate" name="EndDate" id="academicEndDate-{{registro.id}}" />
+              </td>
+              <td>
+                <button (click)="updateEmployee(registro.id)">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+              <td>
+                <button>
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                  <div>
+                    <select formControlName="educationalLevelId" name="educationalLevelId"
+                      id="academicEmployeeEducationalLevelId-new">
+                      <option value="" disabled selected>Seleccione</option>
+                      <option *ngFor="let param of paramEducationalLevel" [value]="param.id">{{ param.name }}</option>
+                    </select>
+                  </div>
+              </td>
+              <td>
+                  <div>
+                    <input type="text" formControlName="career" name="career" id="academicEmployeeCareer-new" placeholder="Digite el titulo">
+                  </div>
+
+              </td>
+              <td>
+                  <input type="date" formControlName="EndDate" name="EndDate" id="academicEndDate-new" />
+              </td>
+              <td>
+                <button class="agregar" (click) = "addAcademic()">
+                  <i class="fa fa-plus"></i> <!-- Icono de agregar -->
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
         </form>
 
         <!--Documents-->

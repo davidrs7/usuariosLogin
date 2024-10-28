@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { EmployeeBasicDTO, EmployeeDTO, EmployeeSkillDTO, EmployeeKnowledgeDTO, EmployeeGeneralDTO, EmployeeAcademicDTO, EmployeeFileTypeDTO, EmployeeFileDTO, EmployeeCriteriaDTO, EmployeeDownloadDTO, EmployeeSonsDTO } from '../../dto/employee/employee.dto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -153,8 +154,8 @@ export class EmployeeService {
     return this.http.get<EmployeeGeneralDTO>(this.baseUrl + 'EmpGeneral/' + employeeId.toString());
   }
 
-  employeeAcademicEndpoint(employeeId: number) {
-    return this.http.get<EmployeeAcademicDTO>(this.baseUrl + 'Academic/' + employeeId.toString());
+  employeeAcademicEndpoint(employeeId: number): Observable<EmployeeAcademicDTO[]> {
+    return this.http.get<EmployeeAcademicDTO[]>(this.baseUrl + 'Academic/' + employeeId.toString());
   }
 
   editEndpoint(employeeEdit: EmployeeDTO) {

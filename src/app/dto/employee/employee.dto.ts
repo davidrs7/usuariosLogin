@@ -104,6 +104,7 @@ export interface EmployeeAcademicDTO {
 	educationalLevelId: number;
 	educationalLevelName?: string;
 	career: string;
+  academicEndDate?: string;
 }
 
 export interface EmployeeSkillDTO {
