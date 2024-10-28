@@ -756,12 +756,12 @@
                 <input type="date" formControlName="EndDate" name="EndDate" id="academicEndDate-{{registro.id}}" />
               </td>
               <td>
-                <button (click)="updateEmployee(registro.id)">
+                <button (click)="updateEmployeeAcademic(registro.id)">
                   <i class="fa fa-edit"></i>
                 </button>
               </td>
               <td>
-                <button>
+                <button (click)="deleteAcademic(registro.id)">
                   <i class="fa fa-trash"></i>
                 </button>
               </td>

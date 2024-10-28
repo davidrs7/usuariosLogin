@@ -110,6 +110,7 @@ export class EmployeeService {
     formData.append("educationalLevelId", this.stringValue(employeeAcademic.educationalLevelId));
     formData.append("employeeId", this.stringValue(employeeAcademic.employeeId));
     formData.append("career", this.stringValue(employeeAcademic.career));
+    formData.append("academicEndDate", this.stringValue(employeeAcademic.academicEndDate));
     return formData;
   }
 
@@ -156,6 +157,11 @@ export class EmployeeService {
 
   employeeAcademicEndpoint(employeeId: number): Observable<EmployeeAcademicDTO[]> {
     return this.http.get<EmployeeAcademicDTO[]>(this.baseUrl + 'Academic/' + employeeId.toString());
+  }
+  deleteAcademicEndpoint(id:number){
+    console.log('eliminar servicio',id)
+    return this.http.delete<any>(this.baseUrl + 'Delete/Academic/' + id);
+
   }
 
   editEndpoint(employeeEdit: EmployeeDTO) {

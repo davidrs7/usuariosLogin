@@ -310,13 +310,11 @@ export class EmployeesAddComponent implements OnInit {
   }
 
   setValuesFormAcademic(employeeAcademics: EmployeeAcademicDTO[]) {
-    console.log('hola', employeeAcademics)
     for (let i: number = 0; i < employeeAcademics.length; i++) {
       const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-' + employeeAcademics[i].id) as HTMLSelectElement;
       const selectacademicEndDate = document.getElementById('academicEndDate-' + employeeAcademics[i].id) as HTMLSelectElement;
       const selectacacademicEmployeeCareer = document.getElementById('academicEmployeeCareer-' + employeeAcademics[i].id) as HTMLSelectElement;
 
-      console.log('academicEndDateId-' + employeeAcademics[i].id);
       if (selectEducationalLevel) {
         selectEducationalLevel.value = employeeAcademics[i].educationalLevelId.toString()
       }
@@ -396,12 +394,11 @@ export class EmployeesAddComponent implements OnInit {
         if (this.employeeId != null) {
           this.employeeService.employeeAcademicEndpoint(this.employeeId).subscribe(
             (employeeResponse: EmployeeAcademicDTO[]) => {
-              console.log(employeeResponse);
               this.employeeAcademics = this.errors.transformObjectToValidSetter(employeeResponse);
               this.canva = false;
               setTimeout(() => {
                 this.setValuesFormAcademic(this.employeeAcademics);
-              }, 1 * 1000);
+              }, 0.1 * 1000);
             }
           );
 
@@ -947,6 +944,50 @@ export class EmployeesAddComponent implements OnInit {
     }
   }
 
+  updateEmployeeAcademic(id: number) {
+    console.log(id);
+    const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-' + id) as HTMLSelectElement;
+    const selectacademicEndDate = document.getElementById('academicEndDate-' + id) as HTMLSelectElement;
+    const selectacacademicEmployeeCareer = document.getElementById('academicEmployeeCareer-' + id) as HTMLSelectElement;
+    let campoVacio = "";
+    if (!selectEducationalLevel.value) {
+      campoVacio += " -Nivel estudios";
+    }
+    if (!selectacacademicEmployeeCareer.value) {
+      campoVacio += " -Titulo";
+    }
+    if (!selectacademicEndDate.value) {
+      campoVacio += " -Fecha finalización";
+    }
+
+    if (campoVacio.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: "Por favor diligencia los siguientes campos:",
+        text: campoVacio
+      })
+    } else {
+
+      const body: EmployeeAcademicDTO  = {
+        id: id,
+        employeeId: this.employeeAcademics[0].employeeId,
+        educationalLevelId: Number(selectEducationalLevel.value),
+        career: selectacacademicEmployeeCareer.value,
+        academicEndDate: this.convertirFormatoFecha(selectacademicEndDate.value)
+      }
+      this.updateServiceAcademic(body);
+    }
+
+
+  }
+  updateServiceAcademic(body:EmployeeAcademicDTO){
+    this.employeeService.editAcademicEndpoint(body).subscribe(
+      (employeeAcademicId: any) => {
+        this.employeeAcademic.id = employeeAcademicId;
+        this.openSection('academica');
+      }
+    );
+}
 
   addAcademic() {
     const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-new') as HTMLSelectElement;
@@ -979,18 +1020,27 @@ export class EmployeesAddComponent implements OnInit {
         career: selectacacademicEmployeeCareer.value,
         academicEndDate: this.convertirFormatoFecha(selectacademicEndDate.value)
       }
-      console.log(body);
       this.addServiceAcademic(body);
+      selectEducationalLevel.value = '';
+      selectacademicEndDate.value = '';
+      selectacacademicEmployeeCareer.value = '';
+
     }
   }
   addServiceAcademic(body:EmployeeAcademicDTO){
       this.employeeService.addAcademicEndpoint(body).subscribe(
         (employeeAcademicId: any) => {
           this.employeeAcademic.id = employeeAcademicId;
-          console.log(employeeAcademicId);
           this.openSection('academica');
         }
       );
+  }
+  deleteAcademic(id:number){
+    this.employeeService.deleteAcademicEndpoint(id).subscribe(
+      (employeeAcademicId: any) => {
+        this.openSection('academica');
+      }
+    );
   }
 
   convertirFormatoFecha(fechaISO: string): string {
@@ -1003,10 +1053,7 @@ export class EmployeesAddComponent implements OnInit {
     return `${año}-${mes}-${dia}`;
   }
 
-  updateEmployee(id: number) {
-    console.log(id);
-    console.log(this.employeeAcademics)
-  }
+
   toggleCancelDocument() {
     this.cancelDocument = true;
   }
