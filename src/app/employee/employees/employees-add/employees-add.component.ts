@@ -31,6 +31,7 @@ export class EmployeesAddComponent implements OnInit {
   sonsFormDel: boolean = false;
   sonDelId?: number = 0;
   cancelDocument: boolean = false;
+  continuaDoc: boolean = false;
 
   employee: EmployeeDTO = { id: 0, department: '', jobId: 0, statusId: 0, maritalStatusId: 0, docTypeId: 0, docIssueCityId: 0, contractTypeId: 0, jobCityId: 0, bankingEntityId: 0, doc: '', docIssueDate: new Date(), name: '', sex: '', birthDate: new Date(), rh: '', corpCellPhone: '', cellPhone: '', phone: '', email: '', employmentDate: new Date(), bankAccount: '', bankAccountType: '', hasVaccine: false, vaccineMaker: '', vaccineDose: 0, hasVaccineBooster: false, colorHex: '#000' };
   employeeGeneral: EmployeeGeneralDTO = { id: 0, employeeId: 0, cityId: 0, cityName: '', housingTypeId: 0, transportationId: 0, emergencyContactName: '', emergencyContactPhone: '', emergencyContactRelationship: '', dependents: 0, dependentsUnder9: 0, dependentBirthDate: new Date(), address: '', neighborhood: '', housingTime: 0, socioeconomicStatus: 0, licensePlate: '', vehicleMark: '', vehicleModel: '', licenseNumber: '', licenseCategory: '', licenseValidity: new Date(), soatExpirationDate: new Date(), rtmExpirationDate: new Date(), vehicleOwnerName: '', contributorType: '', eps: '', arl: '', afp: '', recommendedBy: '', description: '' };
@@ -396,7 +397,7 @@ export class EmployeesAddComponent implements OnInit {
         if (this.employeeId != null) {
         this.cargarinfoEmployee();
         } else {
-          this.cargaDataAcademic();
+          this.ObtenerIdUser(this.employee.id)
         }
 
         this.paramsService.educationalLevelEndpoint().subscribe(
@@ -444,9 +445,7 @@ export class EmployeesAddComponent implements OnInit {
       this.canva = false;
   }
 
-  cargaDataAcademic(){
-    let idEmployee = this.employeeId != null ? this.employeeId : this.ObtenerIdUser(this.employee.id) ;
-
+  cargaDataAcademic(idEmployee:number){
     this.employeeService.employeeAcademicEndpoint(idEmployee).subscribe(
       (employeeResponse: EmployeeAcademicDTO[]) => {
         this.employeeAcademics = this.errors.transformObjectToValidSetter(employeeResponse);
@@ -460,15 +459,11 @@ export class EmployeesAddComponent implements OnInit {
 
 
   ObtenerIdUser(idEmployee:number){
-
-    let idUser = 0;
-    var usuariosEmployees;
     this.usuariosService.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
-      idUser = respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId;
-      console.log(idUser);
+      this.cargaDataAcademic(respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId);
       this.canva = false;
+      this.continuaDoc = true;
     });
-    return idUser;
   }
 
   cargarinfoEmployee(){
@@ -476,7 +471,7 @@ export class EmployeesAddComponent implements OnInit {
       (employeeResponse: EmployeeDTO) => {
         this.employee = this.errors.transformObjectToValidSetter(employeeResponse);
         this.canva = false;
-        this.cargaDataAcademic();
+        this.cargaDataAcademic(this.employeeId);
       }
     );
   }
@@ -918,12 +913,7 @@ export class EmployeesAddComponent implements OnInit {
           break;
         case 'academica':
         this.AcademicVar = true;
-          this.employeeService.addAcademicEndpoint(this.employeeAcademic).subscribe(
-            (employeeAcademicId: any) => {
-              this.employeeAcademic.id = employeeAcademicId;
-              this.openSection('documentacion');
-            }
-          );
+        this.openSection('documentacion');
           break;
         case 'documentacion':
           this.saveDocument();
