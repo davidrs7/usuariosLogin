@@ -61,6 +61,7 @@ export class EmployeesAddComponent implements OnInit {
   employeeSonsAge: EmployeeSonsDTO[] = [];
   employeeSonData: EmployeeSonsDTO[] = [];
   usuarios: any[] = [];
+  AcademicVar:boolean = false;
 
   errors: AdminMsgErrors = new AdminMsgErrors();
   formBasic!: FormGroup;
@@ -171,18 +172,18 @@ export class EmployeesAddComponent implements OnInit {
   }
   initFormBasic() {
     this.formBasic = new FormGroup({
-      name: new FormControl(null),
-      jobId: new FormControl(null),
-      docTypeId: new FormControl(null),
-      doc: new FormControl(null, Validators.pattern('^[0-9]*$')),
-      docIssueCityId: new FormControl(null),
-      docIssueDate: new FormControl(null),
-      phone: new FormControl(null, [Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
+      name: new FormControl(null, Validators.required),
+      jobId: new FormControl(null,Validators.required),
+      docTypeId: new FormControl(null,Validators.required),
+      doc: new FormControl(null,[Validators.required,Validators.pattern('^[0-9]*$')]),
+      docIssueCityId: new FormControl(null,Validators.required),
+      docIssueDate: new FormControl(null,Validators.required),
+      phone: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
       cellPhone: new FormControl(null, [Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
       corpCellPhone: new FormControl(null, [Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
-      email: new FormControl(null, [Validators.email]),
-      sex: new FormControl(null),
-      birthDate: new FormControl(null),
+      email: new FormControl(null, [Validators.required,Validators.email]),
+      sex: new FormControl(null,Validators.required),
+      birthDate: new FormControl(null,Validators.required),
       rh: new FormControl(null),
       maritalStatusId: new FormControl(null),
       contractTypeId: new FormControl(null),
@@ -390,20 +391,12 @@ export class EmployeesAddComponent implements OnInit {
         suscribeLoad = true;
         break;
       case 'academica':
+        this.AcademicVar = true;
         this.employeeAcademics = [];
         if (this.employeeId != null) {
-          this.employeeService.employeeAcademicEndpoint(this.employeeId).subscribe(
-            (employeeResponse: EmployeeAcademicDTO[]) => {
-              this.employeeAcademics = this.errors.transformObjectToValidSetter(employeeResponse);
-              this.canva = false;
-              setTimeout(() => {
-                this.setValuesFormAcademic(this.employeeAcademics);
-              }, 0.1 * 1000);
-            }
-          );
-
+        this.cargarinfoEmployee();
         } else {
-          this.employeeAcademics = this.errors.transformObjectToValidSetter(this.employeeAcademics);
+          this.cargaDataAcademic();
         }
 
         this.paramsService.educationalLevelEndpoint().subscribe(
@@ -451,6 +444,42 @@ export class EmployeesAddComponent implements OnInit {
       this.canva = false;
   }
 
+  cargaDataAcademic(){
+    let idEmployee = this.employeeId != null ? this.employeeId : this.ObtenerIdUser(this.employee.id) ;
+
+    this.employeeService.employeeAcademicEndpoint(idEmployee).subscribe(
+      (employeeResponse: EmployeeAcademicDTO[]) => {
+        this.employeeAcademics = this.errors.transformObjectToValidSetter(employeeResponse);
+        this.canva = false;
+        setTimeout(() => {
+          this.setValuesFormAcademic(this.employeeAcademics);
+        }, 0.1 * 1000);
+      }
+    );
+  }
+
+
+  ObtenerIdUser(idEmployee:number){
+
+    let idUser = 0;
+    var usuariosEmployees;
+    this.usuariosService.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
+      idUser = respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId;
+      console.log(idUser);
+      this.canva = false;
+    });
+    return idUser;
+  }
+
+  cargarinfoEmployee(){
+    this.employeeService.employeeEndpoint(this.employeeId).subscribe(
+      (employeeResponse: EmployeeDTO) => {
+        this.employee = this.errors.transformObjectToValidSetter(employeeResponse);
+        this.canva = false;
+        this.cargaDataAcademic();
+      }
+    );
+  }
 
   // metodo para poblar campos select desde el backend Crud usuarios. Integración DavRo
   addParamsforTipDocs(data: any[]) {
@@ -825,19 +854,20 @@ export class EmployeesAddComponent implements OnInit {
     //david
     let idusuario = this.usuarios.filter(x => x.usuarioIdOpcional == idEmployee)[0];
     idusuario = idusuario == undefined ? 0 : this.usuarios.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId;
+    const sexDefault = usuario.sex.length > 0 ? usuario.sex : "Otro";
 
     const body: ReqUsuarios = {
       usuarioId: idusuario,
-      nombre: usuario.name.toString(),
-      tipoDocumento: Number(usuario.docTypeId),
+      nombre: usuario.name.length > 0 ? usuario.name.toString() : 'dummy',
+      tipoDocumento: Number(usuario.docTypeId) == 0 ? Number(usuario.docTypeId) : 1,
       numDocumento: usuario.doc.toString(),
       correoElectronico: usuario.email.toString(),
       contraseña: usuario.doc.toString(),
       telefono: usuario.cellPhone.toString(),
       direccion: "",
-      fechaNacimiento: usuario.birthDate,
-      fechaCreacion: usuario.docIssueDate,
-      sexoId: Number(this.paramSex.filter(x => x.name == usuario.sex)[0].id),
+      fechaNacimiento: usuario.birthDate.length > 0 ? usuario.birthDate : this.obtenerFechaActual() ,
+      fechaCreacion: usuario.docIssueDate > 0 ? usuario.docIssueDate : this.obtenerFechaActual(),
+      sexoId: Number(this.paramSex.filter(x => x.name == sexDefault)[0].id),
       jefeId: Number(1),
       rolId: Number(1),
       cargoId: Number(usuario.jobId) || 0,
@@ -845,6 +875,7 @@ export class EmployeesAddComponent implements OnInit {
       usuarioIdOpcional: Number(idEmployee),
       estado: true,
     };
+    console.log(body);
 
     if (idusuario == 0) {
       this.usuariosService.createData('User', body).subscribe((respuesta: ApiResponse<any>) => {
@@ -863,6 +894,7 @@ export class EmployeesAddComponent implements OnInit {
     if (this.employeeId == null) {
       switch (this.section) {
         case 'basica':
+          console.log(this.employee);
           this.employeeService.addEndpoint(this.employee).subscribe(
             (employeeId: any) => {
               this.employee.id = employeeId;
@@ -885,6 +917,7 @@ export class EmployeesAddComponent implements OnInit {
           );
           break;
         case 'academica':
+        this.AcademicVar = true;
           this.employeeService.addAcademicEndpoint(this.employeeAcademic).subscribe(
             (employeeAcademicId: any) => {
               this.employeeAcademic.id = employeeAcademicId;
@@ -919,6 +952,7 @@ export class EmployeesAddComponent implements OnInit {
           );
           break;
         case 'academica':
+        this.AcademicVar = true;
           this.employeeAcademic.employeeId = this.employeeId
           this.employeeService.editAcademicEndpoint(this.employeeAcademic).subscribe(
             (rsp: any) => {
@@ -1012,14 +1046,16 @@ export class EmployeesAddComponent implements OnInit {
         text: campoVacio
       })
     } else {
-
+      let  employeeId = 0;
       const body: EmployeeAcademicDTO  = {
         id: 0,
-        employeeId: this.employeeAcademics[0].employeeId,
+        employeeId: this.employee.id,
         educationalLevelId: Number(selectEducationalLevel.value),
         career: selectacacademicEmployeeCareer.value,
         academicEndDate: this.convertirFormatoFecha(selectacademicEndDate.value)
       }
+      console.log(body);
+
       this.addServiceAcademic(body);
       selectEducationalLevel.value = '';
       selectacademicEndDate.value = '';
@@ -1042,6 +1078,16 @@ export class EmployeesAddComponent implements OnInit {
       }
     );
   }
+ /* ------- Fechas --------- */
+  obtenerFechaActual(): string {
+    const fechaActual: Date = new Date();
+    const fechaFormateada: string = `${fechaActual.getFullYear()}-${this.dosDigitos(fechaActual.getMonth() + 1)}-${this.dosDigitos(fechaActual.getDate())}`;
+    return fechaFormateada;
+  }
+
+  dosDigitos(n: number): string {
+    return n < 10 ? '0' + n : '' + n;
+  }
 
   convertirFormatoFecha(fechaISO: string): string {
     const fechaObj = new Date(fechaISO);
@@ -1053,6 +1099,7 @@ export class EmployeesAddComponent implements OnInit {
     return `${año}-${mes}-${dia}`;
   }
 
+  /* ------ Fin fechas ------ */
 
   toggleCancelDocument() {
     this.cancelDocument = true;
@@ -1067,6 +1114,12 @@ export class EmployeesAddComponent implements OnInit {
       this.employee.hasVaccineBooster = this.hasVaccineBooster?.value === 'Si' ? true : false;
       this.employee.photo = (this.filesRel.length > 0 && this.filesRel[0].file != undefined) ? this.filesRel[0].file : undefined;
       this.saveAndNext();
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: "Hay campos obligatorios sin diligenciar: ",
+        text: ''
+      });
     }
   }
 

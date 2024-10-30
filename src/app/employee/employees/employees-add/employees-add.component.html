@@ -1,728 +1,718 @@
 <app-navigation></app-navigation>
 <div class="employees-edit background-right">
-    <div class="employees-edit__filters" *ngIf="employeeId == null">
-        <h4 class="employees-edit__filters--title">Agregar nuevo funcionario</h4>
-        <h4 [style.border-bottom-style]="section === 'basica' ? 'solid' : 'none'">Información Básica</h4>
-        <h4 [style.border-bottom-style]="section === 'general' ? 'solid' : 'none'">Información General</h4>
-        <h4 [style.border-bottom-style]="section === 'academica' ? 'solid' : 'none'">Información Academica</h4>
-        <h4 [style.border-bottom-style]="section === 'documentacion' ? 'solid' : 'none'">Documentación</h4>
-    </div>
-    <div class="employees-edit__information">
-        <!--Basic-->
-        <form [formGroup]="formBasic" (ngSubmit)="validateFormBasic()">
-            <div class="employees-edit__information--basic" *ngIf="section === 'basica'">
-                <div class="employees-edit__information--basic--items">
-                    <div class="information__item">
-                        <label for="basicEmployeeName">Nombre</label>
-                        <div>
-                            <input type="text" formControlName="name" name="name" id="basicEmployeeName">
-                            <ul *ngIf="errors.validate(name)">
-                                <li *ngFor="let message of errors.getErrors(name)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeJobId">Cargo</label>
-                        <div>
-                            <select formControlName="jobId" name="jobId" id="basicEmployeeJobId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramJob" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(jobId)">
-                                <li *ngFor="let message of errors.getErrors(jobId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeDocTypeId">Tipo de identificación</label>
-                        <div>
-                            <select formControlName="docTypeId" name="docTypeId" id="basicEmployeeDocTypeId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramDocType" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(docTypeId)">
-                                <li *ngFor="let message of errors.getErrors(docTypeId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeDoc">Identificación</label>
-                        <div>
-                            <input type="number" formControlName="doc" name="doc" id="basicEmployeeDoc">
-                            <ul *ngIf="errors.validate(doc)">
-                                <li *ngFor="let message of errors.getErrors(doc)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeDocIssueCityId">Ciudad de expedición</label>
-                        <div>
-                            <select formControlName="docIssueCityId" name="docIssueCityId" id="basicEmployeeDocIssueCityId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramCity" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(docIssueCityId)">
-                                <li *ngFor="let message of errors.getErrors(docIssueCityId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeDocIssueDate">Fecha de expedición</label>
-                        <div>
-                            <input type="date" formControlName="docIssueDate" name="docIssueDate" id="basicEmployeeDocIssueDate">
-                            <ul *ngIf="errors.validate(docIssueDate)">
-                                <li *ngFor="let message of errors.getErrors(docIssueDate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeePhone">Teléfono</label>
-                        <div>
-                            <input type="number" formControlName="phone" name="phone" id="basicEmployeePhone">
-                            <ul *ngIf="errors.validate(phone)">
-                                <li *ngFor="let message of errors.getErrors(phone)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeCellPhone">Celular</label>
-                        <div>
-                            <input type="number" formControlName="cellPhone" name="cellPhone" id="basicEmployeeCellPhone">
-                            <ul *ngIf="errors.validate(cellPhone)">
-                                <li *ngFor="let message of errors.getErrors(cellPhone)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeCorpCellPhone">Celular corporativo</label>
-                        <div>
-                            <input type="number" formControlName="corpCellPhone" name="corpCellPhone" id="basicEmployeeCorpCellPhone">
-                            <ul *ngIf="errors.validate(corpCellPhone)">
-                                <li *ngFor="let message of errors.getErrors(corpCellPhone)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeEmail">Correo electrónico</label>
-                        <div>
-                            <input type="email" formControlName="email" name="email" id="basicEmployeeEmail">
-                            <ul *ngIf="errors.validate(email)">
-                                <li *ngFor="let message of errors.getErrors(email)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeSex">Sexo</label>
-                        <div>
-                            <select formControlName="sex" name="sex" id="basicEmployeeSex">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramSex">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(sex)">
-                                <li *ngFor="let message of errors.getErrors(sex)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeBirthDate">Fecha de nacimiento</label>
-                        <div>
-                            <input type="date" formControlName="birthDate" name="birthDate" id="basicEmployeeBirthDate">
-                            <ul *ngIf="errors.validate(birthDate)">
-                                <li *ngFor="let message of errors.getErrors(birthDate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeRh">RH</label>
-                        <div>
-                            <select formControlName="rh" name="rh" id="basicEmployeeRh">
-                        <option value=""></option>
-                        <option>A+</option>
-                        <option>A-</option>
-                        <option>B+</option>
-                        <option>B-</option>
-                        <option>AB+</option>
-                        <option>AB-</option>
-                        <option>O+</option>
-                        <option>O-</option>
-                      </select>
-                            <ul *ngIf="errors.validate(rh)">
-                                <li *ngFor="let message of errors.getErrors(rh)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeMaritalStatusId">Estado civil</label>
-                        <div>
-                            <select formControlName="maritalStatusId" name="maritalStatusId" id="basicEmployeeMaritalStatusId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramMaritalStatus" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(maritalStatusId)">
-                                <li *ngFor="let message of errors.getErrors(maritalStatusId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeContractTypeId">Tipo de contrato</label>
-                        <div>
-                            <select formControlName="contractTypeId" name="contractTypeId" id="basicEmployeeContractTypeId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramContractType" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(contractTypeId)">
-                                <li *ngFor="let message of errors.getErrors(contractTypeId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeEmploymentDate">Fecha de ingreso</label>
-                        <div>
-                            <input type="date" formControlName="employmentDate" name="employmentDate" id="basicEmployeeEmploymentDate">
-                            <ul *ngIf="errors.validate(employmentDate)">
-                                <li *ngFor="let message of errors.getErrors(employmentDate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeJobCityId">Ciudad de trabajo</label>
-                        <div>
-                            <select formControlName="jobCityId" name="jobCityId" id="basicEmployeeJobCityId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramCity" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(jobCityId)">
-                                <li *ngFor="let message of errors.getErrors(jobCityId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeBankingEntityId">Entidad bancaria</label>
-                        <div>
-                            <select formControlName="bankingEntityId" name="bankingEntityId" id="basicEmployeeBankingEntityId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramBankingEntity" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(bankingEntityId)">
-                                <li *ngFor="let message of errors.getErrors(bankingEntityId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicBankAccount">No. cuenta bancaria</label>
-                        <div>
-                            <input type="text" formControlName="bankAccount" name="bankAccount" id="basicBankAccount">
-                            <ul *ngIf="errors.validate(bankAccount)">
-                                <li *ngFor="let message of errors.getErrors(bankAccount)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeBankAccountType">Tipo de cuenta bancaria</label>
-                        <div>
-                            <select formControlName="bankAccountType" name="bankAccountType" id="basicEmployeeBankAccountType">
-                        <option value=""></option>
-                        <option>Cuenta de ahorros</option>
-                        <option>Cuenta corriente</option>
-                      </select>
-                            <ul *ngIf="errors.validate(bankAccountType)">
-                                <li *ngFor="let message of errors.getErrors(bankAccountType)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeHasVaccine">¿Tiene vacuna?</label>
-                        <div>
-                            <select formControlName="hasVaccine" name="hasVaccine" id="basicEmployeeHasVaccine">
-                        <option value=""></option>
-                        <option>Si</option>
-                        <option>No</option>
-                      </select>
-                            <ul *ngIf="errors.validate(hasVaccine)">
-                                <li *ngFor="let message of errors.getErrors(hasVaccine)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeVaccineMaker">Fabricante / Laboratorio</label>
-                        <div>
-                            <select formControlName="vaccineMaker" name="vaccineMaker" id="basicEmployeeVaccineMaker">
-                        <option value=""></option>
-                        <option>AstraZeneca</option>
-                        <option>Pfizer / BioNTech</option>
-                        <option>Janssen</option>
-                        <option>Sinovac</option>
-                        <option>Moderna</option>
-                        <option>Sputnik V</option>
-                      </select>
-                            <ul *ngIf="errors.validate(vaccineMaker)">
-                                <li *ngFor="let message of errors.getErrors(vaccineMaker)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeVaccineDose">No. de dosis</label>
-                        <div>
-                            <input type="number" formControlName="vaccineDose" name="vaccineDose" id="basicEmployeeVaccineDose">
-                            <ul *ngIf="errors.validate(vaccineDose)">
-                                <li *ngFor="let message of errors.getErrors(vaccineDose)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeHasVaccineBooster">¿Tiene refuerzo?</label>
-                        <div>
-                            <select formControlName="hasVaccineBooster" name="hasVaccineBooster" id="basicEmployeeHasVaccineBooster">
-                        <option value=""></option>
-                        <option>Si</option>
-                        <option>No</option>
-                      </select>
-                            <ul *ngIf="errors.validate(hasVaccineBooster)">
-                                <li *ngFor="let message of errors.getErrors(hasVaccineBooster)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="basicEmployeeStatusId">Estado del funcionario</label>
-                        <div>
-                            <select formControlName="statusId" name="statusId" id="basicEmployeeStatusId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramEmployeeStatus" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(statusId)">
-                                <li *ngFor="let message of errors.getErrors(statusId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label>Nueva foto</label>
-                        <div>
-                            <input type="file" formControlName="photo" name="photo" (change)="addFile($event, 0)">
-                            <ul *ngIf="errors.validate(photo)">
-                                <li *ngFor="let message of errors.getErrors(photo)">{{ message }}</li>
-                            </ul>
-                            <div class="information__item--desc"><strong>ADVERTENCIA:</strong> Los cambios de fotografía realizados a través de este campo pueden tardar unos minutos en reflejarse dentro de la aplicación.</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="employees-edit__information--basic--skills">
-                    <div class="employees-edit__information--basic--skills--1">
-                        <h3>Conocimientos</h3>
-                        <div class="employees-edit__information--basic--skills--1--edit">
-                            <div class="employees-edit__information--basic--skills--1--edit--fields">
-                                <div class="employees-edit__information--basic--skills--1--edit--fields--item" *ngFor="let knowledge of employeeKnowledges; let i = index">
-                                    <div class="employees-edit__information--basic--skills--1--edit--fields--item--info" *ngIf="knowledge.active">
-                                        <span>{{ knowledge.knowledgeName }}</span>
-                                        <div>
-                                            <input type="number" (change)="updateFlagKnowledge(i)" [formControlName]="setControlKnowledge(i)" [name]="'knowledge-rate-' + i">
-                                            <ul *ngIf="errors.validate(this.formBasic.get(this.getNameControlKnowledge(i)))">
-                                                <li *ngFor="let message of errors.getErrors(this.formBasic.get(this.getNameControlKnowledge(i)))">{{ message }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalKnowledgeForm" (click)="openModal(modalKnowledgeForm, false)">+</button>
-                        </div>
-                    </div>
-                    <div class="employees-edit__information--basic--skills--2">
-                        <h3>Habilidades</h3>
-                        <div class="employees-edit__information--basic--skills--2--edit">
-                            <div class="employees-edit__information--basic--skills--2--edit--fields">
-                                <div class="employees-edit__information--basic--skills--2--edit--fields--item" *ngFor="let skill of employeeSkills; let i = index">
-                                    <div class="employees-edit__information--basic--skills--2--edit--fields--item--info" *ngIf="skill.active">
-                                        <span>{{ skill.skillName }}</span>
-                                        <div>
-                                            <input type="number" (change)="updateFlagSkill(i)" [formControlName]="setControlSkill(i)" [name]="'skill-rate-' + i">
-                                            <ul *ngIf="errors.validate(this.formBasic.get(this.getNameControlSkill(i)))">
-                                                <li *ngFor="let message of errors.getErrors(this.formBasic.get(this.getNameControlSkill(i)))">{{ message }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalSkillForm" (click)="openModal(modalSkillForm, false)">+</button>
-                        </div>
-                    </div>
-                    <div class="employees-edit__information--basic--skills--3">
-                        <h3>Hijos</h3>
-                        <div class="employees-edit__information--basic--skills--3--edit">
-                            <div class="employees-edit__information--basic--skills--3--edit--fields">
-                                <div *ngFor="let son of employeeSonsAge; let i = index">
-                                    <div class="contenedor-hijos">
-                                        <div>{{son.sonName}}</div>
-                                        <div class="list-hijos-fecha">{{son.sonBornDate | date: 'dd/MM/yyyy'}}</div>
-                                        <div class="list-hijos-anos">{{son.age}}</div>
-                                        <button type="button" (click)="toggleFrmSons(i)"><i class="fa-regular fa-pen-to-square"></i></button>
-                                        <!--icono editar -->
-                                        <button type="button" (click)="toggleFrmSonDel(i)"><i class="fa-sharp fa-solid fa-trash"></i></button>
-                                        <!-- icono borrar -->
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" data-bs-toggle="modal" data-bs-target="#modalSonsForm" (click)="toggleFrmSons(); openModal(modalSonsForm, true);">+</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="employees-edit__information--basic--btn information__btn">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cancel()">Cancelar</button>
-                </div>
+  <div class="employees-edit__filters" *ngIf="employeeId == null">
+    <h4 class="employees-edit__filters--title">Agregar nuevo funcionario</h4>
+    <h4 [style.border-bottom-style]="section === 'basica' ? 'solid' : 'none'">Información Básica</h4>
+    <h4 [style.border-bottom-style]="section === 'general' ? 'solid' : 'none'">Información General</h4>
+    <h4 [style.border-bottom-style]="section === 'academica' ? 'solid' : 'none'">Información Academica</h4>
+    <h4 [style.border-bottom-style]="section === 'documentacion' ? 'solid' : 'none'">Documentación</h4>
+  </div>
+  <div class="employees-edit__information">
+    <!--Basic-->
+    <form [formGroup]="formBasic" (ngSubmit)="validateFormBasic()">
+      <div class="employees-edit__information--basic" *ngIf="section === 'basica'">
+        <div class="employees-edit__information--basic--items">
+          <div class="information__item">
+            <label for="basicEmployeeName">Nombre</label>
+            <div>
+              <input type="text" formControlName="name" name="name" id="basicEmployeeName">
+              <ul *ngIf="errors.validate(name)">
+                <li *ngFor="let message of errors.getErrors(name)">{{ message }}</li>
+              </ul>
             </div>
-        </form>
-
-        <!--General-->
-        <form [formGroup]="formGeneral" (ngSubmit)="validateFormGeneral()">
-            <div class="employees-edit__information--general" *ngIf="section === 'general'">
-                <div class="employees-edit__information--general--items">
-                    <div class="information__item">
-                        <label for="generalEmployeeEmergencyContactName">Nombre contacto de emergencia</label>
-                        <div>
-                            <input type="text" formControlName="emergencyContactName" name="emergencyContactName" id="generalEmployeeEmergencyContactName">
-                            <ul *ngIf="errors.validate(emergencyContactName)">
-                                <li *ngFor="let message of errors.getErrors(emergencyContactName)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeEmergencyContactPhone">Teléfono contacto de emergencia</label>
-                        <div>
-                            <input type="number" formControlName="emergencyContactPhone" name="emergencyContactPhone" id="generalEmployeeEmergencyContactPhone">
-                            <ul *ngIf="errors.validate(emergencyContactPhone)">
-                                <li *ngFor="let message of errors.getErrors(emergencyContactPhone)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeEmergencyContactRelationship">Parentesco contacto de emergencia</label>
-                        <div>
-                            <select formControlName="emergencyContactRelationship" name="emergencyContactRelationship" id="generalEmployeeEmergencyContactRelationship">
-                        <option value=""></option>
-                        <option>Padre / Madre</option>
-                        <option>Hijo / Hija</option>
-                        <option>Hermano / Hermana</option>
-                        <option>Pareja</option>
-                        <option>Tio / Tia</option>
-                        <option>Abuelo / Abuela</option>
-                        <option>Cuñado / Cuñada</option>
-                        <option>Otro</option>
-                      </select>
-                            <ul *ngIf="errors.validate(emergencyContactRelationship)">
-                                <li *ngFor="let message of errors.getErrors(emergencyContactRelationship)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeDependents">Personas a cargo</label>
-                        <div>
-                            <input type="number" formControlName="dependents" name="dependents" id="generalEmployeeDependents">
-                            <ul *ngIf="errors.validate(dependents)">
-                                <li *ngFor="let message of errors.getErrors(dependents)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeDependentsUnder9">¿Tiene hijos menores de 9 años?</label>
-                        <div>
-                            <input type="number" formControlName="dependentsUnder9" name="dependentsUnder9" id="generalEmployeeDependentsUnder9">
-                            <ul *ngIf="errors.validate(dependentsUnder9)">
-                                <li *ngFor="let message of errors.getErrors(dependentsUnder9)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeDependentBirthDate">Fecha de nacimiento hijo(a)</label>
-                        <div>
-                            <input type="date" formControlName="dependentBirthDate" name="dependentBirthDate" id="generalEmployeeDependentBirthDate">
-                            <ul *ngIf="errors.validate(dependentBirthDate)">
-                                <li *ngFor="let message of errors.getErrors(dependentBirthDate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeAddress">Dirección de residencia</label>
-                        <div>
-                            <input type="text" formControlName="address" name="address" id="generalEmployeeAddress">
-                            <ul *ngIf="errors.validate(address)">
-                                <li *ngFor="let message of errors.getErrors(address)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeNeighborhood">Barrio</label>
-                        <div>
-                            <input type="text" formControlName="neighborhood" name="neighborhood" id="generalEmployeeNeighborhood">
-                            <ul *ngIf="errors.validate(neighborhood)">
-                                <li *ngFor="let message of errors.getErrors(neighborhood)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeCityId">Ciudad de residencia</label>
-                        <div>
-                            <select formControlName="cityId" name="cityId" id="generalEmployeeCityId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramCity" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(cityId)">
-                                <li *ngFor="let message of errors.getErrors(cityId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeHousingTypeId">Tipo de vivienda</label>
-                        <div>
-                            <select formControlName="housingTypeId" name="housingTypeId" id="generalEmployeeHousingTypeId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramHousingType" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(housingTypeId)">
-                                <li *ngFor="let message of errors.getErrors(housingTypeId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeHousingTime">Tiempo en residencia (meses)</label>
-                        <div>
-                            <input type="number" formControlName="housingTime" name="housingTime" id="generalEmployeeHousingTime">
-                            <ul *ngIf="errors.validate(housingTime)">
-                                <li *ngFor="let message of errors.getErrors(housingTime)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeSocioeconomicStatus">Estrato</label>
-                        <div>
-                            <select formControlName="socioeconomicStatus" name="socioeconomicStatus" id="generalEmployeeSocioeconomicStatus">
-                        <option value=""></option>
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                      </select>
-                            <ul *ngIf="errors.validate(socioeconomicStatus)">
-                                <li *ngFor="let message of errors.getErrors(socioeconomicStatus)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeTransportationId">Medio de transporte</label>
-                        <div>
-                            <select formControlName="transportationId" name="transportationId" id="generalEmployeeTransportationId">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramTransportation" [value]="param.id">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(transportationId)">
-                                <li *ngFor="let message of errors.getErrors(transportationId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalLicensePlate">Placa del vehículo</label>
-                        <div>
-                            <input type="text" formControlName="licensePlate" name="licensePlate" id="generalLicensePlate">
-                            <ul *ngIf="errors.validate(licensePlate)">
-                                <li *ngFor="let message of errors.getErrors(licensePlate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalVehicleMark">Marca del vehículo</label>
-                        <div>
-                            <input type="text" formControlName="vehicleMark" name="vehicleMark" id="generalVehicleMark">
-                            <ul *ngIf="errors.validate(vehicleMark)">
-                                <li *ngFor="let message of errors.getErrors(vehicleMark)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalVehicleModel">Modelo del vehículo</label>
-                        <div>
-                            <input type="text" formControlName="vehicleModel" name="vehicleModel" id="generalVehicleModel">
-                            <ul *ngIf="errors.validate(vehicleModel)">
-                                <li *ngFor="let message of errors.getErrors(vehicleModel)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalLicenseNumber">No. de licencia</label>
-                        <div>
-                            <input type="text" formControlName="licenseNumber" name="licenseNumber" id="generalLicenseNumber">
-                            <ul *ngIf="errors.validate(licenseNumber)">
-                                <li *ngFor="let message of errors.getErrors(licenseNumber)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeLicenseCategory">Categoría de la licencia</label>
-                        <div>
-                            <select formControlName="licenseCategory" name="licenseCategory" id="generalEmployeeLicenseCategory">
-                        <option value=""></option>
-                        <option>A1</option>
-                        <option>A2</option>
-                        <option>B1</option>
-                        <option>B2</option>
-                        <option>B3</option>
-                        <option>C1</option>
-                        <option>C2</option>
-                        <option>C3</option>
-                      </select>
-                            <ul *ngIf="errors.validate(licenseCategory)">
-                                <li *ngFor="let message of errors.getErrors(licenseCategory)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeLicenseValidity">Vigencia de la licencia</label>
-                        <div>
-                            <input type="date" formControlName="licenseValidity" name="licenseValidity" id="generalEmployeeLicenseValidity">
-                            <ul *ngIf="errors.validate(licenseValidity)">
-                                <li *ngFor="let message of errors.getErrors(licenseValidity)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeSoatExpirationDate">Fecha de vencimiento del SOAT</label>
-                        <div>
-                            <input type="date" formControlName="soatExpirationDate" name="soatExpirationDate" id="generalEmployeeSoatExpirationDate">
-                            <ul *ngIf="errors.validate(soatExpirationDate)">
-                                <li *ngFor="let message of errors.getErrors(soatExpirationDate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeRTMExpirationDate">Fecha de vencimiento de la Revisión Tecnico-Mecánica</label>
-                        <div>
-                            <input type="date" formControlName="rtmExpirationDate" name="rtmExpirationDate" id="generalEmployeeRTMExpirationDate">
-                            <ul *ngIf="errors.validate(rtmExpirationDate)">
-                                <li *ngFor="let message of errors.getErrors(rtmExpirationDate)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeVehicleOwnerName">Nombre del propietario del vehículo</label>
-                        <div>
-                            <input type="text" formControlName="vehicleOwnerName" name="vehicleOwnerName" id="generalEmployeeVehicleOwnerName">
-                            <ul *ngIf="errors.validate(vehicleOwnerName)">
-                                <li *ngFor="let message of errors.getErrors(vehicleOwnerName)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeContributorType">Tipo de cotizante</label>
-                        <div>
-                            <select formControlName="contributorType" name="contributorType" id="generalEmployeeContributorType">
-                        <option value=""></option>
-                        <option>Cotizante</option>
-                        <option>Subsidiado</option>
-                        <option>Beneficiario</option>
-                        <option>Activo por Emergencia</option>
-                        <option>Retirado</option>
-                      </select>
-                            <ul *ngIf="errors.validate(contributorType)">
-                                <li *ngFor="let message of errors.getErrors(contributorType)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeEps">Eps</label>
-                        <div>
-                            <input type="text" formControlName="eps" name="eps" id="generalEmployeeEps">
-                            <ul *ngIf="errors.validate(eps)">
-                                <li *ngFor="let message of errors.getErrors(eps)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeArl">Arl</label>
-                        <div>
-                            <input type="text" formControlName="arl" name="arl" id="generalEmployeeArl">
-                            <ul *ngIf="errors.validate(arl)">
-                                <li *ngFor="let message of errors.getErrors(arl)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeAfp">Afp</label>
-                        <div>
-                            <input type="text" formControlName="afp" name="afp" id="generalEmployeeAfp">
-                            <ul *ngIf="errors.validate(afp)">
-                                <li *ngFor="let message of errors.getErrors(afp)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="employees-edit__information--general--items2">
-                    <div class="information__item">
-                        <label for="generalEmployeeRecommendedBy">Recomendado Por</label>
-                        <div>
-                            <select formControlName="recommendedBy" name="recommendedBy" id="generalEmployeeRecommendedBy">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramEmployees" [value]="param.name">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(recommendedBy)">
-                                <li *ngFor="let message of errors.getErrors(recommendedBy)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="generalEmployeeDescription">Descripción</label>
-                        <div>
-                            <textarea formControlName="description" name="description" id="generalEmployeeDescription"></textarea>
-                            <ul *ngIf="errors.validate(description)">
-                                <li *ngFor="let message of errors.getErrors(description)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="employees-edit__information--general--btn information__btn">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cancel()">Cancelar</button>
-                </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeJobId">Cargo</label>
+            <div>
+              <select formControlName="jobId" name="jobId" id="basicEmployeeJobId">
+                <option value=""></option>
+                <option *ngFor="let param of paramJob" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(jobId)">
+                <li *ngFor="let message of errors.getErrors(jobId)">{{ message }}</li>
+              </ul>
             </div>
-        </form>
-
-        <!--Academic-->
-        <form [formGroup]="formAcademic">
-     <!--       <div class="employees-edit__information--academic" *ngIf="section === 'academica'">
-                <div class="employees-edit__information--general--items">
-                    <div class="information__item">
-                        <label for="academicEmployeeEducationalLevelId">Nivel de Estudios</label>
-                        <div>
-                            <select formControlName="educationalLevelId" name="educationalLevelId" id="academicEmployeeEducationalLevelId">
-                      <option value=""></option>
-                      <option *ngFor="let param of paramEducationalLevel" [value]="param.id">{{ param.name }}</option>
-                    </select>
-                            <ul *ngIf="errors.validate(educationalLevelId)">
-                                <li *ngFor="let message of errors.getErrors(educationalLevelId)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="academicEmployeeCareer">Titulo</label>
-                        <div>
-                            <input type="text" formControlName="career" name="career" id="academicEmployeeCareer">
-                            <ul *ngIf="errors.validate(career)">
-                                <li *ngFor="let message of errors.getErrors(career)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                      <label for="academicEndDate">Fecha Finalización</label>
-                      <input type="date" formControlName = "academicEndDate" name = "academicEndDate" id = "academicEndDate" />
-                    </div>
-                </div>
-                <div class="employees-edit__information--academic--btn information__btn">
-                    <button type="submit">Guardar</button>
-                    <button type="button" (click)="cancel()">Cancelar</button>
-                </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeDocTypeId">Tipo de identificación</label>
+            <div>
+              <select formControlName="docTypeId" name="docTypeId" id="basicEmployeeDocTypeId">
+                <option value=""></option>
+                <option *ngFor="let param of paramDocType" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(docTypeId)">
+                <li *ngFor="let message of errors.getErrors(docTypeId)">{{ message }}</li>
+              </ul>
             </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeDoc">Identificación</label>
+            <div>
+              <input type="number" formControlName="doc" name="doc" id="basicEmployeeDoc">
+              <ul *ngIf="errors.validate(doc)">
+                <li *ngFor="let message of errors.getErrors(doc)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeDocIssueCityId">Ciudad de expedición</label>
+            <div>
+              <select formControlName="docIssueCityId" name="docIssueCityId" id="basicEmployeeDocIssueCityId">
+                <option value=""></option>
+                <option *ngFor="let param of paramCity" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(docIssueCityId)">
+                <li *ngFor="let message of errors.getErrors(docIssueCityId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeDocIssueDate">Fecha de expedición</label>
+            <div>
+              <input type="date" formControlName="docIssueDate" name="docIssueDate" id="basicEmployeeDocIssueDate">
+              <ul *ngIf="errors.validate(docIssueDate)">
+                <li *ngFor="let message of errors.getErrors(docIssueDate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeePhone">Teléfono</label>
+            <div>
+              <input type="number" formControlName="phone" name="phone" id="basicEmployeePhone">
+              <ul *ngIf="errors.validate(phone)">
+                <li *ngFor="let message of errors.getErrors(phone)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeCellPhone">Celular</label>
+            <div>
+              <input type="number" formControlName="cellPhone" name="cellPhone" id="basicEmployeeCellPhone">
+              <ul *ngIf="errors.validate(cellPhone)">
+                <li *ngFor="let message of errors.getErrors(cellPhone)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeCorpCellPhone">Celular corporativo</label>
+            <div>
+              <input type="number" formControlName="corpCellPhone" name="corpCellPhone" id="basicEmployeeCorpCellPhone">
+              <ul *ngIf="errors.validate(corpCellPhone)">
+                <li *ngFor="let message of errors.getErrors(corpCellPhone)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeEmail">Correo electrónico</label>
+            <div>
+              <input type="email" formControlName="email" name="email" id="basicEmployeeEmail">
+              <ul *ngIf="errors.validate(email)">
+                <li *ngFor="let message of errors.getErrors(email)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeSex">Sexo</label>
+            <div>
+              <select formControlName="sex" name="sex" id="basicEmployeeSex">
+                <option value=""></option>
+                <option *ngFor="let param of paramSex">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(sex)">
+                <li *ngFor="let message of errors.getErrors(sex)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeBirthDate">Fecha de nacimiento</label>
+            <div>
+              <input type="date" formControlName="birthDate" name="birthDate" id="basicEmployeeBirthDate">
+              <ul *ngIf="errors.validate(birthDate)">
+                <li *ngFor="let message of errors.getErrors(birthDate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeRh">RH</label>
+            <div>
+              <select formControlName="rh" name="rh" id="basicEmployeeRh">
+                <option value=""></option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+                <option>O+</option>
+                <option>O-</option>
+              </select>
+              <ul *ngIf="errors.validate(rh)">
+                <li *ngFor="let message of errors.getErrors(rh)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeMaritalStatusId">Estado civil</label>
+            <div>
+              <select formControlName="maritalStatusId" name="maritalStatusId" id="basicEmployeeMaritalStatusId">
+                <option value=""></option>
+                <option *ngFor="let param of paramMaritalStatus" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(maritalStatusId)">
+                <li *ngFor="let message of errors.getErrors(maritalStatusId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeContractTypeId">Tipo de contrato</label>
+            <div>
+              <select formControlName="contractTypeId" name="contractTypeId" id="basicEmployeeContractTypeId">
+                <option value=""></option>
+                <option *ngFor="let param of paramContractType" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(contractTypeId)">
+                <li *ngFor="let message of errors.getErrors(contractTypeId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeEmploymentDate">Fecha de ingreso</label>
+            <div>
+              <input type="date" formControlName="employmentDate" name="employmentDate"
+                id="basicEmployeeEmploymentDate">
+              <ul *ngIf="errors.validate(employmentDate)">
+                <li *ngFor="let message of errors.getErrors(employmentDate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeJobCityId">Ciudad de trabajo</label>
+            <div>
+              <select formControlName="jobCityId" name="jobCityId" id="basicEmployeeJobCityId">
+                <option value=""></option>
+                <option *ngFor="let param of paramCity" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(jobCityId)">
+                <li *ngFor="let message of errors.getErrors(jobCityId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeBankingEntityId">Entidad bancaria</label>
+            <div>
+              <select formControlName="bankingEntityId" name="bankingEntityId" id="basicEmployeeBankingEntityId">
+                <option value=""></option>
+                <option *ngFor="let param of paramBankingEntity" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(bankingEntityId)">
+                <li *ngFor="let message of errors.getErrors(bankingEntityId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicBankAccount">No. cuenta bancaria</label>
+            <div>
+              <input type="text" formControlName="bankAccount" name="bankAccount" id="basicBankAccount">
+              <ul *ngIf="errors.validate(bankAccount)">
+                <li *ngFor="let message of errors.getErrors(bankAccount)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeBankAccountType">Tipo de cuenta bancaria</label>
+            <div>
+              <select formControlName="bankAccountType" name="bankAccountType" id="basicEmployeeBankAccountType">
+                <option value=""></option>
+                <option>Cuenta de ahorros</option>
+                <option>Cuenta corriente</option>
+              </select>
+              <ul *ngIf="errors.validate(bankAccountType)">
+                <li *ngFor="let message of errors.getErrors(bankAccountType)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeHasVaccine">¿Tiene vacuna?</label>
+            <div>
+              <select formControlName="hasVaccine" name="hasVaccine" id="basicEmployeeHasVaccine">
+                <option value=""></option>
+                <option>Si</option>
+                <option>No</option>
+              </select>
+              <ul *ngIf="errors.validate(hasVaccine)">
+                <li *ngFor="let message of errors.getErrors(hasVaccine)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeVaccineMaker">Fabricante / Laboratorio</label>
+            <div>
+              <select formControlName="vaccineMaker" name="vaccineMaker" id="basicEmployeeVaccineMaker">
+                <option value=""></option>
+                <option>AstraZeneca</option>
+                <option>Pfizer / BioNTech</option>
+                <option>Janssen</option>
+                <option>Sinovac</option>
+                <option>Moderna</option>
+                <option>Sputnik V</option>
+              </select>
+              <ul *ngIf="errors.validate(vaccineMaker)">
+                <li *ngFor="let message of errors.getErrors(vaccineMaker)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeVaccineDose">No. de dosis</label>
+            <div>
+              <input type="number" formControlName="vaccineDose" name="vaccineDose" id="basicEmployeeVaccineDose">
+              <ul *ngIf="errors.validate(vaccineDose)">
+                <li *ngFor="let message of errors.getErrors(vaccineDose)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeHasVaccineBooster">¿Tiene refuerzo?</label>
+            <div>
+              <select formControlName="hasVaccineBooster" name="hasVaccineBooster" id="basicEmployeeHasVaccineBooster">
+                <option value=""></option>
+                <option>Si</option>
+                <option>No</option>
+              </select>
+              <ul *ngIf="errors.validate(hasVaccineBooster)">
+                <li *ngFor="let message of errors.getErrors(hasVaccineBooster)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="basicEmployeeStatusId">Estado del funcionario</label>
+            <div>
+              <select formControlName="statusId" name="statusId" id="basicEmployeeStatusId">
+                <option value=""></option>
+                <option *ngFor="let param of paramEmployeeStatus" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(statusId)">
+                <li *ngFor="let message of errors.getErrors(statusId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label>Nueva foto</label>
+            <div>
+              <input type="file" formControlName="photo" name="photo" (change)="addFile($event, 0)">
+              <ul *ngIf="errors.validate(photo)">
+                <li *ngFor="let message of errors.getErrors(photo)">{{ message }}</li>
+              </ul>
+              <div class="information__item--desc"><strong>ADVERTENCIA:</strong> Los cambios de fotografía realizados a
+                través de este campo pueden tardar unos minutos en reflejarse dentro de la aplicación.</div>
+            </div>
+          </div>
+        </div>
+        <div class="employees-edit__information--basic--skills">
+          <div class="employees-edit__information--basic--skills--1">
+            <h3>Conocimientos</h3>
+            <div class="employees-edit__information--basic--skills--1--edit">
+              <div class="employees-edit__information--basic--skills--1--edit--fields">
+                <div class="employees-edit__information--basic--skills--1--edit--fields--item"
+                  *ngFor="let knowledge of employeeKnowledges; let i = index">
+                  <div class="employees-edit__information--basic--skills--1--edit--fields--item--info"
+                    *ngIf="knowledge.active">
+                    <span>{{ knowledge.knowledgeName }}</span>
+                    <div>
+                      <input type="number" (change)="updateFlagKnowledge(i)" [formControlName]="setControlKnowledge(i)"
+                        [name]="'knowledge-rate-' + i">
+                      <ul *ngIf="errors.validate(this.formBasic.get(this.getNameControlKnowledge(i)))">
+                        <li
+                          *ngFor="let message of errors.getErrors(this.formBasic.get(this.getNameControlKnowledge(i)))">
+                          {{ message }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#modalKnowledgeForm"
+                (click)="openModal(modalKnowledgeForm, false)">+</button>
+            </div>
+          </div>
+          <div class="employees-edit__information--basic--skills--2">
+            <h3>Habilidades</h3>
+            <div class="employees-edit__information--basic--skills--2--edit">
+              <div class="employees-edit__information--basic--skills--2--edit--fields">
+                <div class="employees-edit__information--basic--skills--2--edit--fields--item"
+                  *ngFor="let skill of employeeSkills; let i = index">
+                  <div class="employees-edit__information--basic--skills--2--edit--fields--item--info"
+                    *ngIf="skill.active">
+                    <span>{{ skill.skillName }}</span>
+                    <div>
+                      <input type="number" (change)="updateFlagSkill(i)" [formControlName]="setControlSkill(i)"
+                        [name]="'skill-rate-' + i">
+                      <ul *ngIf="errors.validate(this.formBasic.get(this.getNameControlSkill(i)))">
+                        <li *ngFor="let message of errors.getErrors(this.formBasic.get(this.getNameControlSkill(i)))">{{
+                          message }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#modalSkillForm"
+                (click)="openModal(modalSkillForm, false)">+</button>
+            </div>
+          </div>
+          <div class="employees-edit__information--basic--skills--3">
+            <h3>Hijos</h3>
+            <div class="employees-edit__information--basic--skills--3--edit">
+              <div class="employees-edit__information--basic--skills--3--edit--fields">
+                <div *ngFor="let son of employeeSonsAge; let i = index">
+                  <div class="contenedor-hijos">
+                    <div>{{son.sonName}}</div>
+                    <div class="list-hijos-fecha">{{son.sonBornDate | date: 'dd/MM/yyyy'}}</div>
+                    <div class="list-hijos-anos">{{son.age}}</div>
+                    <button type="button" (click)="toggleFrmSons(i)"><i
+                        class="fa-regular fa-pen-to-square"></i></button>
+                    <!--icono editar -->
+                    <button type="button" (click)="toggleFrmSonDel(i)"><i
+                        class="fa-sharp fa-solid fa-trash"></i></button>
+                    <!-- icono borrar -->
+                  </div>
+                </div>
+              </div>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#modalSonsForm"
+                (click)="toggleFrmSons(); openModal(modalSonsForm, true);">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="employees-edit__information--basic--btn information__btn">
+          <button type="submit">Guardar</button>
+          <button type="button" (click)="cancel()">Cancelar</button>
+        </div>
+      </div>
+    </form>
 
-      <br><hr>  -->
+    <!--General-->
+    <form [formGroup]="formGeneral" (ngSubmit)="validateFormGeneral()">
+      <div class="employees-edit__information--general" *ngIf="section === 'general'">
+        <div class="employees-edit__information--general--items">
+          <div class="information__item">
+            <label for="generalEmployeeEmergencyContactName">Nombre contacto de emergencia</label>
+            <div>
+              <input type="text" formControlName="emergencyContactName" name="emergencyContactName"
+                id="generalEmployeeEmergencyContactName">
+              <ul *ngIf="errors.validate(emergencyContactName)">
+                <li *ngFor="let message of errors.getErrors(emergencyContactName)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeEmergencyContactPhone">Teléfono contacto de emergencia</label>
+            <div>
+              <input type="number" formControlName="emergencyContactPhone" name="emergencyContactPhone"
+                id="generalEmployeeEmergencyContactPhone">
+              <ul *ngIf="errors.validate(emergencyContactPhone)">
+                <li *ngFor="let message of errors.getErrors(emergencyContactPhone)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeEmergencyContactRelationship">Parentesco contacto de emergencia</label>
+            <div>
+              <select formControlName="emergencyContactRelationship" name="emergencyContactRelationship"
+                id="generalEmployeeEmergencyContactRelationship">
+                <option value=""></option>
+                <option>Padre / Madre</option>
+                <option>Hijo / Hija</option>
+                <option>Hermano / Hermana</option>
+                <option>Pareja</option>
+                <option>Tio / Tia</option>
+                <option>Abuelo / Abuela</option>
+                <option>Cuñado / Cuñada</option>
+                <option>Otro</option>
+              </select>
+              <ul *ngIf="errors.validate(emergencyContactRelationship)">
+                <li *ngFor="let message of errors.getErrors(emergencyContactRelationship)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeDependents">Personas a cargo</label>
+            <div>
+              <input type="number" formControlName="dependents" name="dependents" id="generalEmployeeDependents">
+              <ul *ngIf="errors.validate(dependents)">
+                <li *ngFor="let message of errors.getErrors(dependents)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeDependentsUnder9">¿Tiene hijos menores de 9 años?</label>
+            <div>
+              <input type="number" formControlName="dependentsUnder9" name="dependentsUnder9"
+                id="generalEmployeeDependentsUnder9">
+              <ul *ngIf="errors.validate(dependentsUnder9)">
+                <li *ngFor="let message of errors.getErrors(dependentsUnder9)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeDependentBirthDate">Fecha de nacimiento hijo(a)</label>
+            <div>
+              <input type="date" formControlName="dependentBirthDate" name="dependentBirthDate"
+                id="generalEmployeeDependentBirthDate">
+              <ul *ngIf="errors.validate(dependentBirthDate)">
+                <li *ngFor="let message of errors.getErrors(dependentBirthDate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeAddress">Dirección de residencia</label>
+            <div>
+              <input type="text" formControlName="address" name="address" id="generalEmployeeAddress">
+              <ul *ngIf="errors.validate(address)">
+                <li *ngFor="let message of errors.getErrors(address)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeNeighborhood">Barrio</label>
+            <div>
+              <input type="text" formControlName="neighborhood" name="neighborhood" id="generalEmployeeNeighborhood">
+              <ul *ngIf="errors.validate(neighborhood)">
+                <li *ngFor="let message of errors.getErrors(neighborhood)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeCityId">Ciudad de residencia</label>
+            <div>
+              <select formControlName="cityId" name="cityId" id="generalEmployeeCityId">
+                <option value=""></option>
+                <option *ngFor="let param of paramCity" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(cityId)">
+                <li *ngFor="let message of errors.getErrors(cityId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeHousingTypeId">Tipo de vivienda</label>
+            <div>
+              <select formControlName="housingTypeId" name="housingTypeId" id="generalEmployeeHousingTypeId">
+                <option value=""></option>
+                <option *ngFor="let param of paramHousingType" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(housingTypeId)">
+                <li *ngFor="let message of errors.getErrors(housingTypeId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeHousingTime">Tiempo en residencia (meses)</label>
+            <div>
+              <input type="number" formControlName="housingTime" name="housingTime" id="generalEmployeeHousingTime">
+              <ul *ngIf="errors.validate(housingTime)">
+                <li *ngFor="let message of errors.getErrors(housingTime)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeSocioeconomicStatus">Estrato</label>
+            <div>
+              <select formControlName="socioeconomicStatus" name="socioeconomicStatus"
+                id="generalEmployeeSocioeconomicStatus">
+                <option value=""></option>
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+              </select>
+              <ul *ngIf="errors.validate(socioeconomicStatus)">
+                <li *ngFor="let message of errors.getErrors(socioeconomicStatus)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeTransportationId">Medio de transporte</label>
+            <div>
+              <select formControlName="transportationId" name="transportationId" id="generalEmployeeTransportationId">
+                <option value=""></option>
+                <option *ngFor="let param of paramTransportation" [value]="param.id">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(transportationId)">
+                <li *ngFor="let message of errors.getErrors(transportationId)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalLicensePlate">Placa del vehículo</label>
+            <div>
+              <input type="text" formControlName="licensePlate" name="licensePlate" id="generalLicensePlate">
+              <ul *ngIf="errors.validate(licensePlate)">
+                <li *ngFor="let message of errors.getErrors(licensePlate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalVehicleMark">Marca del vehículo</label>
+            <div>
+              <input type="text" formControlName="vehicleMark" name="vehicleMark" id="generalVehicleMark">
+              <ul *ngIf="errors.validate(vehicleMark)">
+                <li *ngFor="let message of errors.getErrors(vehicleMark)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalVehicleModel">Modelo del vehículo</label>
+            <div>
+              <input type="text" formControlName="vehicleModel" name="vehicleModel" id="generalVehicleModel">
+              <ul *ngIf="errors.validate(vehicleModel)">
+                <li *ngFor="let message of errors.getErrors(vehicleModel)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalLicenseNumber">No. de licencia</label>
+            <div>
+              <input type="text" formControlName="licenseNumber" name="licenseNumber" id="generalLicenseNumber">
+              <ul *ngIf="errors.validate(licenseNumber)">
+                <li *ngFor="let message of errors.getErrors(licenseNumber)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeLicenseCategory">Categoría de la licencia</label>
+            <div>
+              <select formControlName="licenseCategory" name="licenseCategory" id="generalEmployeeLicenseCategory">
+                <option value=""></option>
+                <option>A1</option>
+                <option>A2</option>
+                <option>B1</option>
+                <option>B2</option>
+                <option>B3</option>
+                <option>C1</option>
+                <option>C2</option>
+                <option>C3</option>
+              </select>
+              <ul *ngIf="errors.validate(licenseCategory)">
+                <li *ngFor="let message of errors.getErrors(licenseCategory)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeLicenseValidity">Vigencia de la licencia</label>
+            <div>
+              <input type="date" formControlName="licenseValidity" name="licenseValidity"
+                id="generalEmployeeLicenseValidity">
+              <ul *ngIf="errors.validate(licenseValidity)">
+                <li *ngFor="let message of errors.getErrors(licenseValidity)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeSoatExpirationDate">Fecha de vencimiento del SOAT</label>
+            <div>
+              <input type="date" formControlName="soatExpirationDate" name="soatExpirationDate"
+                id="generalEmployeeSoatExpirationDate">
+              <ul *ngIf="errors.validate(soatExpirationDate)">
+                <li *ngFor="let message of errors.getErrors(soatExpirationDate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeRTMExpirationDate">Fecha de vencimiento de la Revisión Tecnico-Mecánica</label>
+            <div>
+              <input type="date" formControlName="rtmExpirationDate" name="rtmExpirationDate"
+                id="generalEmployeeRTMExpirationDate">
+              <ul *ngIf="errors.validate(rtmExpirationDate)">
+                <li *ngFor="let message of errors.getErrors(rtmExpirationDate)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeVehicleOwnerName">Nombre del propietario del vehículo</label>
+            <div>
+              <input type="text" formControlName="vehicleOwnerName" name="vehicleOwnerName"
+                id="generalEmployeeVehicleOwnerName">
+              <ul *ngIf="errors.validate(vehicleOwnerName)">
+                <li *ngFor="let message of errors.getErrors(vehicleOwnerName)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeContributorType">Tipo de cotizante</label>
+            <div>
+              <select formControlName="contributorType" name="contributorType" id="generalEmployeeContributorType">
+                <option value=""></option>
+                <option>Cotizante</option>
+                <option>Subsidiado</option>
+                <option>Beneficiario</option>
+                <option>Activo por Emergencia</option>
+                <option>Retirado</option>
+              </select>
+              <ul *ngIf="errors.validate(contributorType)">
+                <li *ngFor="let message of errors.getErrors(contributorType)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeEps">Eps</label>
+            <div>
+              <input type="text" formControlName="eps" name="eps" id="generalEmployeeEps">
+              <ul *ngIf="errors.validate(eps)">
+                <li *ngFor="let message of errors.getErrors(eps)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeArl">Arl</label>
+            <div>
+              <input type="text" formControlName="arl" name="arl" id="generalEmployeeArl">
+              <ul *ngIf="errors.validate(arl)">
+                <li *ngFor="let message of errors.getErrors(arl)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeAfp">Afp</label>
+            <div>
+              <input type="text" formControlName="afp" name="afp" id="generalEmployeeAfp">
+              <ul *ngIf="errors.validate(afp)">
+                <li *ngFor="let message of errors.getErrors(afp)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="employees-edit__information--general--items2">
+          <div class="information__item">
+            <label for="generalEmployeeRecommendedBy">Recomendado Por</label>
+            <div>
+              <select formControlName="recommendedBy" name="recommendedBy" id="generalEmployeeRecommendedBy">
+                <option value=""></option>
+                <option *ngFor="let param of paramEmployees" [value]="param.name">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(recommendedBy)">
+                <li *ngFor="let message of errors.getErrors(recommendedBy)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="information__item">
+            <label for="generalEmployeeDescription">Descripción</label>
+            <div>
+              <textarea formControlName="description" name="description" id="generalEmployeeDescription"></textarea>
+              <ul *ngIf="errors.validate(description)">
+                <li *ngFor="let message of errors.getErrors(description)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="employees-edit__information--general--btn information__btn">
+          <button type="submit">Guardar</button>
+          <button type="button" (click)="cancel()">Cancelar</button>
+        </div>
+      </div>
+    </form>
 
+    <!--Academic-->
+    <form [formGroup]="formAcademic" *ngIf="section === 'academica'" >
       <div class="container">
         <table class="table">
           <thead>
@@ -733,11 +723,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr  *ngFor="let registro of employeeAcademics">
+            <tr *ngFor="let registro of employeeAcademics">
               <td>
                 <div>
                   <select formControlName="educationalLevelId" id="academicEmployeeEducationalLevelId-{{registro.id}}">
-                    <option [value]="registro.educationalLevelId" disabled [selected]="registro.educationalLevelId">{{ registro.educationalLevelName }}</option>
+                    <option [value]="registro.educationalLevelId" disabled [selected]="registro.educationalLevelId">{{
+                      registro.educationalLevelName }}</option>
 
                     <option *ngFor="let param of paramEducationalLevel" [value]="param.id">
                       {{ param.name }}
@@ -768,170 +759,180 @@
             </tr>
             <tr>
               <td>
-                  <div>
-                    <select formControlName="educationalLevelId" name="educationalLevelId"
-                      id="academicEmployeeEducationalLevelId-new">
-                      <option value="" disabled selected>Seleccione</option>
-                      <option *ngFor="let param of paramEducationalLevel" [value]="param.id">{{ param.name }}</option>
-                    </select>
-                  </div>
+                <div>
+                  <select formControlName="educationalLevelId" name="educationalLevelId"
+                    id="academicEmployeeEducationalLevelId-new">
+                    <option value="" disabled selected>Seleccione</option>
+                    <option *ngFor="let param of paramEducationalLevel" [value]="param.id">{{ param.name }}</option>
+                  </select>
+                </div>
               </td>
               <td>
-                  <div>
-                    <input type="text" formControlName="career" name="career" id="academicEmployeeCareer-new" placeholder="Digite el titulo">
-                  </div>
+                <div>
+                  <input type="text" formControlName="career" name="career" id="academicEmployeeCareer-new"
+                    placeholder="Digite el titulo">
+                </div>
 
               </td>
               <td>
-                  <input type="date" formControlName="EndDate" name="EndDate" id="academicEndDate-new" />
+                <input type="date" formControlName="EndDate" name="EndDate" id="academicEndDate-new" />
               </td>
               <td>
-                <button class="agregar" (click) = "addAcademic()">
+                <button class="agregar" (click)="addAcademic()">
                   <i class="fa fa-plus"></i> <!-- Icono de agregar -->
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+      <button type="button" (click)="cancel()">regresar</button>
       </div>
+    </form>
 
-
-        </form>
-
-        <!--Documents-->
-        <form [formGroup]="formDocument" (ngSubmit)="validateFormDocument()">
-            <div class="employees-edit__information--document" *ngIf="section === 'documentacion'">
-                <div class="employees-edit__information--general--items">
-                    <div class="information__item">
-                        <label for="fileEmployeeLevel1">Carpeta</label>
-                        <div>
-                            <select formControlName="level1" (change)="getParamLevel2()" name="level1" id="fileEmployeeLevel1">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramFileTypesLevel1" [value]="param.name">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(level1)">
-                                <li *ngFor="let message of errors.getErrors(level1)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="information__item">
-                        <label for="fileEmployeeLevel2">Subcarpeta</label>
-                        <div>
-                            <select formControlName="level2" (change)="getParamLevel3()" name="level2" id="fileEmployeeLevel2">
-                        <option value=""></option>
-                        <option *ngFor="let param of paramFileTypesLevel2" [value]="param.name">{{ param.name }}</option>
-                      </select>
-                            <ul *ngIf="errors.validate(level2)">
-                                <li *ngFor="let message of errors.getErrors(level2)">{{ message }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="employees-edit__information--general--items2">
-                    <div class="information__item"><label>Nuevo documento</label></div>
-                    <div class="information__item">
-                        <div class="employees-edit__information--general--items2--files">
-                            <div class="employees-edit__information--general--items2--files--document">
-                                <div class="employees-edit__information--general--items2--files--document--item" *ngFor="let fileRel of filesRel; let i = index">
-                                    <select [name]="'level3_' + i" [id]="'fileEmployeeLevel3' + i" (change)="addLevel3($event, i)">
-                          <option value="">-- Raíz --</option>
-                          <option *ngFor="let param of paramFileTypesLevel3" [value]="param.name">{{ param.name }}</option>
-                        </select>
-                                    <input type="file" [name]="'document' + i" [id]="'documentSel' + i" (change)="addFile($event, i)">
-                                </div>
-                            </div>
-                            <div class="employees-edit__information--general--items2--files--action">
-                                <button type="button" (click)="addFileField()">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <ul *ngIf="errors.validate(document)"><li *ngFor="let message of errors.getErrors(document)">{{ message }}</li></ul> -->
-                </div>
-                <div class="employees-edit__information--document--btn information__btn">
-                    <button type="submit" *ngIf="employeeGeneral.cityName != '' && employee.name != ''">Guardar y Continuar</button>
-                    <button type="submit" (click)="toggleCancelDocument()" *ngIf="employeeGeneral.cityName != '' && employee.name != ''">Guardar y Salir</button>
-                    <button type="button" (click)="cancel()">Cancelar</button>
-                </div>
+    <!--Documents-->
+    <form [formGroup]="formDocument" (ngSubmit)="validateFormDocument()">
+      <div class="employees-edit__information--document" *ngIf="section === 'documentacion'">
+        <div class="employees-edit__information--general--items">
+          <div class="information__item">
+            <label for="fileEmployeeLevel1">Carpeta</label>
+            <div>
+              <select formControlName="level1" (change)="getParamLevel2()" name="level1" id="fileEmployeeLevel1">
+                <option value=""></option>
+                <option *ngFor="let param of paramFileTypesLevel1" [value]="param.name">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(level1)">
+                <li *ngFor="let message of errors.getErrors(level1)">{{ message }}</li>
+              </ul>
             </div>
-        </form>
-    </div>
+          </div>
+          <div class="information__item">
+            <label for="fileEmployeeLevel2">Subcarpeta</label>
+            <div>
+              <select formControlName="level2" (change)="getParamLevel3()" name="level2" id="fileEmployeeLevel2">
+                <option value=""></option>
+                <option *ngFor="let param of paramFileTypesLevel2" [value]="param.name">{{ param.name }}</option>
+              </select>
+              <ul *ngIf="errors.validate(level2)">
+                <li *ngFor="let message of errors.getErrors(level2)">{{ message }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="employees-edit__information--general--items2">
+          <div class="information__item"><label>Nuevo documento</label></div>
+          <div class="information__item">
+            <div class="employees-edit__information--general--items2--files">
+              <div class="employees-edit__information--general--items2--files--document">
+                <div class="employees-edit__information--general--items2--files--document--item"
+                  *ngFor="let fileRel of filesRel; let i = index">
+                  <select [name]="'level3_' + i" [id]="'fileEmployeeLevel3' + i" (change)="addLevel3($event, i)">
+                    <option value="">-- Raíz --</option>
+                    <option *ngFor="let param of paramFileTypesLevel3" [value]="param.name">{{ param.name }}</option>
+                  </select>
+                  <input type="file" [name]="'document' + i" [id]="'documentSel' + i" (change)="addFile($event, i)">
+                </div>
+              </div>
+              <div class="employees-edit__information--general--items2--files--action">
+                <button type="button" (click)="addFileField()">+</button>
+              </div>
+            </div>
+          </div>
+          <!-- <ul *ngIf="errors.validate(document)"><li *ngFor="let message of errors.getErrors(document)">{{ message }}</li></ul> -->
+        </div>
+        <div class="employees-edit__information--document--btn information__btn">
+          <button type="submit" *ngIf="employeeGeneral.cityName != '' && employee.name != ''">Guardar y
+            Continuar</button>
+          <button type="submit" (click)="toggleCancelDocument()"
+            *ngIf="employeeGeneral.cityName != '' && employee.name != ''">Guardar y Salir</button>
+          <button type="button" (click)="cancel()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 
 <ng-template #modalSonsForm let-modal>
-    <div class="modal-body">
-        <div class="modal-close" (click)="closeModal()">
-          <i class="fa-regular fa-circle-xmark fa-2xl"></i>
-        </div>
-        <div class="modal-form">
-            <form id="sonsEmployee-{{this.employeeId}}" [formGroup]="sonForm">
-                <div>aaaaaaa</div>
-                <div>{{this.employeeId}} --</div>
-                <div>{{this.employeeId}} --</div>
-                <input type="hidden" ormControlName="id" id="id" name="id" required />
-                <input type="hidden" ormControlName="employeeGeneralId" id="employeeGeneralId" name="employeeGeneralId" required />
-                <input class="campo-nombrehijo" formControlName="sonName" id="sonName" name="sonName" required/>
-                <input type="hidden" ormControlName="employeeGeneralId" id="employeeGeneralId" name="employeeGeneralId" required />
-                <input class="campo-fecha" type="date" value="{{this.employeeSonData.length?this.employeeSonData[0].sonBornDate :null | date:'yyyy-MM-dd'}}" formControlName="sonBornDate" name="sonBornDate" />
-                <div *ngIf="! this.sonForm.get('sonName')!.value || ! this.sonForm.get('sonBornDate')?.value" class="alert">
-                    wwwww
-                </div>
-            </form>
-            <div class="information__btn">
-                <button [disabled]="! this.sonForm.get('sonName')!.value || ! this.sonForm.get('sonBornDate')?.value" (click)="sonUpdate()">{{this.employeeSonData.length && this.employeeSonData[0].id?"Actualizar":"Guardar"}}</button>
-            </div>
-        </div>
+  <div class="modal-body">
+    <div class="modal-close" (click)="closeModal()">
+      <i class="fa-regular fa-circle-xmark fa-2xl"></i>
     </div>
+    <div class="modal-form">
+      <form id="sonsEmployee-{{this.employeeId}}" [formGroup]="sonForm">
+        <div>aaaaaaa</div>
+        <div>{{this.employeeId}} --</div>
+        <div>{{this.employeeId}} --</div>
+        <input type="hidden" ormControlName="id" id="id" name="id" required />
+        <input type="hidden" ormControlName="employeeGeneralId" id="employeeGeneralId" name="employeeGeneralId"
+          required />
+        <input class="campo-nombrehijo" formControlName="sonName" id="sonName" name="sonName" required />
+        <input type="hidden" ormControlName="employeeGeneralId" id="employeeGeneralId" name="employeeGeneralId"
+          required />
+        <input class="campo-fecha" type="date"
+          value="{{this.employeeSonData.length?this.employeeSonData[0].sonBornDate :null | date:'yyyy-MM-dd'}}"
+          formControlName="sonBornDate" name="sonBornDate" />
+        <div *ngIf="! this.sonForm.get('sonName')!.value || ! this.sonForm.get('sonBornDate')?.value" class="alert">
+          wwwww
+        </div>
+      </form>
+      <div class="information__btn">
+        <button [disabled]="! this.sonForm.get('sonName')!.value || ! this.sonForm.get('sonBornDate')?.value"
+          (click)="sonUpdate()">{{this.employeeSonData.length &&
+          this.employeeSonData[0].id?"Actualizar":"Guardar"}}</button>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <div class="modal fade show" style="color: #ffffff" *ngIf="sonsFormDel">
-    <div class="modal-content">
-        Eliminar el registro <span>{{this.employeeSonData[0]!.sonName}}</span>?
-        <div>
-            <div class="modal__form--btn"><button (click)="delSon()">Sí</button></div>
-            <div class="modal__form--btn"><button (click)="toggleFrmSonDel()">No</button></div>
-        </div>
+  <div class="modal-content">
+    Eliminar el registro <span>{{this.employeeSonData[0]!.sonName}}</span>?
+    <div>
+      <div class="modal__form--btn"><button (click)="delSon()">Sí</button></div>
+      <div class="modal__form--btn"><button (click)="toggleFrmSonDel()">No</button></div>
     </div>
+  </div>
 </div>
 
 
 <ng-template #modalSkillForm let-modal>
-    <div class="modal-body">
-        <div class="modal-close" (click)="closeModal()">
-          <i class="fa-regular fa-circle-xmark fa-2xl"></i>
-        </div>
-        <div class="modal-form">
-            <div class="modal-form-checklist">
-                <div class="modal-form-checklist-item" *ngFor="let skill of employeeSkills; let i = index">
-                    <span>{{ skill.skillName }}</span>
-                    <input type="checkbox" (change)="updateFlagSkill(i)" [(ngModel)]="skill.active" [name]="'skill-active-' + i">
-                </div>
-            </div>
-            <div class="information__btn">
-                <button type="button" (click)="closeModal()">Aceptar</button>
-            </div>
-        </div>
+  <div class="modal-body">
+    <div class="modal-close" (click)="closeModal()">
+      <i class="fa-regular fa-circle-xmark fa-2xl"></i>
     </div>
+    <div class="modal-form">
+      <div class="modal-form-checklist">
+        <div class="modal-form-checklist-item" *ngFor="let skill of employeeSkills; let i = index">
+          <span>{{ skill.skillName }}</span>
+          <input type="checkbox" (change)="updateFlagSkill(i)" [(ngModel)]="skill.active" [name]="'skill-active-' + i">
+        </div>
+      </div>
+      <div class="information__btn">
+        <button type="button" (click)="closeModal()">Aceptar</button>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 
 <ng-template #modalKnowledgeForm let-modal>
-    <div class="modal-body">
-        <div class="modal-close" (click)="closeModal()">
-          <i class="fa-regular fa-circle-xmark fa-2xl"></i>
-        </div>
-        <div class="modal-form">
-            <div class="modal-form-checklist">
-                <div class="modal-form-checklist-item" *ngFor="let knowledge of employeeKnowledges; let i = index">
-                    <span>{{ knowledge.knowledgeName }}</span>
-                    <input type="checkbox" (change)="updateFlagKnowledge(i)" [(ngModel)]="knowledge.active" [name]="'knowledge-active-' + i">
-                </div>
-            </div>
-            <div class="information__btn">
-                <button type="button" (click)="closeModal()">Aceptar</button>
-            </div>
-        </div>
+  <div class="modal-body">
+    <div class="modal-close" (click)="closeModal()">
+      <i class="fa-regular fa-circle-xmark fa-2xl"></i>
     </div>
+    <div class="modal-form">
+      <div class="modal-form-checklist">
+        <div class="modal-form-checklist-item" *ngFor="let knowledge of employeeKnowledges; let i = index">
+          <span>{{ knowledge.knowledgeName }}</span>
+          <input type="checkbox" (change)="updateFlagKnowledge(i)" [(ngModel)]="knowledge.active"
+            [name]="'knowledge-active-' + i">
+        </div>
+      </div>
+      <div class="information__btn">
+        <button type="button" (click)="closeModal()">Aceptar</button>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 
