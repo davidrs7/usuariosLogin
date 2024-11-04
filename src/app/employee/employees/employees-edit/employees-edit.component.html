@@ -15,6 +15,10 @@
             <div [style.background-color]="employee.colorHex"></div>
             <h4>Información Académica</h4>
         </span>
+        <span class="employees-edit__filters--section" (click)="openSection('laboral')">
+          <div [style.background-color]="employee.colorHex"></div>
+          <h4>Información Laboral</h4>
+      </span>
         <span class="employees-edit__filters--section" (click)="openSection('documentacion')">
             <div [style.background-color]="employee.colorHex"></div>
             <h4>Documentación</h4>
@@ -182,15 +186,48 @@
         </div>
 
         <div class="employees-edit__information__card" *ngIf="section === 'academica'">
-            <div class="employees-edit__information__card--head">
-                <div class="employees-edit__information__card--head--info">
-                    <div class="employees-edit__information__card--head--info--name">{{ employeeAcademic.educationalLevelName }}</div>
-                    <div class="employees-edit__information__card--head--info--job">{{ employeeAcademic.career }}</div>
-                </div>
-                <div class="employees-edit__information__card--head--img" [style.border-bottom-color]="employee.colorHex">
-                    <img src="{{ employee.photoUrl }}" alt="Photo Url" [style.border-bottom-color]="employee.colorHex" />
-                </div>
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th scope="col">Nivel Educativo</th>
+                <th scope="col">Carrera</th>
+                <th scope="col">Fecha de Finalización</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employeeAcademic of employeeAcademics">
+                <td>{{ employeeAcademic.educationalLevelName }}</td>
+                <td>{{ employeeAcademic.career }}</td>
+                <td>{{ employeeAcademic.academicEndDate | date:'yyyy-MM-dd' }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+            <div class="employees-edit__information__card--btn">
+                <button (click)="editMethod()">Editar información</button>
             </div>
+        </div>
+
+        <div class="employees-edit__information__card" *ngIf="section === 'laboral'">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th scope="col">Nombre empresa </th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Fecha Ingreso</th>
+                <th scope="col">Fecha Retiro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employeeAcademic of employeeAcademics">
+                <td>Tiindux</td>
+                <td>Desarrollador</td>
+                <td>2020-08-12</td>
+                <td>2021-08-12</td>
+              </tr>
+            </tbody>
+          </table>
+
             <div class="employees-edit__information__card--btn">
                 <button (click)="editMethod()">Editar información</button>
             </div>

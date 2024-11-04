@@ -159,7 +159,6 @@ export class EmployeeService {
     return this.http.get<EmployeeAcademicDTO[]>(this.baseUrl + 'Academic/' + employeeId.toString());
   }
   deleteAcademicEndpoint(id:number){
-    console.log('eliminar servicio',id)
     return this.http.delete<any>(this.baseUrl + 'Delete/Academic/' + id);
 
   }

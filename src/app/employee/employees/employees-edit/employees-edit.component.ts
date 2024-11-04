@@ -19,7 +19,9 @@ export class EmployeesEditComponent implements OnInit {
   employee: EmployeeDTO = { id: 0, department: '', jobId: 0, statusId: 0, maritalStatusId: 0, docTypeId: 0, docIssueCityId: 0, contractTypeId: 0, jobCityId: 0, bankingEntityId: 0, doc: '', docIssueDate: new Date(), name: '', sex: '', birthDate: new Date(), rh: '', corpCellPhone: '', cellPhone: '', phone: '', email: '', employmentDate: new Date(), bankAccount: '', bankAccountType: '', hasVaccine: false, vaccineMaker: '', vaccineDose: 0, hasVaccineBooster: false, colorHex: '#000' };
   employeeGeneral: EmployeeGeneralDTO = { id: 0, employeeId: 0, cityId: 0, cityName: '', housingTypeId: 0, transportationId: 0, emergencyContactName: '', emergencyContactPhone: '', emergencyContactRelationship: '', dependents: 0, dependentsUnder9: 0, dependentBirthDate: new Date(), address: '', neighborhood: '', housingTime: 0, socioeconomicStatus: 0, licensePlate: '', vehicleMark: '', vehicleModel: '', licenseNumber: '', licenseCategory: '', licenseValidity: new Date(), soatExpirationDate: new Date(), rtmExpirationDate: new Date(), vehicleOwnerName: '', contributorType: '', eps: '', arl: '', afp: '', recommendedBy: '', description: '' };
   employeeAcademic: EmployeeAcademicDTO = { id: 0, employeeId: 0, educationalLevelId: 0, career: '' };
-  employeeAcademics: EmployeeAcademicDTO[] = [{ id: 0, employeeId: 0, educationalLevelId: 0, career: '' }];
+  employeeAcademics: EmployeeAcademicDTO[] = [];
+  employeeLabs: any[] = [];
+  employeeLab: any;
 
   employeeSkills: EmployeeSkillDTO[] = [];
   employeeKnowledges: EmployeeKnowledgeDTO[] = [];
@@ -103,12 +105,17 @@ export class EmployeesEditComponent implements OnInit {
           suscribeLoad = true;
           this.employeeService.employeeAcademicEndpoint(this.employeeId).subscribe(
             (employeeResponse: EmployeeAcademicDTO[]) => {
-              this.employeeAcademics = [...employeeResponse];
+              this.employeeAcademics = employeeResponse;
               this.canva = false;
             }
           );
         }
         break;
+        case 'laboral':
+          if(this.employeeAcademic.id == 0) {
+            console.log('info laboral');
+          }
+          break;
       case 'documentacion':
         suscribeLoad = true;
         this.treeLoad = true;
@@ -118,6 +125,16 @@ export class EmployeesEditComponent implements OnInit {
 
     if(!suscribeLoad)
       this.canva = false;
+  }
+  cargaDataAcademic(idEmployee:number){
+    this.employeeService.employeeAcademicEndpoint(idEmployee).subscribe(
+      (employeeResponse: EmployeeAcademicDTO[]) => {
+        this.employeeAcademics = employeeResponse;
+        this.canva = false;
+        setTimeout(() => {
+        }, 0.1 * 1000);
+      }
+    );
   }
 
   getGeneral() {

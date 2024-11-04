@@ -870,7 +870,6 @@ export class EmployeesAddComponent implements OnInit {
       usuarioIdOpcional: Number(idEmployee),
       estado: true,
     };
-    console.log(body);
 
     if (idusuario == 0) {
       this.usuariosService.createData('User', body).subscribe((respuesta: ApiResponse<any>) => {
@@ -889,7 +888,6 @@ export class EmployeesAddComponent implements OnInit {
     if (this.employeeId == null) {
       switch (this.section) {
         case 'basica':
-          console.log(this.employee);
           this.employeeService.addEndpoint(this.employee).subscribe(
             (employeeId: any) => {
               this.employee.id = employeeId;
@@ -969,7 +967,6 @@ export class EmployeesAddComponent implements OnInit {
   }
 
   updateEmployeeAcademic(id: number) {
-    console.log(id);
     const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-' + id) as HTMLSelectElement;
     const selectacademicEndDate = document.getElementById('academicEndDate-' + id) as HTMLSelectElement;
     const selectacacademicEmployeeCareer = document.getElementById('academicEmployeeCareer-' + id) as HTMLSelectElement;
@@ -1044,7 +1041,6 @@ export class EmployeesAddComponent implements OnInit {
         career: selectacacademicEmployeeCareer.value,
         academicEndDate: this.convertirFormatoFecha(selectacademicEndDate.value)
       }
-      console.log(body);
 
       this.addServiceAcademic(body);
       selectEducationalLevel.value = '';
