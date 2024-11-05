@@ -219,11 +219,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let employeeAcademic of employeeAcademics">
-                <td>Tiindux</td>
-                <td>Desarrollador</td>
-                <td>2020-08-12</td>
-                <td>2021-08-12</td>
+              <tr *ngFor="let employeeLab of employeeLabs">
+                <td>{{employeeLab.companyName}}</td>
+                <td>{{employeeLab.jobTitle}}</td>
+                <td>{{employeeLab.startDate |  date:'yyyy-MM-dd'}}</td>
+                <td>{{employeeLab.endDate |  date:'yyyy-MM-dd' }}</td>
               </tr>
             </tbody>
           </table>

@@ -81,7 +81,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    
+
                     <div class="assign-postulates-action information__btn">
                         <button type="button" (click)="savePostulates()">Asignar postulados</button>
                     </div>
@@ -93,6 +93,8 @@
                             <tr>
                                 <th>Postulado</th>
                                 <th>Información complementaria</th>
+                                <th>Fecha postulación</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -130,6 +132,8 @@
                                         <div class="assign-postulates-table-info-desc" *ngIf="postulate.description != null && postulate.description != ''">{{ postulate.description }}</div>
                                     </div>
                                 </td>
+                                <td>{{findDateVacant(postulate.id) | date:'yyyy-MM-dd'}}</td>
+                                <td>{{findStatusVacant(postulate.id)}}</td>
                                 <td class="action">
                                     <span ngbTooltip="Ir al detalle del postulado" class="fa-solid fa-arrow-right action-button" (click)="openPostulate(postulate.id)"></span>
                                 </td>
@@ -143,7 +147,7 @@
             </div>
         </div>
     </div>
-                    
+
     <div class="information__btn">
         <button type="button" (click)="cancel()">Volver a la lista</button>
     </div>

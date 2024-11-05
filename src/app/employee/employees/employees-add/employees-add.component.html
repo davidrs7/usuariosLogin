@@ -1,10 +1,10 @@
 <app-navigation></app-navigation>
 <div class="employees-edit background-right">
   <div class="employees-edit__filters" *ngIf="employeeId == null">
-    <h4 class="employees-edit__filters--title">Agregar nuevo funcionario</h4>
-    <h4 [style.border-bottom-style]="section === 'basica' ? 'solid' : 'none'">Información Básica</h4>
-    <h4 [style.border-bottom-style]="section === 'general' ? 'solid' : 'none'">Información General</h4>
-    <h4 [style.border-bottom-style]="section === 'academica' ? 'solid' : 'none'">Información Academica</h4>
+    <h4 [style.border-bottom-style]="section === 'basica' ? 'solid' : 'none'">Info. Básica</h4>
+    <h4 [style.border-bottom-style]="section === 'general' ? 'solid' : 'none'">Info. General</h4>
+    <h4 [style.border-bottom-style]="section === 'academica' ? 'solid' : 'none'">Info. Academica</h4>
+    <h4 [style.border-bottom-style]="section === 'laboral' ? 'solid' : 'none'">Info. Laboral</h4>
     <h4 [style.border-bottom-style]="section === 'documentacion' ? 'solid' : 'none'">Documentación</h4>
   </div>
   <div class="employees-edit__information">
@@ -712,8 +712,10 @@
     </form>
 
     <!--Academic-->
-    <form [formGroup]="formAcademic" *ngIf="section === 'academica'" >
+    <form [formGroup]="formAcademic" *ngIf="section === 'academica'">
       <div class="container">
+        <h1 style="text-align : center">Información academica</h1>
+        <hr>
         <table class="table">
           <thead>
             <tr>
@@ -752,7 +754,7 @@
                 </button>
               </td>
               <td>
-                <button (click)="deleteAcademic(registro.id)">
+                <button (click)="deleteAcademic(registro.id)" class = "eliminar">
                   <i class="fa fa-trash"></i>
                 </button>
               </td>
@@ -785,12 +787,87 @@
             </tr>
           </tbody>
         </table>
-      <button type="button" (click)="cancel()">regresar</button>
-      <button type="button" (click)="saveAndNext()" *ngIf="continuaDoc" >continuar</button>
+        <button type="button" (click)="cancel()">regresar</button>
+        <button type="button" (click)="saveAndNext()" *ngIf="continuaDoc">continuar</button>
 
 
       </div>
     </form>
+
+    <!--Employment-->
+    <form [formGroup]="formEmployment" *ngIf="section === 'laboral'">
+      <div class="container">
+        <h1 style="text-align : center">Información Laboral</h1>
+        <hr>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Cargo</th>
+              <th>Fecha Ingreso</th>
+              <th>Fecha Retiro</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let registro of employmentInformation">
+              <td>
+                <input type="text" formControlName="companyName" name="companyName"
+                  id="employmentCompanyName-{{ registro.id }}" />
+              </td>
+              <td>
+                <input type="text" formControlName="jobTitle" name="jobTitle"
+                  id="employmentJobTitle-{{ registro.id }}" />
+              </td>
+              <td>
+                <input type="date" formControlName="startDate" name="startDate"
+                  id="employmentStartDate-{{ registro.id }}"/>
+              </td>
+              <td>
+                <input type="date" formControlName="endDate" name="endDate" id="employmentEndDate-{{ registro.id }}"/>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button (click)="updateEmploymentInformation(registro.id)" title="Editar">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button (click)="deleteEmploymentInformation(registro.id)" title="Eliminar"
+                     class="eliminar">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="text" formControlName="companyName" name="companyName" id="employmentCompanyName-new"
+                  placeholder="Nombre de la empresa" />
+              </td>
+              <td>
+                <input type="text" formControlName="jobTitle" name="jobTitle" id="employmentJobTitle-new"
+                  placeholder="Cargo" />
+              </td>
+              <td>
+                <input type="date" formControlName="startDate" name="startDate" id="employmentStartDate-new" />
+              </td>
+              <td>
+                <input type="date" formControlName="endDate" name="endDate" id="employmentEndDate-new" />
+              </td>
+              <td>
+                <button class="agregar" (click)="addEmploymentInformation()" title="Agregar">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-between mt-3">
+          <button type="button" (click)="cancel()">Regresar</button>
+          <button type="button" (click)="saveAndNext()" *ngIf="continuaDoc">Continuar</button>
+        </div>
+      </div>
+    </form>
+
 
     <!--Documents-->
     <form [formGroup]="formDocument" (ngSubmit)="validateFormDocument()">

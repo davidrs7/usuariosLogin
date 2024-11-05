@@ -38,7 +38,7 @@ export class EmployeesAddComponent implements OnInit {
   employeeAcademic: EmployeeAcademicDTO = { id: 0, employeeId: 0, educationalLevelId: 0, career: '' };
   employeeAcademics: EmployeeAcademicDTO[] = [];
   employeeFile: EmployeeFileDTO = { id: 0, employeeId: 0, department: '', name: '', city: '', level1: '', level2: '', level3: '', fileName: '', url: '' }
-
+  employmentInformation: any[] = [];
   employeeSkills: EmployeeSkillDTO[] = [];
   employeeKnowledges: EmployeeKnowledgeDTO[] = [];
   paramEmployees: EmployeeBasicDTO[] = [];
@@ -62,17 +62,19 @@ export class EmployeesAddComponent implements OnInit {
   employeeSonsAge: EmployeeSonsDTO[] = [];
   employeeSonData: EmployeeSonsDTO[] = [];
   usuarios: any[] = [];
-  AcademicVar:boolean = false;
+  AcademicVar: boolean = false;
 
   errors: AdminMsgErrors = new AdminMsgErrors();
   formBasic!: FormGroup;
   formGeneral!: FormGroup;
   formAcademic!: FormGroup;
+  formEmployment!: FormGroup;
   formDocument!: FormGroup;
   sonForm!: FormGroup;
   bornDate!: string | null;
   formGroup: FormGroup;
-  constructor(private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
+  userIdEmployee: any;
+  constructor(private loginServices: loginTiinduxService, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
     private employeeService: EmployeeService, private usuariosService: loginTiinduxService, private jobService: JobService, private paramsService: ParamsService, private fb: FormBuilder, public datepipe: DatePipe) {
     this.formGroup = this.fb.group({
       academics: this.fb.array([])
@@ -84,6 +86,7 @@ export class EmployeesAddComponent implements OnInit {
     this.initFormBasic();
     this.initFormGeneral();
     this.initFormAcademic();
+    this.initFormEmployment();
     this.initFormDocument();
     this.initSonForm(this.fb);
 
@@ -155,10 +158,21 @@ export class EmployeesAddComponent implements OnInit {
   get soatExpirationDate() { return this.formGeneral.get('soatExpirationDate'); }
   get rtmExpirationDate() { return this.formGeneral.get('rtmExpirationDate'); }
   get vehicleOwnerName() { return this.formGeneral.get('vehicleOwnerName'); }
-  get contributorType() { return this.formGeneral.get('contributorType'); }
+  get companyName() { return this.formGeneral.get('companyName'); }
+  get jobTitle() { return this.formGeneral.get('jobTitle'); }
+  get startDate() { return this.formGeneral.get('startDate'); }
+  get endDate() { return this.formGeneral.get('endDate'); }
   get academicsControls() {
     return (this.formGroup.get('academics') as FormArray).controls;
   }
+
+  get employmentControls() {
+    return (this.formGroup.get('academics') as FormArray).controls;
+  }
+
+
+  get contributorType() { return this.formGeneral.get('contributorType'); }
+
 
   initSonForm(fb: FormBuilder) {
     this.sonForm = this.fb.group(
@@ -174,17 +188,17 @@ export class EmployeesAddComponent implements OnInit {
   initFormBasic() {
     this.formBasic = new FormGroup({
       name: new FormControl(null, Validators.required),
-      jobId: new FormControl(null,Validators.required),
-      docTypeId: new FormControl(null,Validators.required),
-      doc: new FormControl(null,[Validators.required,Validators.pattern('^[0-9]*$')]),
-      docIssueCityId: new FormControl(null,Validators.required),
-      docIssueDate: new FormControl(null,Validators.required),
+      jobId: new FormControl(null, Validators.required),
+      docTypeId: new FormControl(null, Validators.required),
+      doc: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
+      docIssueCityId: new FormControl(null, Validators.required),
+      docIssueDate: new FormControl(null, Validators.required),
       phone: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
       cellPhone: new FormControl(null, [Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
       corpCellPhone: new FormControl(null, [Validators.pattern('^[0-9]*$'), Validators.min(3000000000), Validators.max(9999999999)]),
-      email: new FormControl(null, [Validators.required,Validators.email]),
-      sex: new FormControl(null,Validators.required),
-      birthDate: new FormControl(null,Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      sex: new FormControl(null, Validators.required),
+      birthDate: new FormControl(null, Validators.required),
       rh: new FormControl(null),
       maritalStatusId: new FormControl(null),
       contractTypeId: new FormControl(null),
@@ -242,6 +256,19 @@ export class EmployeesAddComponent implements OnInit {
       EndDate: new FormControl('')
     });
   }
+
+  initFormEmployment() {
+    this.formEmployment = new FormGroup({
+      id: new FormControl(null),
+      companyName: new FormControl(null),
+      jobTitle: new FormControl(null),
+      employeeId: new FormControl(null),
+      startDate: new FormControl(''),
+      endDate: new FormControl(''),
+    });
+  }
+
+
 
   initFormDocument() {
     this.formDocument = new FormGroup({
@@ -311,6 +338,33 @@ export class EmployeesAddComponent implements OnInit {
     this.contributorType?.setValue(this.employeeGeneral.contributorType);
   }
 
+  setValuesEmployment(employeeEmployment: any[]) {
+    for (let i = 0; i < employeeEmployment.length; i++) {
+      const inputCompanyName = document.getElementById('employmentCompanyName-' + employeeEmployment[i].id) as HTMLInputElement;
+      const inputJobTitle = document.getElementById('employmentJobTitle-' + employeeEmployment[i].id) as HTMLInputElement;
+      const inputStartDate = document.getElementById('employmentStartDate-' + employeeEmployment[i].id) as HTMLInputElement;
+      const inputEndDate = document.getElementById('employmentEndDate-' + employeeEmployment[i].id) as HTMLInputElement;
+
+      if (inputCompanyName) {
+        inputCompanyName.value = employeeEmployment[i].companyName;
+      }
+      if (inputJobTitle) {
+        inputJobTitle.value = employeeEmployment[i].jobTitle;
+      }
+      if (inputStartDate) {
+        const startDate = new Date(employeeEmployment[i].startDate);
+        const formattedStartDate = startDate.toISOString().split('T')[0];
+        inputStartDate.value = formattedStartDate;
+      }
+      if (inputEndDate) {
+        const endDate = new Date(employeeEmployment[i].endDate);
+        const formattedEndDate = endDate.toISOString().split('T')[0];
+        inputEndDate.value = formattedEndDate;
+      }
+    }
+  }
+
+
   setValuesFormAcademic(employeeAcademics: EmployeeAcademicDTO[]) {
     for (let i: number = 0; i < employeeAcademics.length; i++) {
       const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-' + employeeAcademics[i].id) as HTMLSelectElement;
@@ -332,11 +386,15 @@ export class EmployeesAddComponent implements OnInit {
 
   }
 
+
   setValuesFormDocument() {
     this.level1?.setValue(null);
     this.level2?.setValue(null);
     this.filesRel = [{ level: '' }];
   }
+
+
+  /* End employment */
 
   openSection(section: String) {
     var suscribeLoad = false;
@@ -395,7 +453,7 @@ export class EmployeesAddComponent implements OnInit {
         this.AcademicVar = true;
         this.employeeAcademics = [];
         if (this.employeeId != null) {
-        this.cargarinfoEmployee();
+          this.cargarinfoEmployee();
         } else {
           this.ObtenerIdUser(this.employee.id)
         }
@@ -408,6 +466,14 @@ export class EmployeesAddComponent implements OnInit {
         );
 
         suscribeLoad = true;
+        break;
+      case 'laboral':
+
+        if (this.employeeId != null) {
+          this.cargarinfoEmplyment(this.employeeId);
+        } else {
+          this.ObtenerIdUserEmployment(this.employee.id)
+        }
         break;
       case 'documentacion':
         this.employeeService.fileTypesEndpoint().subscribe(
@@ -445,7 +511,7 @@ export class EmployeesAddComponent implements OnInit {
       this.canva = false;
   }
 
-  cargaDataAcademic(idEmployee:number){
+  cargaDataAcademic(idEmployee: number) {
     this.employeeService.employeeAcademicEndpoint(idEmployee).subscribe(
       (employeeResponse: EmployeeAcademicDTO[]) => {
         this.employeeAcademics = this.errors.transformObjectToValidSetter(employeeResponse);
@@ -458,15 +524,36 @@ export class EmployeesAddComponent implements OnInit {
   }
 
 
-  ObtenerIdUser(idEmployee:number){
+  ObtenerIdUser(idEmployee: number) {
     this.usuariosService.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
+      this.userIdEmployee = respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId
       this.cargaDataAcademic(respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId);
       this.canva = false;
       this.continuaDoc = true;
     });
   }
+  ObtenerIdUserEmployment(idEmployee: number) {
 
-  cargarinfoEmployee(){
+    this.usuariosService.GetAllData<any>('User').subscribe((respuesta: ApiResponse<any>) => {
+      this.userIdEmployee = respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId;
+      this.cargarinfoEmplyment(respuesta.data.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId);
+      this.canva = false;
+      this.continuaDoc = true;
+    });
+  }
+
+  cargarinfoEmplyment(employeeId: number) {
+
+    this.loginServices.getDatabyId<any>('EmploymentInformation', employeeId).subscribe((respuesta: any) => {
+      this.employmentInformation = respuesta;
+      setTimeout(() => {
+        this.setValuesEmployment(this.employmentInformation)
+      }, 0.1 * 1000);
+    }
+    );
+  }
+
+  cargarinfoEmployee() {
     this.employeeService.employeeEndpoint(this.employeeId).subscribe(
       (employeeResponse: EmployeeDTO) => {
         this.employee = this.errors.transformObjectToValidSetter(employeeResponse);
@@ -860,7 +947,7 @@ export class EmployeesAddComponent implements OnInit {
       contraseña: usuario.doc.toString(),
       telefono: usuario.cellPhone.toString(),
       direccion: "",
-      fechaNacimiento: usuario.birthDate.length > 0 ? usuario.birthDate : this.obtenerFechaActual() ,
+      fechaNacimiento: usuario.birthDate.length > 0 ? usuario.birthDate : this.obtenerFechaActual(),
       fechaCreacion: usuario.docIssueDate > 0 ? usuario.docIssueDate : this.obtenerFechaActual(),
       sexoId: Number(this.paramSex.filter(x => x.name == sexDefault)[0].id),
       jefeId: Number(1),
@@ -910,8 +997,12 @@ export class EmployeesAddComponent implements OnInit {
           );
           break;
         case 'academica':
-        this.AcademicVar = true;
-        this.openSection('documentacion');
+          this.AcademicVar = true;
+          this.openSection('laboral');
+          break;
+        case 'laboral':
+          this.AcademicVar = true;
+          this.openSection('documentacion');
           break;
         case 'documentacion':
           this.saveDocument();
@@ -940,7 +1031,7 @@ export class EmployeesAddComponent implements OnInit {
           );
           break;
         case 'academica':
-        this.AcademicVar = true;
+          this.AcademicVar = true;
           this.employeeAcademic.employeeId = this.employeeId
           this.employeeService.editAcademicEndpoint(this.employeeAcademic).subscribe(
             (rsp: any) => {
@@ -966,6 +1057,109 @@ export class EmployeesAddComponent implements OnInit {
     }
   }
 
+  addEmploymentInformation(): void {
+    const inputCompanyName = document.getElementById('employmentCompanyName-new') as HTMLInputElement;
+    const inputJobTitle = document.getElementById('employmentJobTitle-new') as HTMLInputElement;
+    const inputStartDate = document.getElementById('employmentStartDate-new') as HTMLInputElement;
+    const inputEndDate = document.getElementById('employmentEndDate-new') as HTMLInputElement;
+    let campoVacio = "";
+    if (!inputCompanyName.value) {
+      campoVacio += " -Nombre empresa";
+    }
+    if (!inputJobTitle.value) {
+      campoVacio += " -Cargo";
+    }
+    if (!inputStartDate.value) {
+      campoVacio += " -Fecha ingreso";
+    }
+    if (!inputEndDate.value) {
+      campoVacio += " -Fecha Retiro";
+    }
+
+    if (campoVacio.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: "Por favor diligencia los siguientes campos:",
+        text: campoVacio
+      })
+    } else {
+      const body: any = {
+        id: 0,
+        companyName: inputCompanyName.value,
+        employeeId: Number(this.employeeId || this.userIdEmployee),
+        jobTitle: inputJobTitle.value,
+        startDate: this.convertirFormatoFecha(inputStartDate.value),
+        endDate: this.convertirFormatoFecha(inputEndDate.value),
+      }
+      this.addServiceEmployment(body);
+      inputCompanyName.value = "";
+      inputJobTitle.value = "";
+      inputStartDate.value = "";
+      inputEndDate.value = "";
+      this.openSection('laboral');
+    }
+
+  }
+  addServiceEmployment(body: any) {
+    this.loginServices.createData('EmploymentInformation', body).subscribe(
+      (respuesta: any) => {
+        if (respuesta.estado.codigo == "200") {
+          this.openSection('laboral');
+        }
+      }
+    );
+  }
+
+
+  deleteEmploymentInformation(id: number): void {
+    this.loginServices.eliminarDato('EmploymentInformation', id).subscribe(
+      (respuesta: any) => {
+        if (respuesta.estado.codigo == "200") {
+          this.openSection('laboral');
+        }
+      }
+    );
+  }
+
+  updateEmploymentInformation(id: number): void {
+    const inputCompanyName = document.getElementById('employmentCompanyName-' + id) as HTMLInputElement;
+    const inputJobTitle = document.getElementById('employmentJobTitle-' + id) as HTMLInputElement;
+    const inputStartDate = document.getElementById('employmentStartDate-' + id) as HTMLInputElement;
+    const inputEndDate = document.getElementById('employmentEndDate-' + id) as HTMLInputElement;
+    let campoVacio = "";
+    if (!inputCompanyName.value) {
+      campoVacio += " -Nombre empresa";
+    }
+    if (!inputJobTitle.value) {
+      campoVacio += " -Cargo";
+    }
+    if (!inputStartDate.value) {
+      campoVacio += " -Fecha ingreso";
+    }
+    if (!inputEndDate.value) {
+      campoVacio += " -Fecha Retiro";
+    }
+
+    if (campoVacio.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: "Por favor diligencia los siguientes campos:",
+        text: campoVacio
+      })
+    } else {
+      const body: any = {
+        id: id,
+        companyName: inputCompanyName.value,
+        employeeId: Number(this.employmentInformation[0].employeeId),
+        jobTitle: inputJobTitle.value,
+        startDate: this.convertirFormatoFecha(inputStartDate.value),
+        endDate: this.convertirFormatoFecha(inputEndDate.value),
+      }
+      this.updateServiceEmployment(body);
+    }
+
+  }
+
   updateEmployeeAcademic(id: number) {
     const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-' + id) as HTMLSelectElement;
     const selectacademicEndDate = document.getElementById('academicEndDate-' + id) as HTMLSelectElement;
@@ -989,7 +1183,7 @@ export class EmployeesAddComponent implements OnInit {
       })
     } else {
 
-      const body: EmployeeAcademicDTO  = {
+      const body: EmployeeAcademicDTO = {
         id: id,
         employeeId: this.employeeAcademics[0].employeeId,
         educationalLevelId: Number(selectEducationalLevel.value),
@@ -1001,14 +1195,27 @@ export class EmployeesAddComponent implements OnInit {
 
 
   }
-  updateServiceAcademic(body:EmployeeAcademicDTO){
+  updateServiceAcademic(body: EmployeeAcademicDTO) {
     this.employeeService.editAcademicEndpoint(body).subscribe(
       (employeeAcademicId: any) => {
         this.employeeAcademic.id = employeeAcademicId;
         this.openSection('academica');
       }
     );
-}
+  }
+
+  updateServiceEmployment(body: any) {
+    this.loginServices.UpdateData('EmploymentInformation', body.id, body).subscribe(
+      (respuesta: any) => {
+        if (respuesta.estado.codigo == "200") {
+          this.openSection('laboral');
+        }
+      }
+    );
+  }
+
+
+
 
   addAcademic() {
     const selectEducationalLevel = document.getElementById('academicEmployeeEducationalLevelId-new') as HTMLSelectElement;
@@ -1033,8 +1240,8 @@ export class EmployeesAddComponent implements OnInit {
         text: campoVacio
       })
     } else {
-      let  employeeId = 0;
-      const body: EmployeeAcademicDTO  = {
+      let employeeId = 0;
+      const body: EmployeeAcademicDTO = {
         id: 0,
         employeeId: this.employee.id,
         educationalLevelId: Number(selectEducationalLevel.value),
@@ -1049,22 +1256,22 @@ export class EmployeesAddComponent implements OnInit {
 
     }
   }
-  addServiceAcademic(body:EmployeeAcademicDTO){
-      this.employeeService.addAcademicEndpoint(body).subscribe(
-        (employeeAcademicId: any) => {
-          this.employeeAcademic.id = employeeAcademicId;
-          this.openSection('academica');
-        }
-      );
+  addServiceAcademic(body: EmployeeAcademicDTO) {
+    this.employeeService.addAcademicEndpoint(body).subscribe(
+      (employeeAcademicId: any) => {
+        this.employeeAcademic.id = employeeAcademicId;
+        this.openSection('academica');
+      }
+    );
   }
-  deleteAcademic(id:number){
+  deleteAcademic(id: number) {
     this.employeeService.deleteAcademicEndpoint(id).subscribe(
       (employeeAcademicId: any) => {
         this.openSection('academica');
       }
     );
   }
- /* ------- Fechas --------- */
+  /* ------- Fechas --------- */
   obtenerFechaActual(): string {
     const fechaActual: Date = new Date();
     const fechaFormateada: string = `${fechaActual.getFullYear()}-${this.dosDigitos(fechaActual.getMonth() + 1)}-${this.dosDigitos(fechaActual.getDate())}`;

@@ -4,6 +4,8 @@ import { TreeComponent, TreeNode } from '@circlon/angular-tree-component';
 import { EmployeeDTO, EmployeeSkillDTO, EmployeeKnowledgeDTO, EmployeeGeneralDTO, EmployeeAcademicDTO, EmployeeFileTypeDTO, EmployeeFileDTO, EmployeeSonsDTO } from '../../../dto/employee/employee.dto';
 import { NodeIndex, NodeTree } from '../../../dto/utils.dto';
 import { EmployeeService } from '../../../_services/employee/employee.service';
+import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
+import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
 
 
 @Component({
@@ -38,7 +40,7 @@ export class EmployeesEditComponent implements OnInit {
   @ViewChild(TreeComponent)
   private treeComponent!: TreeComponent;
 
-  constructor(private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private loginServices: loginTiinduxService, private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.employeeId = this.route.snapshot.paramMap.get("id");
@@ -113,8 +115,10 @@ export class EmployeesEditComponent implements OnInit {
         break;
         case 'laboral':
           if(this.employeeAcademic.id == 0) {
-            console.log('info laboral');
-          }
+            this.loginServices.getDatabyId<any>('EmploymentInformation',this.employeeId).subscribe((respuesta: any) => {
+              this.employeeLabs = respuesta;
+            });
+          };
           break;
       case 'documentacion':
         suscribeLoad = true;

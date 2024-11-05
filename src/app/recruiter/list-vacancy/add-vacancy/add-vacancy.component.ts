@@ -29,7 +29,7 @@ export class AddVacancyComponent implements OnInit {
   paramContractType: ParamsDTO[] = [];
   paramVacantStatus: ParamsDTO[] = [];
   stepList: StepDTO[] = [];
-  
+
   stepsSelectedError: boolean = false;
   errors: AdminMsgErrors = new AdminMsgErrors();
   vacant: VacantDTO = { id: 0, vacantStatusId: 0, contractTypeId: 0, jobId: 0, userId: 1, vacantNum: 0, description: '' };
@@ -38,7 +38,15 @@ export class AddVacancyComponent implements OnInit {
   constructor(private modalService: NgbModal, private router: Router, private route: ActivatedRoute, private stepService: StepService, private vacantService: VacantService, private jobService: JobService, private paramsService: ParamsService) { }
 
   ngOnInit(): void {
+
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    const inputCreatedVacant = document.getElementById('createdVacant') as HTMLInputElement;
+    if (inputCreatedVacant) {
+      inputCreatedVacant.value = formattedDate;
+    }
     this.initFormVacant();
+
 
     this.vacantId = this.route.snapshot.paramMap.get("id");
     if(this.vacantId != null) {
@@ -47,7 +55,7 @@ export class AddVacancyComponent implements OnInit {
       this.vacantId = -1;
       this.initStepList();
     }
-    
+
     this.initParams();
   }
 
@@ -268,7 +276,7 @@ export class AddVacancyComponent implements OnInit {
   saveVacantSteps() {
     for(var i = 0; i < this.stepList.length; i++)
       if(this.stepList[i].vacantId != null && this.stepList[i].vacantId != 0) {
-        this.stepList[i].vacantId = this.vacantId; 
+        this.stepList[i].vacantId = this.vacantId;
         this.vacantService.mergeVacantStepRelEndpoint(this.stepList[i]).subscribe();
       }
   }

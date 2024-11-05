@@ -17,6 +17,9 @@ export class AssignPostulatesComponent implements OnInit {
   vacant: VacantDTO = { id: 0, vacantStatusId: 0, contractTypeId: 0, jobId: 0, userId: 1, vacantNum: 0, description: '' };
   postulates: PostulateBasicDTO[] = [];
   postulatesSelected: PostulateBasicDTO[] = [];
+  vacantsByPostulate: VacantDTO[];
+
+
 
   constructor(private router: Router, private route: ActivatedRoute, private vacantService: VacantService, private postulateService: PostulateService) { }
 
@@ -43,8 +46,11 @@ export class AssignPostulatesComponent implements OnInit {
   initPostulates() {
     this.postulateService.postulateAllEndpoint().subscribe(
       (postulatesResult: PostulateBasicDTO[]) => {
+
         this.vacantService.vacantsByPostulateRelEndpoint(this.vacantId).subscribe(
           (vacantRelResult: VacantDTO[]) => {
+            console.log(vacantRelResult);
+            this.vacantsByPostulate = vacantRelResult;
             this.postulates = [];
             var findRel: boolean;
 
@@ -62,11 +68,21 @@ export class AssignPostulatesComponent implements OnInit {
                 this.postulates.push(postulate);
               }
             }
+            console.log('postulate', this.postulatesSelected)
             this.canva = false;
           }
         );
       }
     );
+  }
+
+
+  findDateVacant(idPostulate: number){
+    return this.vacantsByPostulate.filter(x => x.postulateId == idPostulate)[0].created
+  }
+
+  findStatusVacant(idPostulate: number){
+    return this.vacantsByPostulate.filter(x => x.postulateId == idPostulate)[0].vacantStatusName
   }
 
   openPostulate(postulateId: number) {

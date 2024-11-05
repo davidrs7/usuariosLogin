@@ -175,5 +175,13 @@
 
 
 .agregar{
-  background-color: green;
+  background-color: #04b904;
+}
+.eliminar{
+  background-color: #d11e1e;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 8px;
 }
