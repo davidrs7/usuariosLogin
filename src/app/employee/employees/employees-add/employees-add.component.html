@@ -920,10 +920,10 @@
           <!-- <ul *ngIf="errors.validate(document)"><li *ngFor="let message of errors.getErrors(document)">{{ message }}</li></ul> -->
         </div>
         <div class="employees-edit__information--document--btn information__btn">
-          <button type="submit" *ngIf="employeeGeneral.cityName != '' && employee.name != ''">Guardar y
+          <button type="submit" *ngIf="employee.name != ''">Guardar y
             Continuar</button>
           <button type="submit" (click)="toggleCancelDocument()"
-            *ngIf="employeeGeneral.cityName != '' && employee.name != ''">Guardar y Salir</button>
+            *ngIf="employee.name != ''">Guardar y Salir</button>
           <button type="button" (click)="cancel()">Cancelar</button>
         </div>
       </div>

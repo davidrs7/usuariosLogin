@@ -200,7 +200,8 @@ export class EmployeeService {
     var formData = new FormData();
     formData.append("employeeId", employeeFile.employeeId.toString());
     formData.append("department", employeeFile.department);
-    formData.append("city", employeeFile.city);
+    //formData.append("city", employeeFile.city);
+    formData.append("city", "integracion");
     formData.append("level1", employeeFile.level1);
     formData.append("level2", employeeFile.level2);
     formData.append("level3", employeeFile.level3);

@@ -119,7 +119,6 @@ export class NavigationComponent implements OnInit {
   }
 
   sessionValidate() {
-    debugger
     if (localStorage.getItem('SESSL') != '1') {
       this.router.navigateByUrl('');
     } else {
