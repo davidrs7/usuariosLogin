@@ -166,7 +166,7 @@ export class EmployeesEditComponent implements OnInit {
           this.treeIndex = {};
 
           for(var i = 0; i < this.employeeFiles.length; i++) {
-            var key = this.employeeFiles[i].department + '-' + this.employeeFiles[i].city + '-' + this.employeeFiles[i].name + '-' + this.employeeFiles[i].level1;
+            var key = this.employeeFiles[i].department + '-'  + '-' + this.employeeFiles[i].name + '-' + this.employeeFiles[i].level1;
             if(this.employeeFiles[i].level2 != '' && this.employeeFiles[i].level2 != 'null')
               key += '-' + this.employeeFiles[i].level2;
             if(this.employeeFiles[i].level3 != '' && this.employeeFiles[i].level3 != 'null')
@@ -243,6 +243,7 @@ export class EmployeesEditComponent implements OnInit {
   }
 
   treeFilesNotFound() {
+    console.log(this.treeIndex);
     var addTree: NodeTree[] = [];
     for(const index in this.treeIndex)
       if(!this.treeIndex[index].found && this.treeIndex[index].children != undefined && this.treeIndex[index].children.length > 0) {
