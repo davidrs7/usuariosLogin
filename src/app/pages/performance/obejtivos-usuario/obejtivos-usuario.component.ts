@@ -90,9 +90,9 @@ export class ObejtivosUsuarioComponent implements OnInit {
       this.cargaUsuariosPromise(this.idusuario);
 
     });
-    
 
-    /* 
+
+    /*
     await this.loginServices.getDatabyId<any>('User', this.idusuario).subscribe((respuesta: ApiResponse<any>) => {
       if (this.usuarios.filter(x => x.usuarioId == this.idusuario).length == 0) {
         this.usuarios.push(respuesta.data);
@@ -115,7 +115,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.loginServices.getDatabyId<any>('User', iduser).subscribe(
         (respuesta: ApiResponse<any>) => {
-          if (this.usuarios.filter(x => x.usuarioId == iduser).length == 0) {           
+          if (this.usuarios.filter(x => x.usuarioId == iduser).length == 0) {
             this.usuarios.push(respuesta.data);           }
           resolve();
         },
@@ -130,9 +130,9 @@ export class ObejtivosUsuarioComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.loginServices.getDatabyId<any>('User', iduser).subscribe(
         (respuesta: ApiResponse<any>) => {
-          if (this.usuariosJefe.filter(x => x.usuarioId == iduser).length == 0) { 
+          if (this.usuariosJefe.filter(x => x.usuarioId == iduser).length == 0) {
               this.usuariosJefe = [];
-              this.usuariosJefe.push(respuesta.data); 
+              this.usuariosJefe.push(respuesta.data);
           }
           resolve();
         },
@@ -296,7 +296,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
       return false;
     }
     // david, descomentar para implementar OKR's por petición de TM se cambia funcionalidad OKRs.
-    /* 
+
     else if (!this.propietario && !this.cargoToEdit) {
       Swal.fire({
         icon: 'info',
@@ -304,7 +304,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
         text: 'No puedes crear acciones, selecciona una accion para calificar'
       });
       return false;
-    } */ 
+    }
     else { return true }
   }
 
@@ -350,7 +350,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.ponderacionTotal = this.objetivos.reduce((total, objetivo) => total + objetivo.peso, 0);
   }
 
-  async abrirModal(objetivo: any) { 
+  async abrirModal(objetivo: any) {
     this.calificacionObjetivo = 0;
     this.objetivo = objetivo;
     this.acciones = true
@@ -358,11 +358,11 @@ export class ObejtivosUsuarioComponent implements OnInit {
     this.objetivotitulo = this.objetivo.titulo
 
     await this.loginServices.getUsersByBoss<any>('AccionesObjetivos/xIduser', this.usuario.usuarioId).subscribe((respuesta: ApiResponse<any>) => {
-      this.accionesObjetivo = respuesta.data; 
+      this.accionesObjetivo = respuesta.data;
         this.accionesObjetivoSel = this.accionesObjetivo.filter(x => x.idObjetivo == objetivo.id && x.idUsuario == this.usuario.usuarioId)
       if (this.accionesObjetivoSel.length > 0) {
         this.calificaObjetivo(this.accionesObjetivoSel);
-        this.editarAccion(this.accionesObjetivoSel[0].id); // solamente una accion para TM - eliminar esta linea para retomar varias acciones por objetivos.
+        //this.editarAccion(this.accionesObjetivoSel[0].id); // solamente una accion para TM - eliminar esta linea para retomar varias acciones por objetivos.
       }
     });
 
@@ -403,7 +403,7 @@ export class ObejtivosUsuarioComponent implements OnInit {
     if (contadorEvidencias > 0) {
       mensaje = { mensaje: "Se deben subir las evidencias", leido: false }
       this.mensajesNotificacion.push(mensaje);
-    }*/ 
+    }*/
     if (contador > 0 && contadorcalificaciones == 0) {
       mensaje = { mensaje: "Todos los objetivos se han calificado", leido: false }
       this.mensajesNotificacion.push(mensaje);
@@ -429,19 +429,19 @@ export class ObejtivosUsuarioComponent implements OnInit {
 
   async cargarObjetivosxUser(usuarioId: number) {
     await this.loginServices.getObjetivosbyId<any>('Objetivos', usuarioId).subscribe((respuesta: ApiResponse<any>) => {
- 
+
       this.asignarObjetivos(respuesta.data);
 
     })
   }
 
-  async rolSelect(event: any) { 
+  async rolSelect(event: any) {
     this.mensajesNotificacion = [];
     this.contadorMensajes = 0;
     this.acciones = false
     const idseleccionado = event?.target?.value;
     this.usuario = this.usuarios.filter(x => x.usuarioId == idseleccionado)[0];
-     
+
     this.cargarObjetivosxUser(idseleccionado);
     await this.cargaUsuariosJefePromise(this.usuario.jefeId);
 

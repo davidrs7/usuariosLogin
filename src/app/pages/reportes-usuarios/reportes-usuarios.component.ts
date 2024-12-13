@@ -22,6 +22,7 @@ interface ReporteObjetivos {
   descripcion: string;
   peso: number;
   accion: string;
+  porcentajeAvanceAccion: string;
   estado: string;
   calificacion: number;
 }
@@ -121,25 +122,33 @@ export class ReportesUsuariosComponent implements OnInit {
       if (objetivo.length > 0) {
         objetivo.forEach(objetivos => {
           const accionesxObjetivo = this.encontrarAccionesObjetivoPorId(objetivos.id);
-          const estadoAccionesObjetivo = accionesxObjetivo ? this.encontrarEstadoAccionPorId(accionesxObjetivo.idEstado).estado : 'N/A'
+          debugger;
+          if (accionesxObjetivo.length > 0) {
+            accionesxObjetivo.forEach(accion => {
+              const estadoAccionesObjetivo =  this.encontrarEstadoAccionPorId(accion.idEstado)?.estado || 'N/A';
+              reporteObjetivos.push({
+                usuario: usuario.nombre,
+                tipo_documento: tipoDocumento ? tipoDocumento.descripcion : '',
+                documento: usuario.numDocumento,
+                correo: usuario.correoElectronico,
+                cargo: cargo ? cargo.nombre : '',
+                rol: rol ? rol.nombre : '',
+                nombre_lider: lider ? lider.nombre : '',
+                objetivo: objetivos ? objetivos.titulo : '',
+                fechaInicio : objetivos ? objetivos.fechaInicio : '',
+                fechaFin : objetivos ? objetivos.fechaFin : '',
+                descripcion: objetivos ? objetivos.descripcion : '',
+                peso: objetivos ? objetivos.peso : 0,
+                accion: accionesxObjetivo ? accion.descripcion : '',
+                porcentajeAvanceAccion: accionesxObjetivo ? accion.evidencia:'',
+                estado: estadoAccionesObjetivo,
+                calificacion: accionesxObjetivo ? accion.calificacion : '',
+              });
+            });
+          }
 
-          reporteObjetivos.push({
-            usuario: usuario.nombre,
-            tipo_documento: tipoDocumento ? tipoDocumento.descripcion : '',
-            documento: usuario.numDocumento,
-            correo: usuario.correoElectronico,
-            cargo: cargo ? cargo.nombre : '',
-            rol: rol ? rol.nombre : '',
-            nombre_lider: lider ? lider.nombre : '',
-            objetivo: objetivos ? objetivos.titulo : '',
-            fechaInicio : objetivos ? objetivos.fechaInicio : '',
-            fechaFin : objetivos ? objetivos.fechaFin : '',
-            descripcion: objetivos ? objetivos.descripcion : '',
-            peso: objetivos ? objetivos.peso : 0,
-            accion: accionesxObjetivo ? accionesxObjetivo.descripcion : '',
-            estado: estadoAccionesObjetivo,
-            calificacion: accionesxObjetivo ? accionesxObjetivo.calificacion : '',
-          });
+
+
         })
       } else {
         reporteObjetivos.push({
@@ -156,6 +165,7 @@ export class ReportesUsuariosComponent implements OnInit {
           descripcion: '',
           peso: 0,
           accion: '',
+          porcentajeAvanceAccion: '',
           estado: '',
           calificacion: 0
         });
@@ -273,7 +283,7 @@ export class ReportesUsuariosComponent implements OnInit {
   }
 
   encontrarObjetivoPorId(id: number) {
-    return this.objetivos.find(objetivo => objetivo.id === id);
+    return this.objetivos.filter(objetivo => objetivo.id === id);
   }
 
   encontrarObjetivoPorIdUser(idUsuario: number) {
@@ -281,7 +291,7 @@ export class ReportesUsuariosComponent implements OnInit {
   }
 
   encontrarAccionesObjetivoPorId(id: number) {
-    return this.accionesObjetivos.find(accion => accion.idObjetivo === id);
+    return this.accionesObjetivos.filter(accion => accion.idObjetivo === id);
   }
 
   encontrarEstadoAccionPorId(id: number) {

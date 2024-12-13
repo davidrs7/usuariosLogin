@@ -92,7 +92,7 @@
                     <div class="col-6">
                         <h1>Objetivo: {{ objetivotitulo || '' }}</h1><br>
                     </div>
-                    <div class="col-4" style="display: none;">
+                    <div class="col-4" >
                         <h1>Calificación Objetivo: {{ calificacionObjetivo }}</h1>
                     </div>
                     <div class="col-6">
@@ -100,10 +100,9 @@
                     </div>
                 </div>
 
-                <table style="display: none;">
+                <table >
                     <thead>
                         <tr>
-                            <th>Objetivo</th>
                             <th>Accion</th>
                             <th>Estado</th>
                             <th>Calificación</th>
@@ -111,7 +110,6 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of accionesObjetivoSel|paginador:p_Size:page">
-                            <td style="text-align: center;">{{ item.idObjetivo }}</td>
                             <td style="text-align: center;">{{ item.descripcion }}</td>
                             <td style="text-align: center;">{{ obtenerestado(item.idEstado) }}</td>
                             <td style="text-align: center;">{{ item.calificacion }}</td>
@@ -126,7 +124,7 @@
                     </tbody>
 
                 </table>
-                <div style="display: none;">
+                <div >
                     <mat-paginator [length]="accionesObjetivo.length" [pageSize]="p_Size"
                         [pageSizeOptions]="optionsPage" (page)="pageEvent($event)" aria-label="page"
                         class="m-3"></mat-paginator>
@@ -134,20 +132,30 @@
 
             </div>
 
-            <h2 style="display: none;">{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
-            <form [formGroup]="AccionesObjForm" autocomplete="off">                
+            <h2 >{{ cargoToEdit ? 'Editar Accion' : 'Crear Nueva Accion' }}</h2><br>
+            <form [formGroup]="AccionesObjForm" autocomplete="off">
 
-                <div style="display: none;">
-                    <label for="descripcion">Resultado esperado: *</label>
+              <div style="border: 1px solid #00648e; padding: 15px; margin-bottom: 20px;">
+                <h3 style="margin-top: -10px; background-color: #00648e; color:white ; width: fit-content; padding: 0 10px; position: relative; top: -20px;">Campos Colaborador</h3>
+
+              <label for="evidencia" >Porcentaje avance: * </label>
+              <input type="text"  formControlName="evidencia"><br><br>
+
+                <div >
+                    <label for="descripcion">Descripción del avance: *</label>
                     <textarea formControlName="descripcion" name="descripcion" required></textarea>
                 </div><br>
+              </div>
+
+              <div style="border: 1px solid #00648e; padding: 15px; margin-bottom: 20px;">
+                <h3 style="margin-top: -10px; background-color: #00648e; color:white; width: fit-content; padding: 0 10px; position: relative; top: -20px;">Campos Lider</h3>
 
                 <label for="estado">Estado: *</label>
                 <select id="estado" formControlName="estado">
                     <option *ngFor="let item of estadoAcciones" value="{{item.id}}">{{item.estado}}</option>
                 </select><br><br>
                 <div>
-                    <div style="display: none;">
+                    <div >
                         <label for="calificacion" >calificacion: *</label>
                         <input type="number" formControlName="calificacion">
                     </div><br>
@@ -158,14 +166,11 @@
                     </div><br>
                 </div>
 
-                
-                <label for="evidencia" style="display: none;">Resultado esperado: * </label>
-                <input type="text" style="display: none;" formControlName="evidencia"><br><br>
-
-                <label for="fechaaccion" style="display: none;">Fecha Accion: * </label>
-                <input type="date" style="display: none;" formControlName="fechaaccion" [attr.disabled]="true"><br><br>
+                <label for="fechaaccion" >Fecha Accion: * </label>
+                <input type="date"  formControlName="fechaaccion" [attr.disabled]="true"><br><br>
+              </div>
                 <br>
-                <div class="row" *ngIf="!propietario">
+                <div class="row">
                     <div class="col-6">
                         <button type="button" class="btn-users" (click)="guardaUsuarios()">{{ cargoToEdit ? 'Editar' :
                             'Guardar'
