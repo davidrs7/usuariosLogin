@@ -394,6 +394,7 @@ export class AddAbsenceComponent implements OnInit {
     } else {
       this.cancel();
     }
+    this.canva = false;
   }
 
 }
