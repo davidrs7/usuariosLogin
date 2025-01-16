@@ -50,7 +50,6 @@ export class ListPostulatesComponent implements OnInit {
 
     this.postulateService.postulateListEndpoint(this.postulateCriteria).subscribe(
       (postulatesResponse: PostulateBasicDTO[]) => {
-        console.log(postulatesResponse);
         this.postulatesList = postulatesResponse;
         var loadVacants:boolean = true;
 

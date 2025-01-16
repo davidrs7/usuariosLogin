@@ -16,7 +16,8 @@
         <div class="postulates__block--card">
             <div class="postulates__block--card--employee" *ngFor="let postulate of postulatesList" [style.border-color]="postulate.colorHex" (click)="openEdit(postulate.id)">
               <div class="postulates__block--card--employee--img" [style.border-bottom-color]="postulate.colorHex">
-                <img [src]="postulate.photoUrl.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />
+              <!--  <img [src]="postulate.photoUrl.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />-->
+              <img [src]=" '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />
               </div>
               <div class="postulates__block--card--employee--info">
                   <span>{{postulate.firstName}} {{postulate.lastName}}</span>

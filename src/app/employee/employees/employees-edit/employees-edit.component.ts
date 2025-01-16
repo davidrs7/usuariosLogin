@@ -243,7 +243,6 @@ export class EmployeesEditComponent implements OnInit {
   }
 
   treeFilesNotFound() {
-    console.log(this.treeIndex);
     var addTree: NodeTree[] = [];
     for(const index in this.treeIndex)
       if(!this.treeIndex[index].found && this.treeIndex[index].children != undefined && this.treeIndex[index].children.length > 0) {

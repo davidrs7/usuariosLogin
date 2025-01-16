@@ -44,15 +44,20 @@
             <div class="postulate-info-card-other">{{ postulate.docTypeName }} {{ postulate.doc }}</div>
         </div>
         <div class="postulate-info-img" [style.border-bottom-color]="postulate.colorHex">
-            <img [src]="postulate.photoUrl?.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />
-        </div>
+        <!--<img [src]="postulate.photoUrl?.trim() != '' ? postulate.photoUrl : '../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />-->
+         <img [src]="'../../assets/avatar.png'" alt="Photo Url" [style.border-bottom-color]="postulate.colorHex" />
+        </div><br>
+
     </div>
 
     <div class="postulate-btn information__btn">
+      <a *ngIf="postulate.photoUrl" [href]="postulate.photoUrl" target="_blank" rel="noopener noreferrer">
+        <button type="button"> <i class="fa fa-file-pdf"></i>  Hoja de Vida</button>
+      </a>
         <button type="button" (click)="cancel()">Volver a la lista</button>
         <button type="button" data-bs-toggle="modal" data-bs-target="#modalSelVacant" (click)="openModal(modalSelVacant, true)" *ngIf="vacantList.length > 0">Asignar vacantes</button>
         <button type="button" data-bs-toggle="modal" data-bs-target="#modalChangeFunc" (click)="openModal(modalChangeFunc, false)" *ngIf="changeEmployee">Convertir en funcionario</button>
-        <button type="button" (click)="openEdit()">Editar postulado</button>
+
     </div>
 
     <div class="postulate-wf">

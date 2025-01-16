@@ -34,28 +34,36 @@
         <label for="telefono">Telefono: * </label>
         <input type="text" formControlName="telefono" required><br><br>
 
+        <label for="direccion">Ciudad de residencia: * </label>
+        <select formControlName="cityLevelId" name="cityLevelId" id="postulatecityLevelId">
+          <option value="0">--Seleccione una opcion--</option>
+          <option *ngFor="let param of cityLevel" [value]="param.id">{{ param.name }}</option>
+        </select><br><br>
+
         <label for="direccion">Nivel educativo: * </label>
         <select formControlName="educationalLevelId" name="educationalLevelId" id="postulateEducationalLevelId">
           <option value="0">--Seleccione una opcion--</option>
           <option *ngFor="let param of paramEducationalLevel" [value]="param.id">{{ param.name }}</option>
-      </select>
+        </select>
 
       </div>
 
       <div class="col-6">
-
         <label for="fechanacimiento">Fecha Nacimiento: * </label>
         <input type="date" formControlName="fechanacimiento" required><br><br>
 
         <label for="vacantesDisponibles">Vacantes disponibles: * </label>
-        <select id="vacantesDisponibles" formControlName="vacantesDisponibles">
+        <select id="vacantesDisponibles" formControlName="vacantesDisponibles"
+          (change)="consultarDescripcionVacante($event)">
           <option value="0">--Seleccione una opcion--</option>
           <option *ngFor="let item of vacantList" value="{{item.jobId}}">{{item.jobName}}</option>
-        </select><br><br><br><br>
+        </select><br><br>
 
+        <label for="vacantesDisponibles">Descripcion Vacante: * </label>
+        <textarea disabled> {{ descripcionVacante }} </textarea> <br><br>
         <div class="upload-container">
           <label for="cv">Adjuntar Hoja de Vida</label>
-          <input type="file" id="cv" name="cv" formControlName="hvPostulante" accept=".pdf,.doc,.docx"
+          <input type="file" id="cv" name="cv" formControlName="hvPostulante" accept=".pdf"
             (change)="onFileSelected($event)" />
           <p class="file-name">{{ fileName || 'Ningún archivo seleccionado' }}</p>
         </div> <br><br>

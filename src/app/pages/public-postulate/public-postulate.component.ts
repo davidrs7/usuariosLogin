@@ -20,10 +20,11 @@ export class PublicPostulateComponent implements OnInit {
   fileName: string | null = null;
   captchaResponse: string | null = null;
   TipDocs: any[] = [];
-  postulate: PostulateDTO = { id: 0, recruiterUserId: 0, findOutId: 0, docTypeId: 0, educationalLevelId: 0, expectedSalary: 0, offeredSalary: 0, doc: '', firstName: '', lastName: '', sex: '', rh: '', phone: '', cellPhone: '', email: '', career: '', description: '' };
+  postulate: PostulateDTO = { id: 0, recruiterUserId: 0, findOutId: 0, docTypeId: 0, educationalLevelId: 0, cityLevelId: 0, expectedSalary: 0, offeredSalary: 0, doc: '', firstName: '', lastName: '', sex: '', rh: '', phone: '', cellPhone: '', email: '', career: '', description: '' };
   vacantList: VacantDTO[] = [];
   paramEducationalLevel: ParamsDTO[] = [];
-
+  cityLevel: ParamsDTO[] = [];
+  descripcionVacante: string;
   siteKey = '6LdszjcqAAAAADpUhY-JGzyTcEZjK89BpCOhTA2R';
   enviaInfo: string = "";
   postulateId: any;
@@ -41,12 +42,13 @@ export class PublicPostulateComponent implements OnInit {
     fechanacimiento: [''],
     fechacreacion: [this.obtenerFechaActual(), []],
     estado: [true, Validators.required],
-    educationalLevelId:[0,Validators.required],
+    cityLevelId: [0, Validators.required],
+    educationalLevelId: [0, Validators.required],
     hvPostulante: ['', []],
     vacantesDisponibles: [0, []],
 
   });
-  constructor(private fb: FormBuilder, private loginServices: loginTiinduxService, private vacantService: VacantService,private paramsService: ParamsService,private postulateService: PostulateService) { }
+  constructor(private fb: FormBuilder, private loginServices: loginTiinduxService, private vacantService: VacantService, private paramsService: ParamsService, private postulateService: PostulateService) { }
 
   ngOnInit(): void {
 
@@ -72,9 +74,15 @@ export class PublicPostulateComponent implements OnInit {
         this.paramEducationalLevel = paramResponse;
       }
     );
+
+    this.paramsService.cityEndpoint().subscribe(
+      (paramResponse: ParamsDTO[]) => {
+        this.cityLevel = paramResponse;
+      }
+    );
   }
 
-  LimpiarFormulario(){
+  LimpiarFormulario() {
     this.usuariosForm.get('nombrePostulante')?.setValue('');
     this.usuariosForm.get('apellidosPostulante')?.setValue('');
     this.usuariosForm.get('correoPostulante')?.setValue('');
@@ -85,6 +93,7 @@ export class PublicPostulateComponent implements OnInit {
     this.usuariosForm.get('fechanacimiento')?.setValue('');
     this.usuariosForm.get('vacantesDisponibles')?.setValue(0);
     this.usuariosForm.get('educationalLevelId')?.setValue(0);
+    this.usuariosForm.get('cityLevelId')?.setValue(0);
     this.usuariosForm.get('hvPostulante')?.setValue('');
   }
 
@@ -93,24 +102,38 @@ export class PublicPostulateComponent implements OnInit {
 
     if (input.files && input.files.length > 0) {
       this.fileName = input.files[0].name;
+      this.postulate.photo = input.files[0];
     } else {
       this.fileName = 'Ningún archivo seleccionado';
     }
   }
 
+  consultarDescripcionVacante(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const idVacante = parseInt(selectElement.value, 10);
+
+    if (idVacante !== 0) {
+      this.descripcionVacante = this.vacantList.filter(x => x.id === idVacante)[0]?.description;
+    } else {
+      this.descripcionVacante  = "Selecciona una vacante";
+    }
+
+  }
+
   enviarFormulario() {
     // if (this.enviaInfo.length > 0 && this.fileName != null) { // con captcha
     if (this.fileName != null) {
-        this.postulate.firstName = this.usuariosForm.get('nombrePostulante')?.value;
-        this.postulate.lastName  = this.usuariosForm.get('apellidosPostulante')?.value;
-        this.postulate.email     = this.usuariosForm.get('correoPostulante')?.value;
-        this.postulate.docTypeId = Number(this.usuariosForm.get('tipoDocumentoPostulante')?.value) || 0;
-        this.postulate.doc       = this.usuariosForm.get('numdocumento')?.value;
-        this.postulate.phone     = this.usuariosForm.get('telefono')?.value;
-        this.postulate.birthDate = this.usuariosForm.get('fechanacimiento')?.value;
-        this.postulate.educationalLevelId = Number(this.usuariosForm.get('educationalLevelId')?.value) || 0;
-        this.postulate.recruiterUserId = Number(1); //setear usuario admin (usualmente es el 1)
-        this.postulate.findOutId = 2; //páginas ofertas laborales
+      this.postulate.firstName = this.usuariosForm.get('nombrePostulante')?.value;
+      this.postulate.lastName = this.usuariosForm.get('apellidosPostulante')?.value;
+      this.postulate.email = this.usuariosForm.get('correoPostulante')?.value;
+      this.postulate.docTypeId = Number(this.usuariosForm.get('tipoDocumentoPostulante')?.value) || 0;
+      this.postulate.doc = this.usuariosForm.get('numdocumento')?.value;
+      this.postulate.phone = this.usuariosForm.get('telefono')?.value;
+      this.postulate.birthDate = this.usuariosForm.get('fechanacimiento')?.value;
+      this.postulate.educationalLevelId = Number(this.usuariosForm.get('educationalLevelId')?.value) || 0;
+      this.postulate.cityLevelId = Number(this.usuariosForm.get('cityLevelId')?.value) || 0;
+      this.postulate.recruiterUserId = Number(1); //setear usuario admin (usualmente es el 1)
+      this.postulate.findOutId = 2; //páginas ofertas laborales
       this.postulateService.addPostulateEndpoint(this.postulate).subscribe(
         (postulateId: any) => {
           this.crearVacanteRelacion(postulateId);
@@ -132,23 +155,23 @@ export class PublicPostulateComponent implements OnInit {
     }
   }
 
-  crearVacanteRelacion(idPostulado: number){
+  crearVacanteRelacion(idPostulado: number) {
 
     const bodyPostulateVacantRel = {
-      VacantId : this.usuariosForm.get('vacantesDisponibles')?.value,
+      VacantId: this.usuariosForm.get('vacantesDisponibles')?.value,
       PostulateId: idPostulado,
-      Active : 1,
-      IsEmployee : 0
+      Active: 1,
+      IsEmployee: 0
     }
 
-    this.loginServices.createData('PostulateVacantRel',bodyPostulateVacantRel).subscribe((respuesta:ApiResponse<any>) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Tu información se registro con exito!',
-          text: 'Pronto estaremos en contacto contigo'
-        }).then((res:any) => {
-          window.location.reload();
-        });
+    this.loginServices.createData('PostulateVacantRel', bodyPostulateVacantRel).subscribe((respuesta: ApiResponse<any>) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Tu información se registro con exito!',
+        text: 'Pronto estaremos en contacto contigo'
+      }).then((res: any) => {
+        //window.location.reload(); //descomentar
+      });
     });
   }
 

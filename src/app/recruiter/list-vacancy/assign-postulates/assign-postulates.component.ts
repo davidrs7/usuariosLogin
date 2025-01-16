@@ -49,7 +49,6 @@ export class AssignPostulatesComponent implements OnInit {
 
         this.vacantService.vacantsByPostulateRelEndpoint(this.vacantId).subscribe(
           (vacantRelResult: VacantDTO[]) => {
-            console.log(vacantRelResult);
             this.vacantsByPostulate = vacantRelResult;
             this.postulates = [];
             var findRel: boolean;
@@ -68,7 +67,6 @@ export class AssignPostulatesComponent implements OnInit {
                 this.postulates.push(postulate);
               }
             }
-            console.log('postulate', this.postulatesSelected)
             this.canva = false;
           }
         );

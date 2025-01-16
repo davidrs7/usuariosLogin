@@ -33,6 +33,7 @@ import { PostulateDTO, PostulateBasicDTO, PostulateCriteriaDTO } from '../../dto
       formData.append("findOutId", this.stringValue(postulate.findOutId));
       formData.append("docTypeId", this.stringValue(postulate.docTypeId));
       formData.append("educationalLevelId", this.stringValue(postulate.educationalLevelId));
+      formData.append("cityLevelId", this.stringValue(postulate.cityLevelId));
       formData.append("offeredSalary", this.stringValue(postulate.offeredSalary));
       formData.append("expectedSalary", this.stringValue(postulate.expectedSalary));
       formData.append("doc", this.stringValue(postulate.doc));
@@ -85,5 +86,5 @@ import { PostulateDTO, PostulateBasicDTO, PostulateCriteriaDTO } from '../../dto
       formData.append("employeeId", employeeId.toString());
       return this.http.put(this.baseUrl + 'ToEmployee', formData);
     }
-    
+
   }

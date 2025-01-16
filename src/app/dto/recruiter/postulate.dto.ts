@@ -29,6 +29,7 @@ export interface PostulateDTO {
     findOutName?: string;
     docTypeId: number;
     docTypeName?: string;
+    cityLevelId?: number;
 	educationalLevelId?: number;
 	educationalLevelName?: string;
     offeredSalary?: number;

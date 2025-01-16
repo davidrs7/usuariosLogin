@@ -6,11 +6,17 @@ import { EmployeeService } from 'src/app/_services/employee/employee.service';
 import { PostulateService } from 'src/app/_services/recruiter/postulate.service';
 import { StepService } from 'src/app/_services/recruiter/step.service';
 import { VacantService } from 'src/app/_services/recruiter/vacant.service';
+import { loginTiinduxService } from 'src/app/_services/UserLogin/loginTiidux.service';
 import { EmployeeAcademicDTO, EmployeeDTO, EmployeeGeneralDTO } from 'src/app/dto/employee/employee.dto';
+import { ApiResponse } from 'src/app/dto/loginTiindux/genericResponse';
+import { ParamsDTO } from 'src/app/dto/params.dto';
 import { PostulateDTO } from 'src/app/dto/recruiter/postulate.dto';
 import { StepDTO, StepFieldDTO } from 'src/app/dto/recruiter/step.dto';
 import { VacantDTO } from 'src/app/dto/recruiter/vacant.dto';
 import { AdminExtraForms, AdminMsgErrors, FormFieldConfigIndex, StepFormIndex, StepFormIndexKey } from 'src/app/dto/utils.dto';
+import { ReqUsuarios } from 'src/app/Interfaces/UserLogin';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-detal-postulantes',
@@ -26,6 +32,9 @@ export class DetalPostulantesComponent implements OnInit {
   postulateId: any;
   errorModalAssign: boolean = false;
   changeEmployee: boolean = false;
+  usuarios: any[] = [];
+    paramSex: ParamsDTO[] = [];
+
 
   forms: AdminExtraForms = new AdminExtraForms();
   errors: AdminMsgErrors = new AdminMsgErrors();
@@ -36,12 +45,17 @@ export class DetalPostulantesComponent implements OnInit {
   vacantSelectedList: VacantDTO[] = [];
   vacantSelected!: VacantDTO;
 
-  constructor(private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private postulateService: PostulateService, private vacantService: VacantService, private stepService: StepService, private employeeService: EmployeeService) {}
+  constructor(private modalService: NgbModal, private route: ActivatedRoute,private usuariosService: loginTiinduxService, private router: Router, private postulateService: PostulateService, private vacantService: VacantService, private stepService: StepService, private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
     this.postulateId = this.route.snapshot.paramMap.get("id");
     if(this.postulateId != null)
       this.initPostulate();
+
+    this.usuariosService.GetAllData<any>('Sexo').subscribe((respuesta: ApiResponse<any>) => {
+      this.paramSex = this.addParamsforSex(respuesta.data);
+      this.canva = false;
+    });
   }
 
   initPostulate() {
@@ -53,6 +67,22 @@ export class DetalPostulantesComponent implements OnInit {
     );
   }
 
+  addParamsforSex(data: any[]) {
+    let paramResponse: ParamsDTO[] = [];
+
+    if (data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        let param: ParamsDTO = {
+          id: data[i].sexoId,
+          name: data[i].descripcion,
+          available: data[i].estado
+        };
+        paramResponse.push(param);
+      }
+    }
+
+    return paramResponse;
+  }
   initVacantlist() {
     this.vacantService.vacantsByPostulateIdEndpoint(this.postulateId).subscribe(
       (vacantsPostulateResult: VacantDTO[]) => {
@@ -285,6 +315,72 @@ export class DetalPostulantesComponent implements OnInit {
     }
   }
 
+    saveUser(usuario: EmployeeDTO, idEmployee: number) {
+      //david
+      let idusuario = this.usuarios.filter(x => x.usuarioIdOpcional == idEmployee)[0];
+      idusuario = idusuario == undefined ? 0 : this.usuarios.filter(x => x.usuarioIdOpcional == idEmployee)[0].usuarioId;
+      const sexDefault = usuario.sex.length > 0 ? usuario.sex : "Otro";
+
+      const body: ReqUsuarios = {
+        usuarioId: 0,
+        nombre: usuario.name,
+        tipoDocumento: usuario.docTypeId,
+        numDocumento: usuario.doc,
+        correoElectronico: usuario.email,
+        contraseña: usuario.doc,
+        telefono: usuario.cellPhone.toString(),
+        direccion: "",
+        fechaNacimiento:  usuario.birthDate ,
+        fechaCreacion: usuario.docIssueDate ,
+        sexoId: Number(this.paramSex.filter(x => x.name == sexDefault)[0].id),
+        jefeId: Number(1),
+        rolId: Number(1),
+        cargoId: Number(usuario.jobId) || 0,
+        empresaId: Number(1),
+        usuarioIdOpcional: Number(idEmployee),
+        estado: true,
+      };
+
+      if (idusuario == 0) {
+        this.usuariosService.createData('User', body).subscribe((respuesta: ApiResponse<any>) => {
+               Swal.fire({
+                  icon: 'success',
+                  title: respuesta.data,
+                  text: respuesta.estado.descripcion
+                });
+          this.canva = false;
+          this.canvaMsg = false;
+        });
+      } else {
+        this.usuariosService.UpdateData('User', idusuario, body).subscribe((respuesta: ApiResponse<any>) => {
+        });
+      }
+
+    }
+
+      /* ------- Fechas --------- */
+  obtenerFechaActual(): string {
+    const fechaActual: Date = new Date();
+    const fechaFormateada: string = `${fechaActual.getFullYear()}-${this.dosDigitos(fechaActual.getMonth() + 1)}-${this.dosDigitos(fechaActual.getDate())}`;
+    return fechaFormateada;
+  }
+
+  dosDigitos(n: number): string {
+    return n < 10 ? '0' + n : '' + n;
+  }
+
+  convertirFormatoFecha(fechaISO: string): string {
+    const fechaObj = new Date(fechaISO);
+
+    const año = fechaObj.getFullYear();
+    const mes = ('0' + (fechaObj.getMonth() + 1)).slice(-2);
+    const dia = ('0' + fechaObj.getDate()).slice(-2);
+
+    return `${año}-${mes}-${dia}`;
+  }
+
+  /* ------ Fin fechas ------ */
+
   changeToEmployee() {
     this.closeModal();
     if(this.changeEmployee) {
@@ -295,7 +391,7 @@ export class DetalPostulantesComponent implements OnInit {
         contractTypeId: this.vacantSelected.contractTypeId, doc: this.postulate.doc,
         name: this.postulate.firstName + ' ' + this.postulate.lastName, sex: this.postulate.sex ?? '', rh: this.postulate.rh ?? '',
         corpCellPhone: '', cellPhone: this.postulate.cellPhone ?? '', phone: this.postulate.phone ?? '', email: this.postulate.email ?? '',
-        bankAccount: '', bankAccountType: '', hasVaccine: false, vaccineMaker: '', vaccineDose: 0, hasVaccineBooster: false, colorHex: ''
+        bankAccount: '', bankAccountType: '', hasVaccine: false, vaccineMaker: '', vaccineDose: 0, hasVaccineBooster: false, colorHex: '',jobCityId: this.postulate.cityLevelId
       };
       if(newEmployee.birthDate != null && typeof newEmployee.birthDate == 'string') {
         var birthDateStr: string = newEmployee.birthDate;
@@ -306,12 +402,14 @@ export class DetalPostulantesComponent implements OnInit {
 
       this.employeeService.addEndpoint(newEmployee).subscribe(
         (employeeId: any) => {
-          var newEmployeeGeneral: EmployeeGeneralDTO = {
+          this.saveUser(newEmployee, employeeId);
+         /* var newEmployeeGeneral: EmployeeGeneralDTO = {
             id: 0, employeeId: employeeId, cityId: 0, cityName: '', housingTypeId: 0, transportationId: 0, emergencyContactName: '',
             emergencyContactPhone: '', emergencyContactRelationship: '', dependents: 0, dependentsUnder9: 0, address: '', neighborhood: '',
             housingTime: 0, socioeconomicStatus: 0, licensePlate: '', vehicleMark: '', vehicleModel: '', licenseNumber: '', licenseCategory: '',
             vehicleOwnerName: '', contributorType: '', eps: '', arl: '', afp: '', recommendedBy: '', description: this.postulate.description ?? ''
           };
+
           this.employeeService.addGeneralEndpoint(newEmployeeGeneral).subscribe(
             (employeeGeneralId: any) => {
               var newEmployeeAcademic: EmployeeAcademicDTO = { id: 0, employeeId: employeeId, educationalLevelId: this.postulate.educationalLevelId, career: this.postulate.career ?? '' };
@@ -322,16 +420,18 @@ export class DetalPostulantesComponent implements OnInit {
               );
             }
           );
-
           this.postulateService.postulateToEmployeeEndpoint(this.postulateId, this.vacantSelected.id, employeeId).subscribe(
             (rsp: any) => {
               this.canvaMsg = true;
             }
-          );
+          );*/// Se detecta que no se envian los parametros correspondientes para completar todo el perfil de empleado, se va crear el empleado y usuario asociado para posteriomente diligenciar los datos faltantes
+
         }
       );
     }
   }
+
+
 
   tabSelect(children: HTMLCollection, selection: number) {
     for(var i = 0; i < children.length; i++) {
