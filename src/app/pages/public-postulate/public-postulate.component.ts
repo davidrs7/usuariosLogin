@@ -113,7 +113,7 @@ export class PublicPostulateComponent implements OnInit {
     const idVacante = parseInt(selectElement.value, 10);
 
     if (idVacante !== 0) {
-      this.descripcionVacante = this.vacantList.filter(x => x.id === idVacante)[0]?.description;
+      this.descripcionVacante = this.vacantList.filter(x => x.jobId === idVacante)[0]?.description;
     } else {
       this.descripcionVacante  = "Selecciona una vacante";
     }
@@ -170,7 +170,7 @@ export class PublicPostulateComponent implements OnInit {
         title: 'Tu información se registro con exito!',
         text: 'Pronto estaremos en contacto contigo'
       }).then((res: any) => {
-        //window.location.reload(); //descomentar
+         window.location.reload(); //descomentar
       });
     });
   }
