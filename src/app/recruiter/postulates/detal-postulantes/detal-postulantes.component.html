@@ -168,7 +168,7 @@
                                                 <span *ngIf="stepIndex[stepId].formGroup.get('approved')?.value == '0'"> del rechazo</span>
                                             </label>
                                             <div>
-                                                <textarea formControlName="reason" name="reason" [readonly]="stepIndex[stepId].status == 'success'" id="fr_reason"></textarea>
+                                                <textarea formControlName="reason" name="reason" id="fr_reason"></textarea>
                                                 <ul *ngIf="errors.validate(stepIndex[stepId].formGroup.get('reason'))">
                                                     <li *ngFor="let message of errors.getErrors(stepIndex[stepId].formGroup.get('reason'))">{{ message }}</li>
                                                 </ul>
@@ -177,7 +177,7 @@
                                     </div>
                                 </div>
 
-                                <div *ngIf="stepIndex[stepId].status != 'success'" class="information__btn">
+                                <div  class="information__btn">
                                     <button type="submit">Guardar {{ stepIndex[stepId].step.name }}</button>
                                 </div>
                             </form>
